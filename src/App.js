@@ -108,6 +108,8 @@ const App = () => {
       type: 'LIST_DELETE',
       payload: { id: selectedList.id }
     });
+    const selectedListIndex = listArray.data.findIndex((list) => list.id === selectedList.id);
+    setSelectedList(listArray.data[selectedListIndex - 1]);
   }
 
   const handleSelectList = (listData) => {
