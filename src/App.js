@@ -193,6 +193,7 @@ const App = () => {
       {/* list item view */}
       <ListItemView
         selectedListData={selectedListData}
+        onToggleListEditView={handleToggleListEditorView}
         // onEditList={handleEditList}
       />
 
@@ -207,11 +208,9 @@ const App = () => {
 
 
 const ListView = ({ isOpen, listRowsData, selectedListData, onToggleView, onSelectList, onCreateList }) => (
-  <div className='grid grid-rows-[auto,1fr,auto] w-80 h-full'>
-    <header className='p-5'></header>
-
-    <main className='overflow-scroll'>
-      <ul className='grid'>
+  <div className='relative grid grid-rows-[auto,1fr,auto] w-80 h-full max-h-screen overflow-scroll'>
+    <main>
+      <ul className='grid py-1'>
         {listRowsData.map((list) => (
           <ListViewRow
             key={list.id}
@@ -223,7 +222,9 @@ const ListView = ({ isOpen, listRowsData, selectedListData, onToggleView, onSele
       </ul>
     </main>
 
-    <footer className='sticky bottom-0 py-1'>
+    <header className='-order-1 sticky top-0 border-b-2 py-3 px-5 bg-slate-100'>Local Data</header>
+
+    <footer className='sticky bottom-0 border-t-2 py-[2px] bg-slate-100'>
       <button 
         onClick={onCreateList}
         className='group w-full px-1 py-[2px]'
@@ -305,12 +306,12 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
 }
 
 
-const ListItemView = ({ listItemRowsData, selectedListData, onEditList }) => (
+const ListItemView = ({ listItemRowsData, selectedListData, onToggleListEditView }) => (
   <div className='pt-2'>
     <div className='rounded-tl-2xl p-10 w-full h-full bg-blue-200'>
       <header>
         <button 
-          onClick={onEditList}
+          onClick={onToggleListEditView}
           className='flex rounded hover:bg-slate-500/40'
         >
           <div className='flex-none grid place-items-center w-10 h-10'>
