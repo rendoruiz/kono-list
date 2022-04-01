@@ -122,7 +122,7 @@ const App = () => {
       {/* list view */}
       <ListView 
         isOpen={isListViewOpen} 
-        listRows={listRowsData.data}
+        listRowsData={listRowsData.data}
         selectedListData={selectedList}
         onToggleView={handleToggleListView} 
         onSelectList={handleSelectList}
@@ -151,13 +151,13 @@ const App = () => {
 }
 
 
-const ListView = ({ isOpen, listRows, selectedListData, onToggleView, onSelectList, onEditList }) => (
+const ListView = ({ isOpen, listRowsData, selectedListData, onToggleView, onSelectList, onEditList }) => (
   <div className='grid grid-rows-[auto,1fr,auto] w-80 h-full'>
     <header className='p-5'></header>
 
     <main className='overflow-scroll'>
       <ul className='grid'>
-        {listRows.map((list) => (
+        {listRowsData.map((list) => (
           <ListViewRow
             key={list.id}
             data={list}
