@@ -22,11 +22,9 @@ const listArrayReducer = (state, action) => {
         date_created: Date.now(),
         date_updated: null,
       };
-      const newData = state.data;
-      newData.push(newList);
       newState = { 
         ...state,
-        data: newData,
+        data: [...state.data, newList],
       };
       break;
     case 'LIST_UPDATE':
@@ -55,6 +53,7 @@ const listArrayReducer = (state, action) => {
       throw new Error();
   }
 
+  console.log("reduce!")
   localStorage.setItem(state.localKey, JSON.stringify(newState.data));
   return newState;
 }
@@ -82,21 +81,28 @@ const App = () => {
       localKey: 'lists',
     }
   );
-  console.log(listArray.data)
+  const [selectedList, setSelectedList] = useLocalState('selected_list', null);
 
   const handleToggleListView = () => setIsListViewOpen(!isListViewOpen);
 
   const handleToggleListItemEditorView = () => setIsListItemEditorViewOpen(!isListItemEditorViewOpen);
 
-  const handleCreateList = () => {
+  const handleCreateList = (event) => {
     dispatchListArray({
       type: 'LIST_CREATE',
       payload: {
-        name: "test",
+        name: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. ",
         badge: "😚",
       }
-    })
+    });
+    event.preventDefault();
   }
+
+  const handleOpenList = (id) => {
+    setSelectedList(id);
+  }
+
+  
 
   return (
     <div className='h-screen w-screen bg-blue-300'>
@@ -106,6 +112,8 @@ const App = () => {
         onToggleView={handleToggleListView} 
         data={listArray.data}
         onCreateList={handleCreateList}
+        onOpenList={handleOpenList}
+        selectedList={selectedList}
       />
 
       {/* list item view */}
@@ -120,18 +128,19 @@ const App = () => {
 }
 
 
-const ListView = ({ isOpen, onToggleView, data, onCreateList }) => {
+const ListView = ({ isOpen, onToggleView, data, onCreateList, onOpenList, selectedList }) => {
   return (
-    <div className='relative grid grid-rows-[auto,1fr,auto] h-full w-80'>
+    <div className='grid grid-rows-[auto,1fr,auto] w-80 h-full'>
       <header className='p-5 bg-blue-600'></header>
 
-      <main className=''>
-        <ul>
-          {JSON.stringify(data)}
+      <main className='overflow-scroll'>
+        <ul className='grid'>
           {data.map((list) => (
             <List
               key={list.id}
-              list={list}
+              data={list}
+              onOpenList={onOpenList}
+              selectedList={selectedList}
             />
           ))}
         </ul>
@@ -145,11 +154,18 @@ const ListView = ({ isOpen, onToggleView, data, onCreateList }) => {
   )
 }
 
-const List = ({ list }) => (
+const List = ({ data, onOpenList, selectedList }) => (
   <li>
-    <button>
-      <span className='w-5 h-5 font-mono leading-none'>{list.badge}</span>
-      <p>{list.name}</p>
+    <button 
+      className='group w-full px-1 py-[2px]'
+      onClick={() => onOpenList(data.id)}
+    >
+      <div className={'flex items-center rounded w-full group-hover:bg-slate-500/50 ' + (selectedList===data.id && " bg-slate-500/40")}>
+        <div className='flex-none grid place-items-center w-10 h-10'>
+          <span className='font-mono text-lg leading-none'>{data.badge}</span>
+        </div>
+        <p className='flex-1 text-left truncate w-1'>{data.name}</p>
+      </div>
     </button>
   </li>
 )
