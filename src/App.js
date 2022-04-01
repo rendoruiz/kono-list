@@ -74,7 +74,7 @@ const useLocalState = (key, initialState) => {
 const App = () => {
   const [isListViewOpen, setIsListViewOpen] = React.useState(true);
   const [isListEditorViewOpen, setIsListEditorViewOpen] = React.useState(false);
-  const [listArray, dispatchListArray] = React.useReducer(
+  const [listRowsData, dispatchListRowsData] = React.useReducer(
     listArrayReducer,
     { 
       data: JSON.parse(localStorage.getItem('lists')) ?? defaultListArray, 
@@ -94,22 +94,22 @@ const App = () => {
   
 
   const handleEditList = () => {
-    const newId = uuidv4();
-    dispatchListArray({
+    const newListId = uuidv4();
+    dispatchListRowsData({
       type: 'LIST_CREATE',
-      payload: { id: newId }
+      payload: { id: newListId }
     });
-    setSelectedList({ id: newId });
+    setSelectedList({ id: newListId });
     handleToggleListEditorView();
   }
 
   const handleCancelEditList = () => {
-    dispatchListArray({
+    dispatchListRowsData({
       type: 'LIST_DELETE',
       payload: { id: selectedList.id }
     });
-    const selectedListIndex = listArray.data.findIndex((list) => list.id === selectedList.id);
-    setSelectedList(listArray.data[selectedListIndex - 1]);
+    const selectedListIndex = listRowsData.data.findIndex((list) => list.id === selectedList.id);
+    setSelectedList(listRowsData.data[selectedListIndex - 1]);
   }
 
   const handleSelectList = (listData) => {
@@ -118,12 +118,12 @@ const App = () => {
   
 
   return (
-    <div className='h-screen w-screen bg-blue-300 overflow-hidden'>
+    <div className='grid grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
       {/* list view */}
       <ListView 
         isOpen={isListViewOpen} 
         onToggleView={handleToggleListView} 
-        listRows={listArray.data}
+        listRows={listRowsData.data}
         onEditList={handleEditList}
         onSelectList={handleSelectList}
         selectedListData={selectedList}
@@ -137,8 +137,9 @@ const App = () => {
       />
 
       {/* list item view */}
-      <div>
-      </div>
+      <ListItemView
+
+      />
 
       {/* list item editor view */}
       <ListItemEditorView
@@ -151,13 +152,13 @@ const App = () => {
 
 
 const ListView = ({ isOpen, onToggleView, listRows, onEditList, onSelectList, selectedListData }) => (
-  <div className='grid grid-rows-[auto,1fr,auto] w-80 h-full bg-blue-200'>
-    <header className='p-5 bg-blue-600'></header>
+  <div className='grid grid-rows-[auto,1fr,auto] w-80 h-full'>
+    <header className='p-5'></header>
 
     <main className='overflow-scroll'>
       <ul className='grid'>
         {listRows.map((list) => (
-          <ListRowItem
+          <ListViewRow
             key={list.id}
             data={list}
             onSelectList={onSelectList}
@@ -165,7 +166,6 @@ const ListView = ({ isOpen, onToggleView, listRows, onEditList, onSelectList, se
           />
         ))}
       </ul>
-        
     </main>
 
     <footer className='sticky bottom-0 py-1'>
@@ -184,15 +184,15 @@ const ListView = ({ isOpen, onToggleView, listRows, onEditList, onSelectList, se
   </div>
 );
 
-const ListRowItem = ({ data, selectedListData, onSelectList }) => (
+const ListViewRow = ({ data, selectedListData, onSelectList }) => (
   <li>
     <button 
-      className='group w-full px-1 py-[2px]'
+      className='group w-full px-2 py-[2px]'
       onClick={() => onSelectList(data)}
     >
       <div className={
-        'relative flex items-center rounded w-full group-hover:bg-slate-500/40 ' + 
-        (selectedListData?.id===data.id && " bg-slate-500/30 before:left-0 before:inset-y-3 before:w-1 before:absolute before:bg-blue-700 before:rounded-full")}
+        'relative flex items-center rounded w-full group-hover:bg-slate-500/10 ' + 
+        (selectedListData?.id===data.id && " bg-slate-500/20 before:left-0 before:inset-y-3 before:w-1 before:absolute before:bg-blue-700 before:rounded-full")}
       >
         <div className='flex-none grid place-items-center w-10 h-10'>
           <span className='font-mono text-lg leading-none'>{data.badge}</span>
@@ -255,13 +255,21 @@ const ListEditorView = ({ isOpen, onToggleView, onCancelEdit, listData }) => {
 }
 
 
-const ListItemView = () => (
-  <div>
+const ListItemView = ({ listItemRowsData, selectedList }) => (
+  <div className='pt-2'>
+    <div className='rounded-tl-2xl w-full h-full bg-blue-200'>
+      <header></header>
+      <main className='overflow-scroll'>
+        <ul className='grid'>
 
+        </ul>
+      </main>
+      <footer className='sticky bottom-0 py-1'></footer>
+    </div>
   </div>
 )
 
-const ListItem = () => {
+const ListItemViewRow = () => {
   <div>
 
   </div>
