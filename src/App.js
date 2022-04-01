@@ -73,8 +73,8 @@ const useLocalState = (key, initialState) => {
 
 
 const App = () => {
-  const [isListViewOpen, setIsListViewOpen] = React.useState('isListViewOpen', true);
-  const [isListItemEditorViewOpen, setIsListItemEditorViewOpen] = useLocalState('isListItemEditorViewOpen', false);
+  const [isListViewOpen, setIsListViewOpen] = React.useState(true);
+  const [isListEditorViewOpen, setIsListEditorViewOpen] = React.useState(false);
   const [listArray, dispatchListArray] = React.useReducer(
     listArrayReducer,
     { 
@@ -82,11 +82,17 @@ const App = () => {
       localKey: 'lists',
     }
   );
+
+  const [isListItemEditorViewOpen, setIsListItemEditorViewOpen] = useLocalState('isListItemEditorViewOpen', false);
+
   const [selectedList, setSelectedList] = useLocalState('selected_list', null);
 
   const handleToggleListView = () => setIsListViewOpen(!isListViewOpen);
+  const handleToggleListEditorView = () => setIsListEditorViewOpen(!isListEditorViewOpen);
 
   const handleToggleListItemEditorView = () => setIsListItemEditorViewOpen(!isListItemEditorViewOpen);
+
+  
 
   const handleCreateList = () => {
     const newId = uuidv4();
@@ -97,26 +103,28 @@ const App = () => {
     setSelectedList(newId);
   }
 
-  const handleOpenList = (id) => {
-    setSelectedList(id);
+  const handleSelectList = (listData) => {
+    setSelectedList(listData);
+    handleToggleListEditorView();
   }
-
-  const handleUpdateList = (event, list) => {
-
-  }
-
   
 
   return (
-    <div className='h-screen w-screen bg-blue-300'>
+    <div className='h-screen w-screen bg-blue-300 overflow-hidden'>
       {/* list view */}
       <ListView 
         isOpen={isListViewOpen} 
         onToggleView={handleToggleListView} 
-        data={listArray.data}
+        listRows={listArray.data}
         onCreateList={handleCreateList}
-        onOpenList={handleOpenList}
+        onSelectList={handleSelectList}
         selectedList={selectedList}
+      />
+
+      <ListEditorView
+        isOpen={isListEditorViewOpen}
+        onToggleView={handleToggleListEditorView}
+        listData={selectedList}
       />
 
       {/* list item view */}
@@ -133,19 +141,19 @@ const App = () => {
 }
 
 
-const ListView = ({ isOpen, onToggleView, data, onCreateList, onOpenList, selectedList }) => {
+const ListView = ({ isOpen, onToggleView, listRows, onCreateList, onSelectList, selectedListData }) => {
   return (
     <div className='grid grid-rows-[auto,1fr,auto] w-80 h-full'>
       <header className='p-5 bg-blue-600'></header>
 
       <main className='overflow-scroll'>
         <ul className='grid'>
-          {data.map((list) => (
-            <List
+          {listRows.map((list) => (
+            <ListRowItem
               key={list.id}
               data={list}
-              onOpenList={onOpenList}
-              selectedList={selectedList}
+              onSelectList={onSelectList}
+              selectedListData={selectedListData}
             />
           ))}
         </ul>
@@ -159,15 +167,17 @@ const ListView = ({ isOpen, onToggleView, data, onCreateList, onOpenList, select
   )
 }
 
-const List = ({ data, onOpenList, selectedList }) => {
-  
+const ListRowItem = ({ data, selectedListData, onSelectList }) => {
   return (
     <li>
       <button 
         className='group w-full px-1 py-[2px]'
-        onClick={() => onOpenList(data.id)}
+        onClick={() => onSelectList(data)}
       >
-        <div className={'relative flex items-center rounded w-full group-hover:bg-slate-500/40 ' + (selectedList===data.id && " bg-slate-500/30 before:left-0 before:inset-y-3 before:w-1 before:absolute before:bg-blue-700 before:rounded-full")}>
+        <div className={
+          'relative flex items-center rounded w-full group-hover:bg-slate-500/40 ' + 
+          (selectedListData?.id===data.id && " bg-slate-500/30 before:left-0 before:inset-y-3 before:w-1 before:absolute before:bg-blue-700 before:rounded-full")}
+        >
           <div className='flex-none grid place-items-center w-10 h-10'>
             <span className='font-mono text-lg leading-none'>{data.badge}</span>
           </div>
@@ -178,6 +188,57 @@ const List = ({ data, onOpenList, selectedList }) => {
   )
 }
 
+const ListEditorView = ({ isOpen, onToggleView, listData }) => {
+  const handleCancelEdit = (event) => {
+    onToggleView();
+    event.preventDefault();
+  }
+
+  return isOpen && (
+    <div
+      className='fixed inset-0 z-50 grid place-items-center bg-black/40'
+      onClick={onToggleView}
+    >
+      <form 
+        className=' rounded px-4 py-3 bg-white'
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className='font-medium text-lg'>{!listData.date_updated ? 'New' : 'Rename'} list</h2>
+        <div className='flex mt-3 w-full'>
+          <div className='flex-none grid place-items-center'>
+            <input 
+              type="text" 
+              className='w-8 h-8 leading-none text-lg'
+              placeholder='📃'
+              maxLength={1}
+              defaultValue={listData?.badge}
+            />
+          </div>
+          
+          <input 
+            type="text"
+            className='flex-1 border-b-2 border-b-blue-600'
+            placeholder='Untitled list'
+            defaultValue={listData?.name}
+          />
+        </div>
+        <div className='grid grid-flow-col items-center justify-end gap-1 mt-4 text-sm'>
+          <button 
+            onClick={handleCancelEdit}
+            className='rounded px-2 py-1 font-medium uppercase hover:bg-black/10'
+          >
+            Cancel
+          </button>
+          <input 
+            type="submit" 
+            value={!listData.date_updated ? 'Create List' : 'Save'} 
+            className='rounded px-2 py-1 font-medium uppercase cursor-pointer hover:bg-black/10'
+          />
+        </div>
+      </form>
+    </div>
+  )
+}
 
 
 const ListItemView = () => (
@@ -191,8 +252,6 @@ const ListItem = () => {
 
   </div>
 }
-
-
 
 const ListItemEditorView = ({ isOpen, onToggleView }) => {
   
