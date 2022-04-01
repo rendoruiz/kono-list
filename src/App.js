@@ -101,6 +101,10 @@ const App = () => {
     setSelectedList(id);
   }
 
+  const handleUpdateList = (event, list) => {
+
+  }
+
   
 
   return (
@@ -116,6 +120,8 @@ const App = () => {
       />
 
       {/* list item view */}
+      <div>
+      </div>
 
       {/* list item editor view */}
       <ListItemEditorView
@@ -143,7 +149,7 @@ const ListView = ({ isOpen, onToggleView, data, onCreateList, onOpenList, select
             />
           ))}
         </ul>
-
+          
       </main>
 
       <footer className='sticky bottom-0 p-5 bg-blue-600'>
@@ -153,23 +159,24 @@ const ListView = ({ isOpen, onToggleView, data, onCreateList, onOpenList, select
   )
 }
 
-const List = ({ data, onOpenList, selectedList }) => (
-  <li>
-    <button 
-      className='group w-full px-1 py-[2px]'
-      onClick={() => onOpenList(data.id)}
-    >
-      <div className={'relative flex items-center rounded w-full group-hover:bg-slate-500/40 ' + (selectedList===data.id && " bg-slate-500/30 before:left-0 before:inset-y-3 before:w-1 before:absolute before:bg-blue-700 before:rounded-full")}>
-        <div className='flex-none grid place-items-center w-10 h-10'>
-          <span className='font-mono text-lg leading-none'>{data.badge}</span>
+const List = ({ data, onOpenList, selectedList }) => {
+  
+  return (
+    <li>
+      <button 
+        className='group w-full px-1 py-[2px]'
+        onClick={() => onOpenList(data.id)}
+      >
+        <div className={'relative flex items-center rounded w-full group-hover:bg-slate-500/40 ' + (selectedList===data.id && " bg-slate-500/30 before:left-0 before:inset-y-3 before:w-1 before:absolute before:bg-blue-700 before:rounded-full")}>
+          <div className='flex-none grid place-items-center w-10 h-10'>
+            <span className='font-mono text-lg leading-none'>{data.badge}</span>
+          </div>
+          <p className='flex-1 text-left truncate w-1'>{data.name}</p>
         </div>
-        <p className='flex-1 text-left truncate w-1'>{data.name}</p>
-
-        {/*  */}
-      </div>
-    </button>
-  </li>
-)
+      </button>
+    </li>
+  )
+}
 
 
 
