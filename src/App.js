@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-const defaultListArray = [
+const defaultListRows = [
   {
     id: 0,
     name: "Tasks",
@@ -11,7 +11,34 @@ const defaultListArray = [
   },
 ];
 
-const listArrayReducer = (state, action) => {
+const defaultListItemRows = [
+  {
+    id: 0,
+    list_id: 0,
+    is_checked: false,
+    date_created: Date.now(),
+    date_updated: null,
+    text: 'List Item 1',
+  },
+  {
+    id: 1,
+    list_id: 0,
+    is_checked: true,
+    date_created: Date.now(),
+    date_updated: null,
+    text: 'List Item 2',
+  },
+  {
+    id: 2,
+    list_id: 0,
+    is_checked: false,
+    date_created: Date.now(),
+    date_updated: null,
+    text: 'List Item 3',
+  },
+];
+
+const listRowsReducer = (state, action) => {
   let newState;
 
   switch(action.type) {
@@ -75,9 +102,9 @@ const App = () => {
   const [isListViewOpen, setIsListViewOpen] = React.useState(true);
   const [isListEditorViewOpen, setIsListEditorViewOpen] = React.useState(false);
   const [listRowsData, dispatchListRowsData] = React.useReducer(
-    listArrayReducer,
+    listRowsReducer,
     { 
-      data: JSON.parse(localStorage.getItem('lists')) ?? defaultListArray, 
+      data: JSON.parse(localStorage.getItem('lists')) ?? defaultListRows, 
       localKey: 'lists',
     }
   );
@@ -138,7 +165,7 @@ const App = () => {
 
       {/* list item view */}
       <ListItemView
-
+        selectedList={selectedList}
       />
 
       {/* list item editor view */}
@@ -223,7 +250,7 @@ const ListEditorView = ({ isOpen, listData, onToggleView, onCancelEdit }) => {
         <div className='flex mt-3 w-full'>
           <input 
             type="text" 
-            className='flex-none w-8 h-8 text-lg text-center leading-none appearance-none'
+            className='flex-none w-8 h-8 text-lg text-center leading-none appearance-none outline-none'
             placeholder='📃'
             maxLength={1}
             defaultValue={listData?.badge}
@@ -231,7 +258,7 @@ const ListEditorView = ({ isOpen, listData, onToggleView, onCancelEdit }) => {
           
           <input 
             type="text"
-            className='flex-1 border-b-2 border-b-blue-600 ml-1 appearance-none'
+            className='flex-1 border-b-2 border-b-blue-600 ml-1 appearance-none outline-none'
             placeholder='Untitled list'
             defaultValue={listData?.name}
           />
@@ -257,14 +284,26 @@ const ListEditorView = ({ isOpen, listData, onToggleView, onCancelEdit }) => {
 
 const ListItemView = ({ listItemRowsData, selectedList }) => (
   <div className='pt-2'>
-    <div className='rounded-tl-2xl w-full h-full bg-blue-200'>
-      <header></header>
+    <div className='rounded-tl-2xl p-10 w-full h-full bg-blue-200'>
+      <header>
+        <button className='flex items-center rounded hover:bg-slate-500/40'>
+          {selectedList.badge &&
+            <div className='flex-none grid place-items-center w-10 h-10'>
+              <span className='font-mono font-bold text-2xl leading-none'>{selectedList.badge}</span>
+            </div>
+          }
+          <h2 className='flex-1 pl-1 pr-2 font-medium text-2xl text-left'>{selectedList.name ?? 'Untitled list'}</h2>
+        </button>
+        { JSON.stringify(selectedList)}
+      </header>
       <main className='overflow-scroll'>
         <ul className='grid'>
 
         </ul>
       </main>
-      <footer className='sticky bottom-0 py-1'></footer>
+      <footer className='sticky bottom-0 py-1'>
+
+      </footer>
     </div>
   </div>
 )
