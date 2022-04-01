@@ -153,7 +153,11 @@ const App = () => {
   const handleUpdateList = (event) => {
     dispatchListRows({
       type: 'LIST_UPDATE',
-      payload: selectedListData,
+      payload: {
+        ...selectedListData,
+        name: event.target?.name?.value,
+        badge: event.target?.badge?.value,
+      },
     });
 
     // complete selected list data and close editor
@@ -183,6 +187,7 @@ const App = () => {
     const selectedListIndex = listRows.data.findIndex((list) => list.id == selectedListData.id);
     setSelectedListData(listRows.data[selectedListIndex - (goBackward ? 1 : 0)]);
   }
+  
 
   return (
     <div className='grid grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
@@ -288,6 +293,7 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
         <h2 className='font-medium text-lg'>{!listData?.date_updated ? 'New' : 'Rename'} list</h2>
         <div className='flex mt-3 w-full'>
           <input 
+            name='badge'
             type="text" 
             className='flex-none w-8 h-8 text-lg text-center leading-none appearance-none outline-none'
             placeholder={defaultListRow.badge}
@@ -296,6 +302,7 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
           />
           
           <input 
+            name='name'
             type="text"
             className='flex-1 border-b-2 border-b-blue-600 ml-1 appearance-none outline-none'
             placeholder={defaultListRow.name}
@@ -303,17 +310,17 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
           />
         </div>
         <div className='grid grid-flow-col items-center justify-end gap-1 mt-4 text-sm'>
-          <button 
-            onClick={onCancelCreate}
-            className='rounded px-2 py-1 font-medium uppercase hover:bg-black/10'
-          >
-            Cancel
-          </button>
           <input 
             type="submit" 
             value={!listData?.date_updated ? 'Create List' : 'Save'} 
             className='rounded px-2 py-1 font-medium uppercase cursor-pointer hover:bg-black/10'
           />
+          <button 
+            onClick={onCancelCreate}
+            className='-order-1 rounded px-2 py-1 font-medium uppercase hover:bg-black/10'
+          >
+            Cancel
+          </button>
         </div>
       </form>
     </div>
