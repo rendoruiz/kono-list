@@ -17,8 +17,9 @@ const listArrayReducer = (state, action) => {
   switch(action.type) {
     case 'LIST_CREATE':
       const newList = {
-        ...action.payload,
-        id: uuidv4(),
+        id: action.payload.id,
+        name: 'Untitled list',
+        badge: '📃',
         date_created: Date.now(),
         date_updated: null,
       };
@@ -45,7 +46,7 @@ const listArrayReducer = (state, action) => {
       newState = {
         ...state,
         data: state.data.filter(
-          (list) => list.id !== action.id
+          (list) => list.id !== action.payload.id
         ),
       };
       break;
@@ -87,15 +88,13 @@ const App = () => {
 
   const handleToggleListItemEditorView = () => setIsListItemEditorViewOpen(!isListItemEditorViewOpen);
 
-  const handleCreateList = (event) => {
+  const handleCreateList = () => {
+    const newId = uuidv4();
     dispatchListArray({
       type: 'LIST_CREATE',
-      payload: {
-        name: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. ",
-        badge: "😚",
-      }
+      payload: { id: newId }
     });
-    event.preventDefault();
+    setSelectedList(newId);
   }
 
   const handleOpenList = (id) => {
@@ -160,11 +159,13 @@ const List = ({ data, onOpenList, selectedList }) => (
       className='group w-full px-1 py-[2px]'
       onClick={() => onOpenList(data.id)}
     >
-      <div className={'flex items-center rounded w-full group-hover:bg-slate-500/50 ' + (selectedList===data.id && " bg-slate-500/40")}>
+      <div className={'relative flex items-center rounded w-full group-hover:bg-slate-500/40 ' + (selectedList===data.id && " bg-slate-500/30 before:left-0 before:inset-y-3 before:w-1 before:absolute before:bg-blue-700 before:rounded-full")}>
         <div className='flex-none grid place-items-center w-10 h-10'>
           <span className='font-mono text-lg leading-none'>{data.badge}</span>
         </div>
         <p className='flex-1 text-left truncate w-1'>{data.name}</p>
+
+        {/*  */}
       </div>
     </button>
   </li>
