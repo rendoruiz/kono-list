@@ -122,11 +122,11 @@ const App = () => {
       {/* list view */}
       <ListView 
         isOpen={isListViewOpen} 
-        onToggleView={handleToggleListView} 
         listRows={listRowsData.data}
-        onEditList={handleEditList}
-        onSelectList={handleSelectList}
         selectedListData={selectedList}
+        onToggleView={handleToggleListView} 
+        onSelectList={handleSelectList}
+        onEditList={handleEditList}
       />
 
       <ListEditorView
@@ -151,7 +151,7 @@ const App = () => {
 }
 
 
-const ListView = ({ isOpen, onToggleView, listRows, onEditList, onSelectList, selectedListData }) => (
+const ListView = ({ isOpen, listRows, selectedListData, onToggleView, onSelectList, onEditList }) => (
   <div className='grid grid-rows-[auto,1fr,auto] w-80 h-full'>
     <header className='p-5'></header>
 
@@ -161,8 +161,8 @@ const ListView = ({ isOpen, onToggleView, listRows, onEditList, onSelectList, se
           <ListViewRow
             key={list.id}
             data={list}
-            onSelectList={onSelectList}
             selectedListData={selectedListData}
+            onSelectList={onSelectList}
           />
         ))}
       </ul>
@@ -203,7 +203,7 @@ const ListViewRow = ({ data, selectedListData, onSelectList }) => (
   </li>
 );
 
-const ListEditorView = ({ isOpen, onToggleView, onCancelEdit, listData }) => {
+const ListEditorView = ({ isOpen, listData, onToggleView, onCancelEdit }) => {
   const handleCancelEdit = (event) => {
     onCancelEdit();
     onToggleView();
