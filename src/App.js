@@ -110,7 +110,7 @@ const App = () => {
       localKey: 'lists',
     }
   );
-  const [selectedList, setSelectedList] = useLocalState('selected_list', { id: 0 });
+  const [selectedListData, setSelectedListData] = useLocalState('selected_list', { id: 0 });
   
   const handleToggleListView = () => setIsListViewOpen(!isListViewOpen);
   const handleToggleListEditorView = () => setIsListEditorViewOpen(!isListEditorViewOpen);
@@ -124,21 +124,21 @@ const App = () => {
       type: 'LIST_CREATE',
       payload: { id: newListId }
     });
-    setSelectedList({ id: newListId });
+    setSelectedListData({ id: newListId });
     handleToggleListEditorView();
   }
 
   const handleCancelEditList = () => {
     dispatchListRows({
       type: 'LIST_DELETE',
-      payload: { id: selectedList.id }
+      payload: { id: selectedListData.id }
     });
-    const selectedListIndex = listRows.data.findIndex((list) => list.id === selectedList.id);
-    setSelectedList(listRows.data[selectedListIndex - 1]);
+    const selectedListIndex = listRows.data.findIndex((list) => list.id === selectedListData.id);
+    setSelectedListData(listRows.data[selectedListIndex - 1]);
   }
 
   const handleSelectList = (listData) => {
-    setSelectedList(listData);
+    setSelectedListData(listData);
   }
   
 
@@ -148,7 +148,7 @@ const App = () => {
       <ListView 
         isOpen={isListViewOpen} 
         listRowsData={listRows.data}
-        selectedListData={selectedList}
+        selectedListData={selectedListData}
         onToggleView={handleToggleListView} 
         onSelectList={handleSelectList}
         onEditList={handleEditList}
@@ -156,14 +156,14 @@ const App = () => {
 
       <ListEditorView
         isOpen={isListEditorViewOpen}
-        listData={selectedList}
+        listData={selectedListData}
         onToggleView={handleToggleListEditorView}
         onCancelEdit={handleCancelEditList}
       />
 
       {/* list item view */}
       <ListItemView
-        selectedList={selectedList}
+        selectedListData={selectedListData}
         onEditList={handleEditList}
       />
 
@@ -281,7 +281,7 @@ const ListEditorView = ({ isOpen, listData, onToggleView, onCancelEdit }) => {
 }
 
 
-const ListItemView = ({ listItemRowsData, selectedList, onEditList }) => (
+const ListItemView = ({ listItemRowsData, selectedListData, onEditList }) => (
   <div className='pt-2'>
     <div className='rounded-tl-2xl p-10 w-full h-full bg-blue-200'>
       <header>
@@ -289,14 +289,14 @@ const ListItemView = ({ listItemRowsData, selectedList, onEditList }) => (
           onClick={onEditList}
           className='flex items-center rounded hover:bg-slate-500/40'
         >
-          {selectedList.badge &&
+          {selectedListData.badge &&
             <div className='flex-none grid place-items-center w-10 h-10'>
-              <span className='font-mono font-bold text-2xl leading-none'>{selectedList.badge}</span>
+              <span className='font-mono font-bold text-2xl leading-none'>{selectedListData.badge}</span>
             </div>
           }
-          <h2 className='flex-1 pl-1 pr-2 font-medium text-2xl text-left'>{selectedList.name ?? 'Untitled list'}</h2>
+          <h2 className='flex-1 pl-1 pr-2 font-medium text-2xl text-left'>{selectedListData.name ?? 'Untitled list'}</h2>
         </button>
-        { JSON.stringify(selectedList)}
+        { JSON.stringify(selectedListData)}
       </header>
       <main className='overflow-scroll'>
         <ul className='grid'>
