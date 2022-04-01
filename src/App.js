@@ -150,52 +150,58 @@ const App = () => {
 }
 
 
-const ListView = ({ isOpen, onToggleView, listRows, onEditList, onSelectList, selectedListData }) => {
-  return (
-    <div className='grid grid-rows-[auto,1fr,auto] w-80 h-full'>
-      <header className='p-5 bg-blue-600'></header>
+const ListView = ({ isOpen, onToggleView, listRows, onEditList, onSelectList, selectedListData }) => (
+  <div className='grid grid-rows-[auto,1fr,auto] w-80 h-full bg-blue-200'>
+    <header className='p-5 bg-blue-600'></header>
 
-      <main className='overflow-scroll'>
-        <ul className='grid'>
-          {listRows.map((list) => (
-            <ListRowItem
-              key={list.id}
-              data={list}
-              onSelectList={onSelectList}
-              selectedListData={selectedListData}
-            />
-          ))}
-        </ul>
-          
-      </main>
+    <main className='overflow-scroll'>
+      <ul className='grid'>
+        {listRows.map((list) => (
+          <ListRowItem
+            key={list.id}
+            data={list}
+            onSelectList={onSelectList}
+            selectedListData={selectedListData}
+          />
+        ))}
+      </ul>
+        
+    </main>
 
-      <footer className='sticky bottom-0 p-5 bg-blue-600'>
-        <button onClick={onEditList}>New List</button>
-      </footer>
-    </div>
-  )
-}
-
-const ListRowItem = ({ data, selectedListData, onSelectList }) => {
-  return (
-    <li>
+    <footer className='sticky bottom-0 py-1'>
       <button 
+        onClick={onEditList}
         className='group w-full px-1 py-[2px]'
-        onClick={() => onSelectList(data)}
       >
-        <div className={
-          'relative flex items-center rounded w-full group-hover:bg-slate-500/40 ' + 
-          (selectedListData?.id===data.id && " bg-slate-500/30 before:left-0 before:inset-y-3 before:w-1 before:absolute before:bg-blue-700 before:rounded-full")}
-        >
+        <div className='flex items-center rounded w-full group-hover:bg-slate-500/40'>
           <div className='flex-none grid place-items-center w-10 h-10'>
-            <span className='font-mono text-lg leading-none'>{data.badge}</span>
+            <span className='font-mono font-bold text-xl leading-none'>+</span>
           </div>
-          <p className='flex-1 text-left truncate w-1'>{data.name}</p>
+          <p className='flex-1 text-left'>New list</p>
         </div>
       </button>
-    </li>
-  )
-}
+    </footer>
+  </div>
+);
+
+const ListRowItem = ({ data, selectedListData, onSelectList }) => (
+  <li>
+    <button 
+      className='group w-full px-1 py-[2px]'
+      onClick={() => onSelectList(data)}
+    >
+      <div className={
+        'relative flex items-center rounded w-full group-hover:bg-slate-500/40 ' + 
+        (selectedListData?.id===data.id && " bg-slate-500/30 before:left-0 before:inset-y-3 before:w-1 before:absolute before:bg-blue-700 before:rounded-full")}
+      >
+        <div className='flex-none grid place-items-center w-10 h-10'>
+          <span className='font-mono text-lg leading-none'>{data.badge}</span>
+        </div>
+        <p className='flex-1 text-left truncate w-1'>{data.name}</p>
+      </div>
+    </button>
+  </li>
+);
 
 const ListEditorView = ({ isOpen, onToggleView, onCancelEdit, listData }) => {
   const handleCancelEdit = (event) => {
