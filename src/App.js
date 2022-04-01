@@ -1,7 +1,8 @@
+import { eventWrapper } from '@testing-library/user-event/dist/utils';
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-const defaultListRows = [
+const initialListRows = [
   {
     id: 0,
     name: "Tasks",
@@ -11,7 +12,14 @@ const defaultListRows = [
   },
 ];
 
-const defaultListItemRows = [
+const defaultListRow = {
+  name: 'Untitled list',
+  badge: '📃',
+  date_created: Date.now(),
+  date_updated: null,
+}
+
+const initialListItemRows = [
   {
     id: 0,
     list_id: 0,
@@ -44,11 +52,8 @@ const listRowsReducer = (state, action) => {
   switch(action.type) {
     case 'LIST_CREATE':
       const newList = {
+        ...defaultListRow,
         id: action.payload.id,
-        name: 'Untitled list',
-        badge: '📃',
-        date_created: Date.now(),
-        date_updated: null,
       };
       newState = { 
         ...state,
@@ -56,18 +61,21 @@ const listRowsReducer = (state, action) => {
       };
       break;
     case 'LIST_UPDATE':
-      newState = state.data.map((list) => {
-        if (list.id === action.payload.id) {
-          const updatedItem = {
-            ...list,
-            name: action.payload.name,
-            badge: action.payload.badge ?? list.badge,
-            date_updated: Date.now(),
-          };
-          return updatedItem;
-        }
-        return list;
-      });
+      newState = {
+        ...state,
+        data: state.data.map((list) => {
+          if (list.id === action.payload.id) {
+            const updatedItem = {
+              ...list,
+              name: action.payload.name ?? list.name,
+              badge: action.payload.badge ?? list.badge,
+              date_updated: Date.now(),
+            };
+            return updatedItem;
+          }
+          return list;
+        }),
+    }
       break;
     case 'LIST_DELETE':
       newState = {
@@ -106,7 +114,7 @@ const App = () => {
   const [listRows, dispatchListRows] = React.useReducer(
     listRowsReducer,
     { 
-      data: JSON.parse(localStorage.getItem('lists')) ?? defaultListRows, 
+      data: JSON.parse(localStorage.getItem('lists')) ?? initialListRows, 
       localKey: 'lists',
     }
   );
@@ -116,31 +124,51 @@ const App = () => {
   const handleToggleListEditorView = () => setIsListEditorViewOpen(!isListEditorViewOpen);
   const handleToggleListItemEditorView = () => setIsListItemEditorViewOpen(!isListItemEditorViewOpen);
 
-  
-
-  const handleEditList = () => {
+  const handleCreateList = () => {
+    // create unique id and create temp list
     const newListId = uuidv4();
     dispatchListRows({
       type: 'LIST_CREATE',
       payload: { id: newListId }
     });
+    // set created id as selected list and close editor
     setSelectedListData({ id: newListId });
     handleToggleListEditorView();
   }
 
-  const handleCancelEditList = () => {
+  const handleUpdateList = (event) => {
+    dispatchListRows({
+      type: 'LIST_UPDATE',
+      payload: selectedListData,
+    });
+
+    // complete selected list data and close editor
+    setCompletedSelectedListData();
+    handleToggleListEditorView();
+    event.preventDefault();
+  }
+
+  const handleCancelCreateList = (event) => {
+    // delete recently created list
     dispatchListRows({
       type: 'LIST_DELETE',
       payload: { id: selectedListData.id }
     });
-    const selectedListIndex = listRows.data.findIndex((list) => list.id === selectedListData.id);
-    setSelectedListData(listRows.data[selectedListIndex - 1]);
+    // assign the list before the recently created list as the selected list
+    setCompletedSelectedListData(true)
+    // close list editor
+    handleToggleListEditorView();
+    event.preventDefault();
   }
 
   const handleSelectList = (listData) => {
     setSelectedListData(listData);
   }
-  
+
+  const setCompletedSelectedListData = (goBackward = false) => {
+    const selectedListIndex = listRows.data.findIndex((list) => list.id === selectedListData.id);
+    setSelectedListData(listRows.data[selectedListIndex - (goBackward ? 1 : 0)]);
+  }
 
   return (
     <div className='grid grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
@@ -151,20 +179,21 @@ const App = () => {
         selectedListData={selectedListData}
         onToggleView={handleToggleListView} 
         onSelectList={handleSelectList}
-        onEditList={handleEditList}
+        onCreateList={handleCreateList}
       />
 
+      {/* list row editor popup */}
       <ListEditorView
         isOpen={isListEditorViewOpen}
         listData={selectedListData}
-        onToggleView={handleToggleListEditorView}
-        onCancelEdit={handleCancelEditList}
+        onUpdateList={handleUpdateList}
+        onCancelCreate={handleCancelCreateList}
       />
 
       {/* list item view */}
       <ListItemView
         selectedListData={selectedListData}
-        onEditList={handleEditList}
+        // onEditList={handleEditList}
       />
 
       {/* list item editor view */}
@@ -177,7 +206,7 @@ const App = () => {
 }
 
 
-const ListView = ({ isOpen, listRowsData, selectedListData, onToggleView, onSelectList, onEditList }) => (
+const ListView = ({ isOpen, listRowsData, selectedListData, onToggleView, onSelectList, onCreateList }) => (
   <div className='grid grid-rows-[auto,1fr,auto] w-80 h-full'>
     <header className='p-5'></header>
 
@@ -196,7 +225,7 @@ const ListView = ({ isOpen, listRowsData, selectedListData, onToggleView, onSele
 
     <footer className='sticky bottom-0 py-1'>
       <button 
-        onClick={onEditList}
+        onClick={onCreateList}
         className='group w-full px-1 py-[2px]'
       >
         <div className='flex items-center rounded w-full group-hover:bg-slate-500/40'>
@@ -229,17 +258,12 @@ const ListViewRow = ({ data, selectedListData, onSelectList }) => (
   </li>
 );
 
-const ListEditorView = ({ isOpen, listData, onToggleView, onCancelEdit }) => {
-  const handleCancelEdit = (event) => {
-    onCancelEdit();
-    onToggleView();
-    event.preventDefault();
-  }
-
+const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
   return isOpen && (
     <div
       className='fixed inset-0 z-50 grid place-items-center bg-black/40'
-      onClick={onToggleView}
+      onClick={onUpdateList}
+      onSubmit={onUpdateList}
     >
       <form 
         className=' rounded px-4 py-3 bg-white'
@@ -250,7 +274,7 @@ const ListEditorView = ({ isOpen, listData, onToggleView, onCancelEdit }) => {
           <input 
             type="text" 
             className='flex-none w-8 h-8 text-lg text-center leading-none appearance-none outline-none'
-            placeholder='📃'
+            placeholder={defaultListRow.badge}
             maxLength={1}
             defaultValue={listData?.badge}
           />
@@ -258,13 +282,13 @@ const ListEditorView = ({ isOpen, listData, onToggleView, onCancelEdit }) => {
           <input 
             type="text"
             className='flex-1 border-b-2 border-b-blue-600 ml-1 appearance-none outline-none'
-            placeholder='Untitled list'
+            placeholder={defaultListRow.name}
             defaultValue={listData?.name}
           />
         </div>
         <div className='grid grid-flow-col items-center justify-end gap-1 mt-4 text-sm'>
           <button 
-            onClick={handleCancelEdit}
+            onClick={onCancelCreate}
             className='rounded px-2 py-1 font-medium uppercase hover:bg-black/10'
           >
             Cancel
@@ -287,14 +311,12 @@ const ListItemView = ({ listItemRowsData, selectedListData, onEditList }) => (
       <header>
         <button 
           onClick={onEditList}
-          className='flex items-center rounded hover:bg-slate-500/40'
+          className='flex rounded hover:bg-slate-500/40'
         >
-          {selectedListData.badge &&
-            <div className='flex-none grid place-items-center w-10 h-10'>
-              <span className='font-mono font-bold text-2xl leading-none'>{selectedListData.badge}</span>
-            </div>
-          }
-          <h2 className='flex-1 pl-1 pr-2 font-medium text-2xl text-left'>{selectedListData.name ?? 'Untitled list'}</h2>
+          <div className='flex-none grid place-items-center w-10 h-10'>
+            <span className='font-mono font-bold text-2xl leading-none'>{selectedListData.badge ?? defaultListRow.badge}</span>
+          </div>
+          <h2 className='flex-1 pt-[2px] pl-1 pr-2 h-full font-medium text-2xl text-left'>{selectedListData.name ?? defaultListRow.name}</h2>
         </button>
         { JSON.stringify(selectedListData)}
       </header>
