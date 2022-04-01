@@ -136,6 +136,20 @@ const App = () => {
     handleToggleListEditorView();
   }
 
+  const handleCancelCreateList = (event) => {
+    // delete recently created list
+    dispatchListRows({
+      type: 'LIST_DELETE',
+      payload: { id: selectedListData.id }
+    });
+    // assign the list before the recently created list as the selected list
+    setCompletedSelectedListData(true);
+    // close list editor
+    handleToggleListEditorView();
+    event.preventDefault();
+  }
+
+
   const handleUpdateList = (event) => {
     dispatchListRows({
       type: 'LIST_UPDATE',
@@ -148,25 +162,25 @@ const App = () => {
     event.preventDefault();
   }
 
-  const handleCancelCreateList = (event) => {
-    // delete recently created list
-    dispatchListRows({
-      type: 'LIST_DELETE',
-      payload: { id: selectedListData.id }
-    });
+  const handleDeleteList = (event) => {
+    if (window.confirm('Are you sure you want to delete this list?')) {
+      dispatchListRows({
+        type: 'LIST_DELETE',
+        payload: { id: selectedListData.id }
+      });
+      setCompletedSelectedListData(true);
+    }
     // assign the list before the recently created list as the selected list
-    setCompletedSelectedListData(true)
-    // close list editor
-    handleToggleListEditorView();
     event.preventDefault();
   }
+
 
   const handleSelectList = (listData) => {
     setSelectedListData(listData);
   }
 
   const setCompletedSelectedListData = (goBackward = false) => {
-    const selectedListIndex = listRows.data.findIndex((list) => list.id === selectedListData.id);
+    const selectedListIndex = listRows.data.findIndex((list) => list.id == selectedListData.id);
     setSelectedListData(listRows.data[selectedListIndex - (goBackward ? 1 : 0)]);
   }
 
@@ -194,6 +208,7 @@ const App = () => {
       <ListItemView
         selectedListData={selectedListData}
         onToggleListEditView={handleToggleListEditorView}
+        onDeleteList={handleDeleteList}
         // onEditList={handleEditList}
       />
 
@@ -306,12 +321,13 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
 }
 
 
-const ListItemView = ({ listItemRowsData, selectedListData, onToggleListEditView }) => (
+const ListItemView = ({ listItemRowsData, selectedListData, onToggleListEditView, onDeleteList }) => (
   <div className='pt-2'>
     <div className='rounded-tl-2xl p-10 w-full h-full bg-blue-200'>
-      <header>
+      <header className='flex justify-between'>
         <button 
           onClick={onToggleListEditView}
+          title='Edit list'
           className='flex rounded hover:bg-slate-500/40'
         >
           <div className='flex-none grid place-items-center w-10 h-10'>
@@ -319,9 +335,17 @@ const ListItemView = ({ listItemRowsData, selectedListData, onToggleListEditView
           </div>
           <h2 className='flex-1 pt-[2px] pl-1 pr-2 h-full font-medium text-2xl text-left'>{selectedListData.name ?? defaultListRow.name}</h2>
         </button>
-        { JSON.stringify(selectedListData)}
+        
+        <button
+          onClick={onDeleteList}
+          title='Delete list'
+          className='grid place-items-center rounded w-10 h-10 bg-white/50 text-lg hover:bg-white/80'
+        >
+          <span className='leading-none'>🗑️</span>
+        </button>
       </header>
       <main className='overflow-scroll'>
+        { JSON.stringify(selectedListData)}
         <ul className='grid'>
 
         </ul>
