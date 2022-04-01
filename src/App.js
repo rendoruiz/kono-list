@@ -101,6 +101,8 @@ const useLocalState = (key, initialState) => {
 const App = () => {
   const [isListViewOpen, setIsListViewOpen] = React.useState(true);
   const [isListEditorViewOpen, setIsListEditorViewOpen] = React.useState(false);
+  const [isListItemEditorViewOpen, setIsListItemEditorViewOpen] = useLocalState('isListItemEditorViewOpen', false);
+
   const [listRowsData, dispatchListRowsData] = React.useReducer(
     listRowsReducer,
     { 
@@ -108,14 +110,10 @@ const App = () => {
       localKey: 'lists',
     }
   );
-
-  const [isListItemEditorViewOpen, setIsListItemEditorViewOpen] = useLocalState('isListItemEditorViewOpen', false);
-
   const [selectedList, setSelectedList] = useLocalState('selected_list', { id: 0 });
-
+  
   const handleToggleListView = () => setIsListViewOpen(!isListViewOpen);
   const handleToggleListEditorView = () => setIsListEditorViewOpen(!isListEditorViewOpen);
-
   const handleToggleListItemEditorView = () => setIsListItemEditorViewOpen(!isListItemEditorViewOpen);
 
   
