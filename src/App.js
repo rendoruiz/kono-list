@@ -54,7 +54,6 @@ const listArrayReducer = (state, action) => {
       throw new Error();
   }
 
-  console.log("reduce!")
   localStorage.setItem(state.localKey, JSON.stringify(newState.data));
   return newState;
 }
@@ -85,7 +84,7 @@ const App = () => {
 
   const [isListItemEditorViewOpen, setIsListItemEditorViewOpen] = useLocalState('isListItemEditorViewOpen', false);
 
-  const [selectedList, setSelectedList] = useLocalState('selected_list', null);
+  const [selectedList, setSelectedList] = useLocalState('selected_list', { id: 0 });
 
   const handleToggleListView = () => setIsListViewOpen(!isListViewOpen);
   const handleToggleListEditorView = () => setIsListEditorViewOpen(!isListEditorViewOpen);
@@ -94,18 +93,25 @@ const App = () => {
 
   
 
-  const handleCreateList = () => {
+  const handleEditList = () => {
     const newId = uuidv4();
     dispatchListArray({
       type: 'LIST_CREATE',
       payload: { id: newId }
     });
-    setSelectedList(newId);
+    setSelectedList({ id: newId });
+    handleToggleListEditorView();
+  }
+
+  const handleCancelEditList = () => {
+    dispatchListArray({
+      type: 'LIST_DELETE',
+      payload: { id: selectedList.id }
+    });
   }
 
   const handleSelectList = (listData) => {
     setSelectedList(listData);
-    handleToggleListEditorView();
   }
   
 
@@ -116,15 +122,16 @@ const App = () => {
         isOpen={isListViewOpen} 
         onToggleView={handleToggleListView} 
         listRows={listArray.data}
-        onCreateList={handleCreateList}
+        onEditList={handleEditList}
         onSelectList={handleSelectList}
-        selectedList={selectedList}
+        selectedListData={selectedList}
       />
 
       <ListEditorView
         isOpen={isListEditorViewOpen}
-        onToggleView={handleToggleListEditorView}
         listData={selectedList}
+        onToggleView={handleToggleListEditorView}
+        onCancelEdit={handleCancelEditList}
       />
 
       {/* list item view */}
@@ -141,7 +148,7 @@ const App = () => {
 }
 
 
-const ListView = ({ isOpen, onToggleView, listRows, onCreateList, onSelectList, selectedListData }) => {
+const ListView = ({ isOpen, onToggleView, listRows, onEditList, onSelectList, selectedListData }) => {
   return (
     <div className='grid grid-rows-[auto,1fr,auto] w-80 h-full'>
       <header className='p-5 bg-blue-600'></header>
@@ -161,7 +168,7 @@ const ListView = ({ isOpen, onToggleView, listRows, onCreateList, onSelectList, 
       </main>
 
       <footer className='sticky bottom-0 p-5 bg-blue-600'>
-        <button onClick={onCreateList}>New List</button>
+        <button onClick={onEditList}>New List</button>
       </footer>
     </div>
   )
@@ -188,8 +195,9 @@ const ListRowItem = ({ data, selectedListData, onSelectList }) => {
   )
 }
 
-const ListEditorView = ({ isOpen, onToggleView, listData }) => {
+const ListEditorView = ({ isOpen, onToggleView, onCancelEdit, listData }) => {
   const handleCancelEdit = (event) => {
+    onCancelEdit();
     onToggleView();
     event.preventDefault();
   }
@@ -203,21 +211,19 @@ const ListEditorView = ({ isOpen, onToggleView, listData }) => {
         className=' rounded px-4 py-3 bg-white'
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className='font-medium text-lg'>{!listData.date_updated ? 'New' : 'Rename'} list</h2>
+        <h2 className='font-medium text-lg'>{!listData?.date_updated ? 'New' : 'Rename'} list</h2>
         <div className='flex mt-3 w-full'>
-          <div className='flex-none grid place-items-center'>
-            <input 
-              type="text" 
-              className='w-8 h-8 leading-none text-lg'
-              placeholder='📃'
-              maxLength={1}
-              defaultValue={listData?.badge}
-            />
-          </div>
+          <input 
+            type="text" 
+            className='flex-none w-8 h-8 text-lg text-center leading-none appearance-none'
+            placeholder='📃'
+            maxLength={1}
+            defaultValue={listData?.badge}
+          />
           
           <input 
             type="text"
-            className='flex-1 border-b-2 border-b-blue-600'
+            className='flex-1 border-b-2 border-b-blue-600 ml-1 appearance-none'
             placeholder='Untitled list'
             defaultValue={listData?.name}
           />
@@ -231,7 +237,7 @@ const ListEditorView = ({ isOpen, onToggleView, listData }) => {
           </button>
           <input 
             type="submit" 
-            value={!listData.date_updated ? 'Create List' : 'Save'} 
+            value={!listData?.date_updated ? 'Create List' : 'Save'} 
             className='rounded px-2 py-1 font-medium uppercase cursor-pointer hover:bg-black/10'
           />
         </div>
