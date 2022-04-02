@@ -116,8 +116,7 @@ const App = () => {
       localKey: 'lists',
     }
   );
-  const [selectedListIndex, setSelectedListIndex] = useLocalState('selected_list_index', 0);
-  const [selectedListData, setSelectedListData] = useLocalState('selected_list', { id: 0 });
+  const [selectedListData, setSelectedListData] = useLocalState('selected_list', initialListRows[0]);
   
   const handleToggleListView = () => setIsListViewOpen(!isListViewOpen);
   const handleToggleListEditorView = () => setIsListEditorViewOpen(!isListEditorViewOpen);
@@ -152,16 +151,18 @@ const App = () => {
 
 
   const handleUpdateList = (event) => {
+    const { name, badge } = event.target;
     dispatchListRows({
       type: 'LIST_UPDATE',
       payload: {
         ...selectedListData,
-        name: event.target?.name?.value,
-        badge: event.target?.badge?.value,
+        name: name?.value ? name.value : null,
+        badge: badge?.value ? badge.value : null,
       },
     });
 
     // close editor
+    setCompletedSelectedListData();
     handleToggleListEditorView();
     event.preventDefault();
   }
@@ -180,16 +181,18 @@ const App = () => {
 
 
   const setCompletedSelectedListData = (goBackward = false) => {
-    setSelectedListData(listRows.data[selectedListIndex - (goBackward ? 1 : 0)]);
+    const index = listRows.data.findIndex((list) => list.id === selectedListData.id);
+    const newdata = listRows.data[index - (goBackward ? 1 : 0)]
+    setSelectedListData({...selectedListData, ...newdata});
+    // setSelectedListId(listRows.data[selectedListIndex - (goBackward ? 1 : 0)])
   }
   
   // keep selectedlistdata up to date with listrows record it is referencing.
-
-
-  // keep index of selectedlistdata, used by many functions.
   React.useEffect(() => {
-    setSelectedListIndex(listRows.data.findIndex((list) => list.id == selectedListData.id));
-  }, [selectedListData.id]);
+    const index = listRows.data.findIndex((list) => list.id === selectedListData.id);
+    setSelectedListData({...selectedListData, ...listRows.data[index]});
+  }, [listRows.data]);
+  
   
   return (
     <div className='grid grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
