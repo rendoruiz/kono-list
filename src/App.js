@@ -426,8 +426,8 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
 
 const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onDeleteList }) => (
   <div className='grid pt-2'>
-    <div className='rounded-tl-2xl p-10 w-full h-full bg-blue-200'>
-      <header className='flex items-center justify-between'>
+    <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-2xl px-10 w-full h-full max-h-screen overflow-scroll bg-blue-200'>
+      <header className='sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
         {/* edit list */}
         <button 
           onClick={onToggleListEditView}
@@ -479,7 +479,7 @@ const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedLis
   }, [listItemRowsData, selectedListData]);
 
   return (
-    <main className='mt-5 overflow-scroll'>
+    <main className=''>
       {/* debug list */}
       {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p> */}
 
@@ -517,38 +517,6 @@ const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedLis
   )
 }
 
-const ListItemViewForm = () => {
-  return (
-    <footer className='sticky bottom-0 py-1'>
-      <form className='grid grid-cols-[auto,1fr,auto]'>
-        {/* list item - init check state */}
-        <button 
-          type='button'
-          className=''
-        >
-          check
-        </button>
-
-        {/* list item - title */}
-        <input 
-          name=""
-          type="text" 
-
-        />
-
-        {/* submit */}
-        <button
-          type='submit'
-          className=''
-        >
-          send
-        </button>
-      </form>
-    </footer>
-  )
-}
-
-
 const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
   <li className={
     'flex rounded-md cursor-pointer hover:bg-white/90 ' + 
@@ -580,6 +548,51 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
     </button>
   </li>
 );
+
+const ListItemViewForm = () => {
+  const [input, setInput] = React.useState("");
+  const [isChecked, setIsChecked] = React.useState(false);
+
+  return (
+    <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90'>
+      <form className='grid grid-cols-[auto,1fr,auto]'>
+        {/* list item - init check state */}
+        
+        <button 
+          type='button'
+          className={isChecked ? 'bg-blue-300' : 'bg-red-300'}
+          onClick={() => setIsChecked(!isChecked)}
+        >
+          check
+        </button>
+
+        {/* list item - title */}
+        <input 
+          name=''
+          type='text' 
+          className='w-full'
+          onChange={(e) => setInput(e.target.value)}
+          value={input}
+          minLength='1'
+        />
+
+        {/* submit */}
+        <button
+          type='submit'
+          title={input.length < 1 ? 'Invalid input' : 'Add new list item'}
+          className={'w-8 h-full cursor-pointer ' + (input.length < 1 && 'opacity-30 !cursor-not-allowed')}
+          disabled={input.length < 1}
+        >
+          {/* <span>↑</span> */}
+          <span className='text-xl leading-none'>⬆️</span> 
+        </button>
+      </form>
+    </footer>
+  )
+}
+
+
+
 
 const ListItemEditorView = ({ isOpen, onToggleView }) => {
   
