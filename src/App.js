@@ -578,7 +578,7 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem, onUpdat
       type='button'
       title='Select list item'
       onClick={() => onSelectListItem(data)}
-      className='flex-1 text-sm text-left'
+      className='flex-1 py-2 pr-2 text-sm text-left'
     >
       <p className={data.is_checked ? 'opacity-60 line-through' : ''}>{data?.title}</p>
     </button>
