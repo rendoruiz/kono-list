@@ -1,4 +1,3 @@
-import { eventWrapper } from '@testing-library/user-event/dist/utils';
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -65,13 +64,12 @@ const listRowsReducer = (state, action) => {
         ...state,
         data: state.data.map((list) => {
           if (list.id === action.payload.id) {
-            const updatedItem = {
+            return {
               ...list,
               name: action.payload.name ?? list.name,
               badge: action.payload.badge ?? list.badge,
               date_updated: Date.now(),
-            };
-            return updatedItem;
+            }
           }
           return list;
         }),
@@ -118,11 +116,13 @@ const App = () => {
       localKey: 'lists',
     }
   );
+  const [selectedListIndex, setSelectedListIndex] = useLocalState('selected_list_index', 0);
   const [selectedListData, setSelectedListData] = useLocalState('selected_list', { id: 0 });
   
   const handleToggleListView = () => setIsListViewOpen(!isListViewOpen);
   const handleToggleListEditorView = () => setIsListEditorViewOpen(!isListEditorViewOpen);
   const handleToggleListItemEditorView = () => setIsListItemEditorViewOpen(!isListItemEditorViewOpen);
+  const handleSelectList = (listData) => setSelectedListData(listData);
 
   const handleCreateList = () => {
     // create unique id and create temp list
@@ -132,6 +132,7 @@ const App = () => {
       payload: { id: newListId }
     });
     // set created id as selected list and close editor
+
     setSelectedListData({ id: newListId });
     handleToggleListEditorView();
   }
@@ -160,8 +161,7 @@ const App = () => {
       },
     });
 
-    // complete selected list data and close editor
-    setCompletedSelectedListData();
+    // close editor
     handleToggleListEditorView();
     event.preventDefault();
   }
@@ -179,16 +179,18 @@ const App = () => {
   }
 
 
-  const handleSelectList = (listData) => {
-    setSelectedListData(listData);
-  }
-
   const setCompletedSelectedListData = (goBackward = false) => {
-    const selectedListIndex = listRows.data.findIndex((list) => list.id == selectedListData.id);
     setSelectedListData(listRows.data[selectedListIndex - (goBackward ? 1 : 0)]);
   }
   
+  // keep selectedlistdata up to date with listrows record it is referencing.
 
+
+  // keep index of selectedlistdata, used by many functions.
+  React.useEffect(() => {
+    setSelectedListIndex(listRows.data.findIndex((list) => list.id == selectedListData.id));
+  }, [selectedListData.id]);
+  
   return (
     <div className='grid grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
       {/* list view */}
@@ -284,13 +286,13 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
     <div
       className='fixed inset-0 z-50 grid place-items-center bg-black/40'
       onClick={onUpdateList}
-      onSubmit={onUpdateList}
     >
       <form 
         className=' rounded px-4 py-3 bg-white'
         onClick={(e) => e.stopPropagation()}
+        onSubmit={onUpdateList}
       >
-        <h2 className='font-medium text-lg'>{!listData?.date_updated ? 'New' : 'Rename'} list</h2>
+        <h2 className='font-medium text-lg'>{!listData.date_updated ? 'New' : 'Rename'} list</h2>
         <div className='flex mt-3 w-full'>
           <input 
             name='badge'
@@ -298,7 +300,7 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
             className='flex-none w-8 h-8 text-lg text-center leading-none appearance-none outline-none'
             placeholder={defaultListRow.badge}
             maxLength={1}
-            defaultValue={listData?.badge}
+            defaultValue={listData.badge}
           />
           
           <input 
@@ -306,13 +308,13 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
             type="text"
             className='flex-1 border-b-2 border-b-blue-600 ml-1 appearance-none outline-none'
             placeholder={defaultListRow.name}
-            defaultValue={listData?.name}
+            defaultValue={listData.name}
           />
         </div>
         <div className='grid grid-flow-col items-center justify-end gap-1 mt-4 text-sm'>
           <input 
             type="submit" 
-            value={!listData?.date_updated ? 'Create List' : 'Save'} 
+            value={!listData.date_updated ? 'Create List' : 'Save'} 
             className='rounded px-2 py-1 font-medium uppercase cursor-pointer hover:bg-black/10'
           />
           <button 
@@ -338,9 +340,9 @@ const ListItemView = ({ listItemRowsData, selectedListData, onToggleListEditView
           className='flex rounded hover:bg-slate-500/40'
         >
           <div className='flex-none grid place-items-center w-10 h-10'>
-            <span className='font-mono font-bold text-2xl leading-none'>{selectedListData.badge ?? defaultListRow.badge}</span>
+            <span className='font-mono font-bold text-2xl leading-none'>{selectedListData?.badge ?? defaultListRow.badge}</span>
           </div>
-          <h2 className='flex-1 pt-[2px] pl-1 pr-2 h-full font-medium text-2xl text-left'>{selectedListData.name ?? defaultListRow.name}</h2>
+          <h2 className='flex-1 pt-[2px] pl-1 pr-2 h-full font-medium text-2xl text-left'>{selectedListData?.name ?? defaultListRow.name}</h2>
         </button>
         
         <button
@@ -362,7 +364,8 @@ const ListItemView = ({ listItemRowsData, selectedListData, onToggleListEditView
       </footer>
     </div>
   </div>
-)
+);
+
 
 const ListItemViewRow = () => {
   <div>
