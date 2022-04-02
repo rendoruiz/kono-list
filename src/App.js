@@ -340,7 +340,7 @@ const ListView = ({ isOpen, listRowsData, selectedListData, onToggleView, onSele
         onClick={onCreateList}
         className='group w-full px-1 py-[2px]'
       >
-        <div className='flex items-center rounded w-full group-hover:bg-slate-500/40'>
+        <div className='flex items-center rounded w-full group-hover:bg-slate-500/10'>
           <div className='flex-none grid place-items-center w-10 h-10'>
             <span className='font-mono font-bold text-xl leading-none'>+</span>
           </div>
@@ -452,7 +452,7 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
       </header>
 
       <main className='overflow-scroll'>
-        <p className='mt-1 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p>
+        <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p>
         <ul className='grid'>
           {listItemRowsData
             .filter((listItem) => listItem.list_id === selectedListData.id)
