@@ -453,7 +453,7 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
 
       <main className='overflow-scroll'>
         <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p>
-        <ul className='grid'>
+        <ul className='grid gap-[2px]'>
           {listItemRowsData
             .filter((listItem) => listItem.list_id === selectedListData.id)
             .map((listItem) => (
@@ -467,6 +467,7 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
           )}
         </ul>
       </main>
+      
       <footer className='sticky bottom-0 py-1'>
 
       </footer>
@@ -476,8 +477,30 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
 
 
 const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
-  <li>
-    {JSON.stringify(data)}
+  <li className='flex rounded-md bg-white/70 cursor-pointer hover:bg-white/90'>
+    {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(data).replaceAll(',"', ', "')}</p> */}
+    {/* toggle is_checked */}
+    <button
+      title={data.is_checked ? 'Mark as incomplete' : 'Mark as complete'}
+      className="group shrink-0 px-1 py-2"
+    >
+      {/* border */}
+      <div className='grid place-items-center m-2 w-[18px] h-[18px] border-2 border-slate-700 rounded-full'>
+        {/* check mark */}
+        <div className={
+          'w-2 h-2 bg-slate-700/80 rounded-full group-hover:opacity-100 ' +
+          (data.is_checked ? 'opacity-100' : 'opacity-0')
+        } />
+      </div>
+    </button>
+
+    {/* select list item */}
+    <button
+      title='Select list item'
+      className='flex-1 text-sm text-left'
+    >
+      <p className=''>{data.title}</p>
+    </button>
   </li>
 );
 
