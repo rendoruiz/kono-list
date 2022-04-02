@@ -1,6 +1,18 @@
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+const useLocalState = (key, initialState) => {
+  const [value, setValue] = React.useState(
+    JSON.parse(localStorage.getItem(key)) || initialState
+  );
+
+  React.useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}
+
 const initialListRows = [
   {
     id: 0,
@@ -12,38 +24,12 @@ const initialListRows = [
 ];
 
 const defaultListRow = {
+  id: null,
   name: 'Untitled list',
   badge: '📃',
   date_created: Date.now(),
   date_updated: null,
 }
-
-const initialListItemRows = [
-  {
-    id: 0,
-    list_id: 0,
-    is_checked: false,
-    date_created: Date.now(),
-    date_updated: null,
-    text: 'List Item 1',
-  },
-  {
-    id: 1,
-    list_id: 0,
-    is_checked: true,
-    date_created: Date.now(),
-    date_updated: null,
-    text: 'List Item 2',
-  },
-  {
-    id: 2,
-    list_id: 0,
-    is_checked: false,
-    date_created: Date.now(),
-    date_updated: null,
-    text: 'List Item 3',
-  },
-];
 
 const listRowsReducer = (state, action) => {
   let newState;
@@ -91,24 +77,110 @@ const listRowsReducer = (state, action) => {
   return newState;
 }
 
-const useLocalState = (key, initialState) => {
-  const [value, setValue] = React.useState(
-    JSON.parse(localStorage.getItem(key)) || initialState
-  );
-
-  React.useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
-  }, [key, value]);
-
-  return [value, setValue];
+const defaultListItemRow = {
+  id: null,
+  list_id: null,
+  is_checked: false,
+  date_created: Date.now(),
+  date_updated: null,
+  title: null,
+  description: null,
 }
 
+const initialListItemRows = [
+  {
+    id: 0,
+    list_id: 0,
+    is_checked: false,
+    date_created: Date.now(),
+    date_updated: null,
+    title: 'List Item 1',
+    description: 'List Item 1 description',
+  },
+  {
+    id: 1,
+    list_id: 0,
+    is_checked: true,
+    date_created: Date.now(),
+    date_updated: null,
+    title: 'List Item 2',
+    description: 'List Item 2 description',
+  },
+  {
+    id: 2,
+    list_id: 0,
+    is_checked: false,
+    date_created: Date.now(),
+    date_updated: null,
+    title: 'List Item 3',
+    description: 'List Item 3 description',
+  },
+];
+
+const listItemRowsReducer = (state, action) => {
+  let newState;
+
+  switch(action.type) {
+    case 'LIST_ITEM_CREATE':
+      const newListItem = {
+        ...defaultListItemRow,
+        id: action.payload.id,
+        list_id: action.payload.list_id,
+        is_checked: action.payload.is_checked,
+        title: action.payload.title,
+        description: action.payload.description,
+      };
+      newState = { 
+        ...state,
+        data: [...state.data, newListItem],
+      };
+      break;
+    case 'LIST_ITEM_UPDATE':
+      newState = {
+        ...state,
+        data: state.data.map((listItem) => {
+          if (listItem.id === action.payload.id) {
+            return {
+              ...listItem,
+              list_id: action.payload.list_id ?? listItem.list_id,
+              is_checked: action.payload.is_checked ?? listItem.is_checked,
+              title: action.payload.title ?? listItem.title,
+              description: action.payload.description ?? listItem.description,
+              date_updated: Date.now(),
+            }
+          }
+          return listItem;
+        }),
+    }
+      break;
+    case 'LIST_ITEM_DELETE':
+      newState = {
+        ...state,
+        data: state.data.filter(
+          (listItem) => listItem.id !== action.payload.id
+        ),
+      };
+      break;
+    default:
+      throw new Error();
+  }
+
+  localStorage.setItem(state.localKey, JSON.stringify(newState.data));
+  return newState;
+}
 
 const App = () => {
+  // view toggle states
   const [isListViewOpen, setIsListViewOpen] = React.useState(true);
   const [isListEditorViewOpen, setIsListEditorViewOpen] = React.useState(false);
   const [isListItemEditorViewOpen, setIsListItemEditorViewOpen] = useLocalState('isListItemEditorViewOpen', false);
 
+  // view toggle handlers
+  const handleToggleListView = () => setIsListViewOpen(!isListViewOpen);
+  const handleToggleListEditorView = () => setIsListEditorViewOpen(!isListEditorViewOpen);
+  const handleToggleListItemEditorView = () => setIsListItemEditorViewOpen(!isListItemEditorViewOpen);
+  
+  // list - reducers
   const [listRows, dispatchListRows] = React.useReducer(
     listRowsReducer,
     { 
@@ -116,13 +188,12 @@ const App = () => {
       localKey: 'lists',
     }
   );
-  const [selectedListData, setSelectedListData] = useLocalState('selected_list', initialListRows[0]);
-  
-  const handleToggleListView = () => setIsListViewOpen(!isListViewOpen);
-  const handleToggleListEditorView = () => setIsListEditorViewOpen(!isListEditorViewOpen);
-  const handleToggleListItemEditorView = () => setIsListItemEditorViewOpen(!isListItemEditorViewOpen);
-  const handleSelectList = (listData) => setSelectedListData(listData);
 
+  // list - states
+  const [selectedListData, setSelectedListData] = useLocalState('selected_list', initialListRows[0]);
+
+  // list - handlers
+  const handleSelectList = (listData) => setSelectedListData(listData);
   const handleCreateList = () => {
     // create unique id and create temp list
     const newListId = uuidv4();
@@ -135,7 +206,6 @@ const App = () => {
     setSelectedListData({ id: newListId });
     handleToggleListEditorView();
   }
-
   const handleCancelCreateList = (event) => {
     // delete recently created list
     dispatchListRows({
@@ -148,8 +218,6 @@ const App = () => {
     handleToggleListEditorView();
     event.preventDefault();
   }
-
-
   const handleUpdateList = (event) => {
     const { name, badge } = event.target;
     dispatchListRows({
@@ -166,7 +234,6 @@ const App = () => {
     handleToggleListEditorView();
     event.preventDefault();
   }
-
   const handleDeleteList = (event) => {
     if (window.confirm('Are you sure you want to delete this list?')) {
       dispatchListRows({
@@ -178,22 +245,39 @@ const App = () => {
     // assign the list before the recently created list as the selected list
     event.preventDefault();
   }
-
-
   const setCompletedSelectedListData = (goBackward = false) => {
     const index = listRows.data.findIndex((list) => list.id === selectedListData.id);
     const newdata = listRows.data[index - (goBackward ? 1 : 0)]
     setSelectedListData({...selectedListData, ...newdata});
     // setSelectedListId(listRows.data[selectedListIndex - (goBackward ? 1 : 0)])
   }
-  
-  // keep selectedlistdata up to date with listrows record it is referencing.
+
+  // list - effects
   React.useEffect(() => {
+    // keep selectedlistdata up to date with listrows record it is referencing.
     const index = listRows.data.findIndex((list) => list.id === selectedListData.id);
     setSelectedListData({...selectedListData, ...listRows.data[index]});
   }, [listRows.data]);
+
+
+  // list item - reducers
+  const [listItemRows, dispatchListItemRows] = React.useReducer(
+    listItemRowsReducer,
+    {
+      data: JSON.parse(localStorage.getItem('list_items')) ?? initialListItemRows,
+      localKey: 'list_items',
+    }
+  );
+
+  // list item - states
+  const [selectedListItemData, setSelectedListItemData] = useLocalState('selected_list_item', initialListItemRows[0]);
   
+  // list item - handlers
+  const handleSelectListItem = (listItemData) => setSelectedListItemData(listItemData);
+
+  // list item - effects
   
+
   return (
     <div className='grid grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
       {/* list view */}
@@ -216,10 +300,12 @@ const App = () => {
 
       {/* list item view */}
       <ListItemView
+        listItemRowsData={listItemRows.data}
+        selectedListItemData={selectedListItemData}
         selectedListData={selectedListData}
         onToggleListEditView={handleToggleListEditorView}
+        onSelectListItem={handleSelectListItem}
         onDeleteList={handleDeleteList}
-        // onEditList={handleEditList}
       />
 
       {/* list item editor view */}
@@ -333,7 +419,7 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
 }
 
 
-const ListItemView = ({ listItemRowsData, selectedListData, onToggleListEditView, onDeleteList }) => (
+const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onDeleteList }) => (
   <div className='pt-2'>
     <div className='rounded-tl-2xl p-10 w-full h-full bg-blue-200'>
       <header className='flex justify-between'>
@@ -359,7 +445,17 @@ const ListItemView = ({ listItemRowsData, selectedListData, onToggleListEditView
       <main className='overflow-scroll'>
         { JSON.stringify(selectedListData)}
         <ul className='grid'>
-
+          {listItemRowsData
+            .filter((listItem) => listItem.list_id === selectedListData.id)
+            .map((listItem) => (
+              <ListItemViewRow
+                key={listItem.id}
+                data={listItem}
+                selectedListItemData={selectedListItemData}
+                onSelectListItem={onSelectListItem}
+              />
+            )
+          )}
         </ul>
       </main>
       <footer className='sticky bottom-0 py-1'>
@@ -370,11 +466,11 @@ const ListItemView = ({ listItemRowsData, selectedListData, onToggleListEditView
 );
 
 
-const ListItemViewRow = () => {
-  <div>
-
-  </div>
-}
+const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
+  <li>
+    {JSON.stringify(data)}
+  </li>
+);
 
 const ListItemEditorView = ({ isOpen, onToggleView }) => {
   
