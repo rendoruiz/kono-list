@@ -484,7 +484,7 @@ const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedLis
       {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p> */}
 
       {/* list item - unchecked */}
-      <ul className='grid gap-[2px]'>
+      <ul className='grid gap-[3px]'>
         {uncheckedItems && uncheckedItems.map((listItem) => (
           <ListItemViewRow
             key={listItem.id}
@@ -502,7 +502,7 @@ const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedLis
           <p className='ml-2 text-sm'>Completed</p>
         </button>
         {/* list item - checked */}
-        <ul className='grid gap-[2px]'>
+        <ul className='grid gap-[3px]'>
           {checkedItems && checkedItems.map((listItem) => (
             <ListItemViewRow
               key={listItem.id}
@@ -526,10 +526,10 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
     {/* toggle is_checked */}
     <button
       title={data.is_checked ? 'Mark as incomplete' : 'Mark as complete'}
-      className="group shrink-0 px-1 py-2"
+      className="group shrink-0 px-3 py-4"
     >
       {/* border */}
-      <div className='group grid place-items-center m-2 w-[18px] h-[18px] border-2 border-slate-700 rounded-full'>
+      <div className='group grid place-items-center w-[18px] h-[18px] border-2 border-slate-700 rounded-full'>
         {/* check mark */}
         <div className={
           'w-2 h-2 bg-slate-700/80 rounded-full transition-all group-hover:opacity-100 ' +
@@ -553,7 +553,7 @@ const ListItemViewForm = ({ selectedListData }) => {
   const [input, setInput] = React.useState("");
 
   return (
-    <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90'>
+    <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90 sh'>
       <form className='relative overflow-hidden'>
         {/* list item - title */}
         <input 
