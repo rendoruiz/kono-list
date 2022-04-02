@@ -522,11 +522,11 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
       className="group shrink-0 px-1 py-2"
     >
       {/* border */}
-      <div className='grid place-items-center m-2 w-[18px] h-[18px] border-2 border-slate-700 rounded-full'>
+      <div className='group grid place-items-center m-2 w-[18px] h-[18px] border-2 border-slate-700 rounded-full'>
         {/* check mark */}
         <div className={
-          'w-2 h-2 bg-slate-700/80 rounded-full group-hover:opacity-100 ' +
-          (data.is_checked ? 'opacity-100' : 'opacity-0')
+          'w-2 h-2 bg-slate-700/80 rounded-full transition-all group-hover:opacity-100 ' +
+          (data.is_checked ? 'opacity-100 group-active:scale-50' : 'opacity-0 group-active:scale-150')
         } />
       </div>
     </button>
