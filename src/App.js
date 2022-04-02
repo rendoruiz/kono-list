@@ -295,6 +295,17 @@ const App = () => {
     setSelectedListItemData(null);
     event.preventDefault();
   }
+  const handleUpdateListItemCheckState = (listItemData) => {
+    dispatchListItemRows({
+      type: 'LIST_ITEM_UPDATE',
+      payload: {
+        id: listItemData.id,
+        is_checked: !listItemData.is_checked,
+      }
+    });
+
+    console.log("updated!")
+  }
 
   // list item - effects
   
@@ -327,6 +338,7 @@ const App = () => {
         onToggleListEditView={handleToggleListEditorView}
         onSelectListItem={handleSelectListItem}
         onCreateListItem={handleCreateListItem}
+        onUpdateListItemCheckState={handleUpdateListItemCheckState}
         onDeleteList={handleDeleteList}
       />
 
@@ -440,7 +452,7 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
 }
 
 
-const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onCreateListItem, onDeleteList }) => (
+const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onCreateListItem, onUpdateListItemCheckState, onDeleteList }) => (
   <div className='grid pt-2'>
     <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-2xl px-10 w-full h-full max-h-screen overflow-scroll bg-blue-200'>
       <header className='sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
@@ -477,6 +489,7 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
         selectedListItemData={selectedListItemData}
         selectedListData={selectedListData}
         onSelectListItem={onSelectListItem}
+        onUpdateListItemCheckState={onUpdateListItemCheckState}
       />
       
       <ListItemViewForm
@@ -487,7 +500,7 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
   </div>
 );
 
-const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedListData, onSelectListItem }) => {
+const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedListData, onSelectListItem, onUpdateListItemCheckState }) => {
   const [checkedItems, setCheckedItems] = React.useState(null);
   const [uncheckedItems, setUncheckedItems] = React.useState(null);
 
@@ -509,6 +522,7 @@ const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedLis
             data={listItem}
             selectedListItemData={selectedListItemData}
             onSelectListItem={onSelectListItem}
+            onUpdateListItemCheckState={onUpdateListItemCheckState}
           />
         ))}
       </ul>
@@ -527,6 +541,7 @@ const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedLis
               data={listItem}
               selectedListItemData={selectedListItemData}
               onSelectListItem={onSelectListItem}
+            onUpdateListItemCheckState={onUpdateListItemCheckState}
             />
           ))}
         </ul>
@@ -535,7 +550,7 @@ const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedLis
   )
 }
 
-const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
+const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem, onUpdateListItemCheckState }) => (
   <li className={
     'flex rounded-md cursor-pointer hover:bg-white/90 ' + 
     (data.id === selectedListItemData?.id ? 'bg-white' : 'bg-white/70')
@@ -543,7 +558,9 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
     {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(data).replaceAll(',"', ', "')}</p> */}
     {/* toggle is_checked */}
     <button
+      type='button'
       title={data.is_checked ? 'Mark as incomplete' : 'Mark as complete'}
+      onClick={() => onUpdateListItemCheckState(data)}
       className="group shrink-0 px-3 py-4"
     >
       {/* border */}
@@ -558,6 +575,7 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
 
     {/* select list item */}
     <button
+      type='button'
       title='Select list item'
       onClick={() => onSelectListItem(data)}
       className='flex-1 text-sm text-left'
