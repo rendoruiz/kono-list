@@ -223,13 +223,13 @@ const App = () => {
     handleToggleListEditorView();
     event.preventDefault();
   }
-  const handleUpdateList = (listData) => {
+  const handleUpdateList = ({ name, badge }) => {
     dispatchListRows({
       type: 'LIST_UPDATE',
       payload: {
         ...selectedListData,
-        name: listData.name.trim().length > 0 ? listData.name : defaultListRow.name,
-        badge: listData.badge,
+        name: name.trim().length > 0 ? name : defaultListRow.name,
+        badge: badge.trim().length > 0 ? badge : defaultListRow.badge,
       },
     });
 
@@ -413,27 +413,45 @@ const ListViewRow = ({ data, selectedListData, onSelectList }) => (
 );
 
 const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
-  const [name, setName] = React.useState(listData?.name);
-  const [badge, setBadge] = React.useState(listData?.badge);
+  const [name, setName] = React.useState(listData.name);
+  const [badge, setBadge] = React.useState(listData.badge);
+
+  // make sure the form fields are up to date whenever the editor is opened
+  React.useEffect(() => {
+    if (isOpen) {
+      setName(listData.name);
+      setBadge(listData.badge);
+    }
+  }, [isOpen, listData]);
 
   const handleSubmit = (event) => {
     onUpdateList({
-      ...listData,
       name: name.trim(),
       badge: badge.trim(),
     });
-    event.preventDefault();
+    if (event) {
+      event.target.reset();
+      event.preventDefault();
+    } else {
+      handleReset();
+    }
+  }
+
+  const handleReset = () => {
+    setName("");
+    setBadge("");
   }
 
   return isOpen && (
     <div
       className='fixed inset-0 z-50 grid place-items-center bg-black/40'
-      onClick={handleSubmit}
+      onClick={() => handleSubmit()}
     >
       <form 
         className=' rounded px-4 py-3 bg-white'
         onClick={(e) => e.stopPropagation()}
         onSubmit={handleSubmit}
+        onReset={handleReset}
       >
         <h2 className='font-medium text-lg'>{!listData.date_updated ? 'New' : 'Rename'} list</h2>
         <div className='flex mt-3 w-full'>
@@ -451,7 +469,6 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
           <input 
             name='name'
             type='text'
-            minLength={1}
             placeholder={defaultListRow.name}
             autoComplete='off'
             className='flex-1 border-b-2 border-b-blue-600 rounded-b ml-2 px-1 w-full appearance-none outline-none'
@@ -464,7 +481,7 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
             type='submit' 
             value={!listData.date_updated ? 'Create List' : 'Save'} 
             className='rounded px-2 py-1 font-medium text-blue-600 uppercase cursor-pointer hover:bg-black/10'
-            disabled={name.trim().length < 1}
+            disabled={name?.trim().length < 1}
           />
           <button 
             type='button'
@@ -541,7 +558,7 @@ const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedLis
   return (
     <main className=''>
       {/* debug list */}
-      {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p> */}
+      <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p>
 
       {/* list item - unchecked */}
       <ul className='grid gap-[3px]'>
