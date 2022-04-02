@@ -229,8 +229,8 @@ const App = () => {
       type: 'LIST_UPDATE',
       payload: {
         ...selectedListData,
-        name: name?.value ? name.value : null,
-        badge: badge?.value ? badge.value : null,
+        name: name.value.length > 0 ? name.value : name.placeholder,
+        badge: badge.value.length > 0 ? badge.value : badge.placeholder,
       },
     });
 
@@ -391,10 +391,10 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
           <input 
             name='badge'
             type="text" 
-            className='flex-none w-8 h-8 text-lg text-center leading-none appearance-none outline-none'
-            placeholder={defaultListRow.badge}
             maxLength={1}
-            defaultValue={listData.badge}
+            autoComplete='off'
+            placeholder={defaultListRow.badge}
+            className='flex-none w-8 h-8 text-lg text-center leading-none appearance-none outline-none active:select-all'
           />
           
           <input 
@@ -402,7 +402,6 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
             type="text"
             className='flex-1 border-b-2 border-b-blue-600 ml-1 appearance-none outline-none'
             placeholder={defaultListRow.name}
-            defaultValue={listData.name}
           />
         </div>
         <div className='grid grid-flow-col items-center justify-end gap-1 mt-4 text-sm'>
@@ -563,6 +562,7 @@ const ListItemViewForm = ({ selectedListData }) => {
           type='text' 
           minLength={1}
           placeholder='Add a task'
+          autoComplete='off'
           title={`Add a task in "${selectedListData.name}"`}
           className='peer rounded-md py-4 px-11 w-full bg-white/50 text-sm leading-none appearance-none outline-none placeholder:text-black/90 hover:bg-white/80 active:bg-white focus:bg-white'
           value={input}
