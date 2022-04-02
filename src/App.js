@@ -556,24 +556,30 @@ const ListItemViewForm = ({ selectedListData }) => {
 
   return (
     <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90'>
-      <form className='grid grid-cols-[auto,1fr,auto] rounded-md bg-white/50 overflow-hidden hover:bg-white/80'>
+      <form className='relative overflow-hidden'>
         {/* list item - title */}
         <input 
-          name=''
+          name='title'
           type='text' 
+          minLength={1}
           placeholder='Add a task'
           title={`Add a task in "${selectedListData.name}"`}
-          className='peer w-full bg-inherit text-sm leading-none appearance-none outline-none placeholder:text-black/90'
-          onChange={(e) => setInput(e.target.value)}
+          className='peer rounded-md py-4 px-11 w-full bg-white/50 text-sm leading-none appearance-none outline-none placeholder:text-black/90 hover:bg-white/80 active:bg-white focus:bg-white'
           value={input}
-          minLength='1'
+          onChange={(e) => setInput(e.target.value)}
         />
+
+        <div 
+          className={'absolute inset-0 grid place-items-center w-11 select-none peer-focus:hidden pointer-events-none ' + (input.length > 0 ? '!hidden' : '')}
+        >
+          <span className='pb-1 font mono text-2xl leading-none'>+</span>
+        </div>
 
         {/* list item - init check state */}
         <button 
           type='button'
           title={isChecked ? 'Mark as incomplete' : 'Mark as complete'}
-          className='-order-1 px-1 py-[6px] bg-inherit invisible peer-focus:visible'
+          className={'absolute inset-0 right-auto px-1 hidden peer-focus:block ' + (input.length > 0 ? '!block' : '')}
           onClick={() => setIsChecked(!isChecked)}
         >
           {/* border */}
@@ -589,12 +595,12 @@ const ListItemViewForm = ({ selectedListData }) => {
         {/* submit */}
         <button
           type='submit'
-          title={input.length < 1 ? 'Invalid input' : 'Add new list item'}
-          className={'px-2 bg-inherit cursor-pointer ' + (input.length < 1 ? '!cursor-not-allowed' : '')}
+          title={input.length > 0 ? 'Add new list item' : 'Invalid input'}
+          className={'absolute inset-0 px-2 left-auto cursor-pointer hidden peer-focus:block ' + (input.length > 0 ? '!block' : '!cursor-not-allowed')}
           disabled={input.length < 1}
         >
           {/* <span>↑</span> */}
-          <span className={'text-xl leading-none ' + (input.length < 1 ? 'opacity-30' : '')}>⬆️</span> 
+          <span className={'text-xl leading-none ' + (input.length > 0 ? 'opacity-90' : 'opacity-30')}>⬆️</span> 
         </button>
 
         <input 
