@@ -364,7 +364,7 @@ const ListViewRow = ({ data, selectedListData, onSelectList }) => (
     >
       <div className={
         'relative flex items-center rounded w-full group-hover:bg-slate-500/10 ' + 
-        (selectedListData?.id===data.id && " bg-slate-500/20 before:left-0 before:inset-y-3 before:w-1 before:absolute before:bg-blue-700 before:rounded-full")}
+        (selectedListData?.id === data.id ? ' bg-slate-500/20 before:left-0 before:inset-y-3 before:w-1 before:absolute before:bg-blue-700 before:rounded-full' : '')}
       >
         <div className='flex-none grid place-items-center w-10 h-10'>
           <span className='font-mono text-lg leading-none'>{data.badge}</span>
@@ -544,7 +544,7 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
       onClick={() => onSelectListItem(data)}
       className='flex-1 text-sm text-left'
     >
-      <p className={data.is_checked && 'opacity-60 line-through'}>{data?.title}</p>
+      <p className={data.is_checked ? 'opacity-60 line-through' : ''}>{data?.title}</p>
     </button>
   </li>
 );
@@ -557,7 +557,13 @@ const ListItemViewForm = () => {
     <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90'>
       <form className='grid grid-cols-[auto,1fr,auto]'>
         {/* list item - init check state */}
-        
+        <input 
+          name='is_checked'
+          type='checkbox'  
+          className='hidden'
+          aria-hidden='true'
+          value={isChecked}
+        />
         <button 
           type='button'
           className={isChecked ? 'bg-blue-300' : 'bg-red-300'}
@@ -580,7 +586,7 @@ const ListItemViewForm = () => {
         <button
           type='submit'
           title={input.length < 1 ? 'Invalid input' : 'Add new list item'}
-          className={'w-8 h-full cursor-pointer ' + (input.length < 1 && 'opacity-30 !cursor-not-allowed')}
+          className={'w-8 h-full cursor-pointer ' + (input.length < 1 ? 'opacity-30 !cursor-not-allowed' : '')}
           disabled={input.length < 1}
         >
           {/* <span>↑</span> */}
