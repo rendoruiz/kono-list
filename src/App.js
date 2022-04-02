@@ -424,8 +424,8 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
   const [uncheckedItems, setUncheckedItems] = React.useState(null);
 
   React.useEffect(() => {
-    setCheckedItems(listItemRowsData.filter((listItem) => !listItem.is_checked && listItem.list_id === selectedListData.id));
-    setUncheckedItems(listItemRowsData.filter((listItem) => listItem.is_checked && listItem.list_id === selectedListData.id));
+    setCheckedItems(listItemRowsData.filter((listItem) => listItem.is_checked && listItem.list_id === selectedListData.id));
+    setUncheckedItems(listItemRowsData.filter((listItem) => !listItem.is_checked && listItem.list_id === selectedListData.id));
   }, [listItemRowsData, selectedListData])
 
   return (
