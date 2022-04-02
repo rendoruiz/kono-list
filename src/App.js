@@ -278,7 +278,21 @@ const App = () => {
   // list item - handlers
   const handleSelectListItem = (listItemData) => setSelectedListItemData(listItemData);
   const handleCreateListItem = (event) => {
-    console.log("creatan!")
+    const newListItemId = uuidv4();
+    dispatchListItemRows({
+      type: 'LIST_ITEM_CREATE',
+      payload: {
+        id: newListItemId,
+        list_id: selectedListData.id,
+        title: event.target.title.value,
+      }
+    });
+    // reset form fields
+    event.target.reset();
+
+    // close list item editor and deselect current list item
+    setIsListItemEditorViewOpen(false);
+    setSelectedListItemData(null);
     event.preventDefault();
   }
 
@@ -561,6 +575,7 @@ const ListItemViewForm = ({ selectedListData, onCreateListItem }) => {
       <form 
         className='relative overflow-hidden'
         onSubmit={onCreateListItem}
+        onReset={() => setInput("")}
       >
         {/* list item - title */}
         <input 
