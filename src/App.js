@@ -84,7 +84,7 @@ const defaultListItemRow = {
   date_created: Date.now(),
   date_updated: null,
   title: null,
-  description: null,
+  note: null,
 }
 
 const initialListItemRows = [
@@ -95,7 +95,7 @@ const initialListItemRows = [
     date_created: Date.now(),
     date_updated: null,
     title: 'List Item 1',
-    description: 'List Item 1 description',
+    note: 'List Item 1 note',
   },
   {
     id: 1,
@@ -104,7 +104,7 @@ const initialListItemRows = [
     date_created: Date.now(),
     date_updated: null,
     title: 'List Item 2',
-    description: 'List Item 2 description',
+    note: 'List Item 2 note',
   },
   {
     id: 2,
@@ -113,7 +113,7 @@ const initialListItemRows = [
     date_created: Date.now(),
     date_updated: null,
     title: 'List Item 3',
-    description: 'List Item 3 description',
+    note: 'List Item 3 note',
   },
 ];
 
@@ -126,9 +126,7 @@ const listItemRowsReducer = (state, action) => {
         ...defaultListItemRow,
         id: action.payload.id,
         list_id: action.payload.list_id,
-        is_checked: action.payload.is_checked,
         title: action.payload.title,
-        description: action.payload.description,
       };
       newState = { 
         ...state,
@@ -145,7 +143,7 @@ const listItemRowsReducer = (state, action) => {
               list_id: action.payload.list_id ?? listItem.list_id,
               is_checked: action.payload.is_checked ?? listItem.is_checked,
               title: action.payload.title ?? listItem.title,
-              description: action.payload.description ?? listItem.description,
+              note: action.payload.note ?? listItem.note,
               date_updated: Date.now(),
             }
           }
@@ -279,6 +277,10 @@ const App = () => {
   
   // list item - handlers
   const handleSelectListItem = (listItemData) => setSelectedListItemData(listItemData);
+  const handleCreateListItem = (event) => {
+    console.log("creatan!")
+    event.preventDefault();
+  }
 
   // list item - effects
   
@@ -310,6 +312,7 @@ const App = () => {
         selectedListData={selectedListData}
         onToggleListEditView={handleToggleListEditorView}
         onSelectListItem={handleSelectListItem}
+        onCreateListItem={handleCreateListItem}
         onDeleteList={handleDeleteList}
       />
 
@@ -423,7 +426,7 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
 }
 
 
-const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onDeleteList }) => (
+const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onCreateListItem, onDeleteList }) => (
   <div className='grid pt-2'>
     <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-2xl px-10 w-full h-full max-h-screen overflow-scroll bg-blue-200'>
       <header className='sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
@@ -464,6 +467,7 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
       
       <ListItemViewForm
         selectedListData={selectedListData}
+        onCreateListItem={onCreateListItem}
       />
     </div>
   </div>
@@ -549,12 +553,15 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
   </li>
 );
 
-const ListItemViewForm = ({ selectedListData }) => {
+const ListItemViewForm = ({ selectedListData, onCreateListItem }) => {
   const [input, setInput] = React.useState("");
 
   return (
     <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90 sh'>
-      <form className='relative overflow-hidden'>
+      <form 
+        className='relative overflow-hidden'
+        onSubmit={onCreateListItem}
+      >
         {/* list item - title */}
         <input 
           name='title'
