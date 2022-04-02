@@ -580,12 +580,12 @@ const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedLis
           className='flex items-center rounded my-2 px-2 py-1 bg-white/50 text-sm hover:bg-white/80'
           onClick={onUpdateListCheckedItemState}
         >
-          <span className={'px-1 scale-y-125 origin-center ' + (selectedListData.is_checked_hidden ? 'rotate-90' : '')}>&gt;</span>
+          <span className={'px-1 scale-y-125 origin-center ' + (!selectedListData.is_checked_hidden ? 'rotate-90' : '')}>&gt;</span>
           <p className='ml-1 mr-2'>Completed</p>
           <span>{checkedItems?.length}</span>
         </button>
         {/* list item - checked */}
-        {selectedListData.is_checked_hidden && (
+        {!selectedListData.is_checked_hidden && (
           <ul className='grid gap-[3px]'>
             {checkedItems && checkedItems.map((listItem) => (
               <ListItemViewRow
