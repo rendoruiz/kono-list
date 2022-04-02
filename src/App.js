@@ -569,12 +569,6 @@ const ListItemViewForm = ({ selectedListData }) => {
           onChange={(e) => setInput(e.target.value)}
         />
 
-        <div 
-          className={'absolute inset-0 grid place-items-center w-11 select-none peer-focus:hidden pointer-events-none ' + (input.length > 0 ? '!hidden' : '')}
-        >
-          <span className='pb-1 font mono text-2xl leading-none'>+</span>
-        </div>
-
         {/* list item - init check state */}
         <button 
           type='button'
