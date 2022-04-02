@@ -193,7 +193,12 @@ const App = () => {
   const [selectedListData, setSelectedListData] = useLocalState('selected_list', initialListRows[0]);
 
   // list - handlers
-  const handleSelectList = (listData) => setSelectedListData(listData);
+  const handleSelectList = (listData) => {
+    setSelectedListData(listData);
+    // reset list item selection & close editor
+    setSelectedListItemData(null);
+    setIsListItemEditorViewOpen(false);
+  }
   const handleCreateList = () => {
     // create unique id and create temp list
     const newListId = uuidv4();
@@ -463,6 +468,7 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
         <main className='overflow-scroll'>
           {/* debug list */}
           <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p>
+
           {/* list item - unchecked */}
           <ul className='grid gap-[2px]'>
             {uncheckedItems && uncheckedItems.map((listItem) => (
@@ -474,6 +480,7 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
               />
             ))}
           </ul>
+
           {checkedItems?.length !== 0 && (<>
             {/* checked list item toggle */}
             <button className='flex items-center rounded my-2 px-2 py-1 bg-white/50 hover:bg-white/80'>
@@ -482,7 +489,7 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
             </button>
             {/* list item - checked */}
             <ul className='grid gap-[2px]'>
-              {checkedItems.map((listItem) => (
+              {checkedItems && checkedItems.map((listItem) => (
                 <ListItemViewRow
                   key={listItem.id}
                   data={listItem}
@@ -506,7 +513,7 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
 const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
   <li className={
     'flex rounded-md cursor-pointer hover:bg-white/90 ' + 
-    (data.id === selectedListItemData.id ? 'bg-white' : 'bg-white/70')
+    (data.id === selectedListItemData?.id ? 'bg-white' : 'bg-white/70')
   }>
     {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(data).replaceAll(',"', ', "')}</p> */}
     {/* toggle is_checked */}
