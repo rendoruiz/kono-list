@@ -501,11 +501,41 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
           </>)}
         </main>
         
-        <footer className='sticky bottom-0 py-1'>
-
-        </footer>
+        <ListItemForm
+        />
       </div>
     </div>
+  )
+}
+
+const ListItemForm = () => {
+  return (
+    <footer className='sticky bottom-0 py-1'>
+      <form className='grid grid-cols-[auto,1fr,auto]'>
+        {/* list item - init check state */}
+        <button 
+          type='button'
+          className=''
+        >
+          check
+        </button>
+
+        {/* list item - title */}
+        <input 
+          name=""
+          type="text" 
+
+        />
+
+        {/* submit */}
+        <button
+          type='submit'
+          className=''
+        >
+          send
+        </button>
+      </form>
+    </footer>
   )
 }
 
@@ -537,7 +567,7 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
       onClick={() => onSelectListItem(data)}
       className='flex-1 text-sm text-left'
     >
-      <p className=''>{data?.title}</p>
+      <p className={data.is_checked && 'opacity-60 line-through'}>{data?.title}</p>
     </button>
   </li>
 );
