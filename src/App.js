@@ -568,20 +568,16 @@ const ListItemViewForm = ({ selectedListData }) => {
           onChange={(e) => setInput(e.target.value)}
         />
 
-        {/* list item - init check state */}
-        <button 
-          type='button'
-          className={'absolute inset-0 hidden right-auto px-1 pointer-events-none peer-focus:block ' + (input.length > 0 ? '!block' : '')}
-        >
-          {/* border */}
-          <div className='group grid place-items-center m-2 w-[18px] h-[18px] border-2 border-slate-700 rounded-full' />
-        </button>
+        {/* list item - unchecked state (decorative) */}
+        <div className={'absolute inset-0 right-auto hidden items-center px-3 pointer-events-none peer-focus:grid ' + (input.length > 0 ? '!grid' : '')}>
+          <div className='w-[18px] h-[18px] border-2 border-slate-700 rounded-full' />
+        </div>
 
         {/* submit */}
         <button
           type='submit'
           title={input.trim().length > 0 ? 'Add new list item' : 'Invalid input'}
-          className={'absolute inset-0 hidden px-2 left-auto cursor-pointer peer-focus:block ' + (input.trim().length > 0 ? '!block' : '!cursor-not-allowed')}
+          className={'absolute inset-0 left-auto hidden px-2 cursor-pointer peer-focus:block ' + (input.trim().length > 0 ? '!block' : '!cursor-not-allowed')}
           disabled={input.trim().length < 1}
         >
           {/* <span>↑</span> */}
