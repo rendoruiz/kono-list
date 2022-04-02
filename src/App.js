@@ -477,7 +477,10 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
 
 
 const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
-  <li className='flex rounded-md bg-white/70 cursor-pointer hover:bg-white/90'>
+  <li className={
+    'flex rounded-md cursor-pointer hover:bg-white/90 ' + 
+    (data.id === selectedListItemData.id ? 'bg-white' : 'bg-white/70')
+  }>
     {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(data).replaceAll(',"', ', "')}</p> */}
     {/* toggle is_checked */}
     <button
@@ -497,9 +500,10 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
     {/* select list item */}
     <button
       title='Select list item'
+      onClick={() => onSelectListItem(data)}
       className='flex-1 text-sm text-left'
     >
-      <p className=''>{data.title}</p>
+      <p className=''>{data?.title}</p>
     </button>
   </li>
 );
