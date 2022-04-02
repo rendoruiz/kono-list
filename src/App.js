@@ -464,6 +464,7 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
       />
       
       <ListItemViewForm
+        selectedListData={selectedListData}
       />
     </div>
   </div>
@@ -549,13 +550,13 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
   </li>
 );
 
-const ListItemViewForm = () => {
+const ListItemViewForm = ({ selectedListData }) => {
   const [input, setInput] = React.useState("");
   const [isChecked, setIsChecked] = React.useState(false);
 
   return (
     <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90'>
-      <form className='grid grid-cols-[auto,1fr,auto]'>
+      <form className='grid grid-cols-[auto,1fr,auto] rounded-md bg-white/50 overflow-hidden hover:bg-white/80'>
         {/* list item - init check state */}
         <input 
           name='is_checked'
@@ -566,17 +567,27 @@ const ListItemViewForm = () => {
         />
         <button 
           type='button'
-          className={isChecked ? 'bg-blue-300' : 'bg-red-300'}
+          title={isChecked ? 'Mark as incomplete' : 'Mark as complete'}
+          className='px-1 py-[6px] bg-inherit'
           onClick={() => setIsChecked(!isChecked)}
         >
-          check
+          {/* border */}
+          <div className='group grid place-items-center m-2 w-[18px] h-[18px] border-2 border-slate-700 rounded-full'>
+            {/* check mark */}
+            <div className={
+              'w-2 h-2 bg-slate-700/80 rounded-full transition-all group-hover:opacity-100 ' +
+              (isChecked ? 'opacity-100 group-active:scale-50' : 'opacity-0 group-active:scale-150')
+            } />
+          </div>
         </button>
 
         {/* list item - title */}
         <input 
           name=''
           type='text' 
-          className='w-full'
+          placeholder='Add a task'
+          title={`Add a task in "${selectedListData.name}"`}
+          className='w-full bg-inherit text-sm leading-none appearance-none outline-none placeholder:text-black/90'
           onChange={(e) => setInput(e.target.value)}
           value={input}
           minLength='1'
@@ -586,11 +597,11 @@ const ListItemViewForm = () => {
         <button
           type='submit'
           title={input.length < 1 ? 'Invalid input' : 'Add new list item'}
-          className={'w-8 h-full cursor-pointer ' + (input.length < 1 ? 'opacity-30 !cursor-not-allowed' : '')}
+          className={'px-2 bg-inherit cursor-pointer ' + (input.length < 1 ? '!cursor-not-allowed' : '')}
           disabled={input.length < 1}
         >
           {/* <span>↑</span> */}
-          <span className='text-xl leading-none'>⬆️</span> 
+          <span className={'text-xl leading-none ' + (input.length < 1 ? 'opacity-30' : '')}>⬆️</span> 
         </button>
       </form>
     </footer>
