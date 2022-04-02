@@ -263,9 +263,7 @@ const App = () => {
         id: selectedListData.id,
         is_checked_hidden: !selectedListData.is_checked_hidden,
       }
-    })
-
-    console.log("completed hidden state updated!")
+    });
   }
 
   // list - effects
@@ -316,8 +314,6 @@ const App = () => {
         is_checked: !listItemData.is_checked,
       }
     });
-
-    console.log("updated!")
   }
 
   // list item - effects
@@ -468,7 +464,7 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
 
 const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onCreateListItem, onUpdateListItemCheckState, onDeleteList, onUpdateListCheckedItemState }) => (
   <div className='grid pt-2'>
-    <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-xl px-10 w-full h-full max-h-screen overflow-scroll bg-blue-200'>
+    <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-xl px-10 w-full h-full max-h-[calc(100vh-8px)] overflow-scroll bg-blue-200'>
       <header className='sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
         {/* edit list */}
         <button 
