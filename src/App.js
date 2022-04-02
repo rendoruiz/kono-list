@@ -557,18 +557,23 @@ const ListItemViewForm = ({ selectedListData }) => {
   return (
     <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90'>
       <form className='grid grid-cols-[auto,1fr,auto] rounded-md bg-white/50 overflow-hidden hover:bg-white/80'>
-        {/* list item - init check state */}
+        {/* list item - title */}
         <input 
-          name='is_checked'
-          type='checkbox'  
-          className='hidden'
-          aria-hidden='true'
-          value={isChecked}
+          name=''
+          type='text' 
+          placeholder='Add a task'
+          title={`Add a task in "${selectedListData.name}"`}
+          className='peer w-full bg-inherit text-sm leading-none appearance-none outline-none placeholder:text-black/90'
+          onChange={(e) => setInput(e.target.value)}
+          value={input}
+          minLength='1'
         />
+
+        {/* list item - init check state */}
         <button 
           type='button'
           title={isChecked ? 'Mark as incomplete' : 'Mark as complete'}
-          className='px-1 py-[6px] bg-inherit'
+          className='-order-1 px-1 py-[6px] bg-inherit invisible peer-focus:visible'
           onClick={() => setIsChecked(!isChecked)}
         >
           {/* border */}
@@ -581,18 +586,6 @@ const ListItemViewForm = ({ selectedListData }) => {
           </div>
         </button>
 
-        {/* list item - title */}
-        <input 
-          name=''
-          type='text' 
-          placeholder='Add a task'
-          title={`Add a task in "${selectedListData.name}"`}
-          className='w-full bg-inherit text-sm leading-none appearance-none outline-none placeholder:text-black/90'
-          onChange={(e) => setInput(e.target.value)}
-          value={input}
-          minLength='1'
-        />
-
         {/* submit */}
         <button
           type='submit'
@@ -603,6 +596,14 @@ const ListItemViewForm = ({ selectedListData }) => {
           {/* <span>↑</span> */}
           <span className={'text-xl leading-none ' + (input.length < 1 ? 'opacity-30' : '')}>⬆️</span> 
         </button>
+
+        <input 
+          name='is_checked'
+          type='checkbox'  
+          className='hidden'
+          aria-hidden='true'
+          value={isChecked}
+        />
       </form>
     </footer>
   )
