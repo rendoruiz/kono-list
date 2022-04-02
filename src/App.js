@@ -434,6 +434,7 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
             autoComplete='off'
             placeholder={defaultListRow.badge}
             className='flex-none w-8 h-8 text-lg text-center leading-none appearance-none outline-none active:select-all'
+            defaultValue={listData.badge}
           />
           
           <input 
@@ -441,6 +442,7 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
             type="text"
             className='flex-1 border-b-2 border-b-blue-600 ml-1 appearance-none outline-none'
             placeholder={defaultListRow.name}
+            defaultValue={listData.name}
           />
         </div>
         <div className='grid grid-flow-col items-center justify-end gap-1 mt-4 text-sm'>
