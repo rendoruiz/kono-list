@@ -436,7 +436,7 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
   return (
     <div className='grid pt-2'>
       <div className='rounded-tl-2xl p-10 w-full h-full bg-blue-200'>
-        <header className='flex justify-between'>
+        <header className='flex items-center justify-between'>
           {/* edit list */}
           <button 
             onClick={onToggleListEditView}
@@ -459,15 +459,15 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
           <button
             onClick={onDeleteList}
             title='Delete list'
-            className='shrink-0 grid place-items-center rounded w-10 h-10 bg-white/50 text-lg hover:bg-white/80'
+            className='shrink-0 grid place-items-center rounded w-8 h-8 bg-white/50 hover:bg-white/80'
           >
             <span className='leading-none'>🗑️</span>
           </button>
         </header>
 
-        <main className='overflow-scroll'>
+        <main className='mt-5 overflow-scroll'>
           {/* debug list */}
-          <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p>
+          {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p> */}
 
           {/* list item - unchecked */}
           <ul className='grid gap-[2px]'>
