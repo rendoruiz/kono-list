@@ -419,61 +419,88 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
 }
 
 
-const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onDeleteList }) => (
-  <div className='grid pt-2'>
-    <div className='rounded-tl-2xl p-10 w-full h-full bg-blue-200'>
-      <header className='flex justify-between'>
-        {/* edit list */}
-        <button 
-          onClick={onToggleListEditView}
-          title='Edit list'
-          className='flex items-center rounded hover:bg-slate-500/40'
-        >
-          {/* list badge */}
-          <div className='flex-none grid place-items-center w-10 h-10'>
-            <span className='font-mono font-bold text-2xl leading-none'>
-              {selectedListData?.badge ?? defaultListRow.badge}
-            </span>
-          </div>
-          {/* list name */}
-          <h2 className='flex-1 pl-1 pr-2 font-medium text-2xl text-left truncate'>
-            {selectedListData?.name ?? defaultListRow.name}
-          </h2>
-        </button>
-        
-        {/* delete list */}
-        <button
-          onClick={onDeleteList}
-          title='Delete list'
-          className='shrink-0 grid place-items-center rounded w-10 h-10 bg-white/50 text-lg hover:bg-white/80'
-        >
-          <span className='leading-none'>🗑️</span>
-        </button>
-      </header>
+const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onDeleteList }) => { 
+  const [checkedItems, setCheckedItems] = React.useState(null);
+  const [uncheckedItems, setUncheckedItems] = React.useState(null);
 
-      <main className='overflow-scroll'>
-        <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p>
-        <ul className='grid gap-[2px]'>
-          {listItemRowsData
-            .filter((listItem) => listItem.list_id === selectedListData.id)
-            .map((listItem) => (
+  React.useEffect(() => {
+    setCheckedItems(listItemRowsData.filter((listItem) => !listItem.is_checked && listItem.list_id === selectedListData.id));
+    setUncheckedItems(listItemRowsData.filter((listItem) => listItem.is_checked && listItem.list_id === selectedListData.id));
+  }, [listItemRowsData, selectedListData])
+
+  return (
+    <div className='grid pt-2'>
+      <div className='rounded-tl-2xl p-10 w-full h-full bg-blue-200'>
+        <header className='flex justify-between'>
+          {/* edit list */}
+          <button 
+            onClick={onToggleListEditView}
+            title='Edit list'
+            className='flex items-center rounded hover:bg-slate-500/40'
+          >
+            {/* list badge */}
+            <div className='flex-none grid place-items-center w-10 h-10'>
+              <span className='font-mono font-bold text-2xl leading-none'>
+                {selectedListData?.badge ?? defaultListRow.badge}
+              </span>
+            </div>
+            {/* list name */}
+            <h2 className='flex-1 pl-1 pr-2 font-medium text-2xl text-left truncate'>
+              {selectedListData?.name ?? defaultListRow.name}
+            </h2>
+          </button>
+          
+          {/* delete list */}
+          <button
+            onClick={onDeleteList}
+            title='Delete list'
+            className='shrink-0 grid place-items-center rounded w-10 h-10 bg-white/50 text-lg hover:bg-white/80'
+          >
+            <span className='leading-none'>🗑️</span>
+          </button>
+        </header>
+
+        <main className='overflow-scroll'>
+          {/* debug list */}
+          <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p>
+          {/* list item - unchecked */}
+          <ul className='grid gap-[2px]'>
+            {uncheckedItems && uncheckedItems.map((listItem) => (
               <ListItemViewRow
                 key={listItem.id}
                 data={listItem}
                 selectedListItemData={selectedListItemData}
                 onSelectListItem={onSelectListItem}
               />
-            )
-          )}
-        </ul>
-      </main>
-      
-      <footer className='sticky bottom-0 py-1'>
+            ))}
+          </ul>
+          {checkedItems?.length !== 0 && (<>
+            {/* checked list item toggle */}
+            <button className='flex items-center rounded my-2 px-2 py-1 bg-white/50 hover:bg-white/80'>
+              <span>&gt;</span>
+              <p className='ml-2 text-sm'>Completed</p>
+            </button>
+            {/* list item - checked */}
+            <ul className='grid gap-[2px]'>
+              {checkedItems.map((listItem) => (
+                <ListItemViewRow
+                  key={listItem.id}
+                  data={listItem}
+                  selectedListItemData={selectedListItemData}
+                  onSelectListItem={onSelectListItem}
+                />
+              ))}
+            </ul>
+          </>)}
+        </main>
+        
+        <footer className='sticky bottom-0 py-1'>
 
-      </footer>
+        </footer>
+      </div>
     </div>
-  </div>
-);
+  )
+}
 
 
 const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
