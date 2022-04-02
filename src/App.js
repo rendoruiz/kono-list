@@ -229,8 +229,8 @@ const App = () => {
       type: 'LIST_UPDATE',
       payload: {
         ...selectedListData,
-        name: name.value.length > 0 ? name.value : name.placeholder,
-        badge: badge.value.length > 0 ? badge.value : badge.placeholder,
+        name: name.value.trim().length > 0 ? name.value.trim() : name.placeholder,
+        badge: badge.value.trim().length > 0 ? badge.value.trim() : badge.placeholder,
       },
     });
 
