@@ -454,7 +454,7 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
 
 const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onCreateListItem, onUpdateListItemCheckState, onDeleteList }) => (
   <div className='grid pt-2'>
-    <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-2xl px-10 w-full h-full max-h-screen overflow-scroll bg-blue-200'>
+    <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-xl px-10 w-full h-full max-h-screen overflow-scroll bg-blue-200'>
       <header className='sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
         {/* edit list */}
         <button 
