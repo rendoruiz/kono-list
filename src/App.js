@@ -20,6 +20,7 @@ const initialListRows = [
     date_created: Date.now(),
     date_updated: null,
     badge: "⭐",
+    is_checked_hidden: false,
   },
 ];
 
@@ -54,6 +55,7 @@ const listRowsReducer = (state, action) => {
               ...list,
               name: action.payload.name ?? list.name,
               badge: action.payload.badge ?? list.badge,
+              is_checked_hidden: action.payload.is_checked_hidden ?? list.is_checked_hidden,
               date_updated: Date.now(),
             }
           }
@@ -254,6 +256,17 @@ const App = () => {
     setSelectedListData({...selectedListData, ...newdata});
     // setSelectedListId(listRows.data[selectedListIndex - (goBackward ? 1 : 0)])
   }
+  const handleUpdateListCheckedItemState = () => {
+    dispatchListRows({
+      type: 'LIST_UPDATE',
+      payload: {
+        id: selectedListData.id,
+        is_checked_hidden: !selectedListData.is_checked_hidden,
+      }
+    })
+
+    console.log("completed hidden state updated!")
+  }
 
   // list - effects
   React.useEffect(() => {
@@ -340,6 +353,7 @@ const App = () => {
         onCreateListItem={handleCreateListItem}
         onUpdateListItemCheckState={handleUpdateListItemCheckState}
         onDeleteList={handleDeleteList}
+        onUpdateListCheckedItemState={handleUpdateListCheckedItemState}
       />
 
       {/* list item editor view */}
@@ -452,7 +466,7 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
 }
 
 
-const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onCreateListItem, onUpdateListItemCheckState, onDeleteList }) => (
+const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onCreateListItem, onUpdateListItemCheckState, onDeleteList, onUpdateListCheckedItemState }) => (
   <div className='grid pt-2'>
     <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-xl px-10 w-full h-full max-h-screen overflow-scroll bg-blue-200'>
       <header className='sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
@@ -490,6 +504,7 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
         selectedListData={selectedListData}
         onSelectListItem={onSelectListItem}
         onUpdateListItemCheckState={onUpdateListItemCheckState}
+        onUpdateListCheckedItemState={onUpdateListCheckedItemState}
       />
       
       <ListItemViewForm
@@ -500,7 +515,7 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
   </div>
 );
 
-const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedListData, onSelectListItem, onUpdateListItemCheckState }) => {
+const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedListData, onSelectListItem, onUpdateListItemCheckState, onUpdateListCheckedItemState }) => {
   const [checkedItems, setCheckedItems] = React.useState(null);
   const [uncheckedItems, setUncheckedItems] = React.useState(null);
 
@@ -529,22 +544,29 @@ const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedLis
 
       {checkedItems?.length !== 0 && (<>
         {/* checked list item toggle */}
-        <button className='flex items-center rounded my-2 px-2 py-1 bg-white/50 hover:bg-white/80'>
-          <span>&gt;</span>
-          <p className='ml-2 text-sm'>Completed</p>
+        <button 
+          type='button'
+          className='flex items-center rounded my-2 px-2 py-1 bg-white/50 text-sm hover:bg-white/80'
+          onClick={onUpdateListCheckedItemState}
+        >
+          <span className={'px-1 scale-y-125 origin-center ' + (selectedListData.is_checked_hidden ? 'rotate-90' : '')}>&gt;</span>
+          <p className='ml-1 mr-2'>Completed</p>
+          <span>{checkedItems.length}</span>
         </button>
         {/* list item - checked */}
-        <ul className='grid gap-[3px]'>
-          {checkedItems && checkedItems.map((listItem) => (
-            <ListItemViewRow
-              key={listItem.id}
-              data={listItem}
-              selectedListItemData={selectedListItemData}
-              onSelectListItem={onSelectListItem}
-            onUpdateListItemCheckState={onUpdateListItemCheckState}
-            />
-          ))}
-        </ul>
+        {selectedListData.is_checked_hidden && (
+          <ul className='grid gap-[3px]'>
+            {checkedItems && checkedItems.map((listItem) => (
+              <ListItemViewRow
+                key={listItem.id}
+                data={listItem}
+                selectedListItemData={selectedListItemData}
+                onSelectListItem={onSelectListItem}
+              onUpdateListItemCheckState={onUpdateListItemCheckState}
+              />
+            ))}
+          </ul>
+        )}
       </>)}
     </main>
   )
@@ -627,8 +649,6 @@ const ListItemViewForm = ({ selectedListData, onCreateListItem }) => {
     </footer>
   )
 }
-
-
 
 
 const ListItemEditorView = ({ isOpen, onToggleView }) => {
