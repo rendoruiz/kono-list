@@ -408,7 +408,7 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
           <input 
             type="submit" 
             value={!listData.date_updated ? 'Create List' : 'Save'} 
-            className='rounded px-2 py-1 font-medium uppercase cursor-pointer hover:bg-black/10'
+            className='rounded px-2 py-1 font-medium text-blue-600 uppercase cursor-pointer hover:bg-black/10'
           />
           <button 
             onClick={onCancelCreate}
