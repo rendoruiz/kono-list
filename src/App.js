@@ -558,7 +558,7 @@ const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedLis
   return (
     <main className=''>
       {/* debug list */}
-      <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p>
+      {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p> */}
 
       {/* list item - unchecked */}
       <ul className='grid gap-[3px]'>
