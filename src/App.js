@@ -551,7 +551,6 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem }) => (
 
 const ListItemViewForm = ({ selectedListData }) => {
   const [input, setInput] = React.useState("");
-  const [isChecked, setIsChecked] = React.useState(false);
 
   return (
     <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90'>
@@ -572,38 +571,22 @@ const ListItemViewForm = ({ selectedListData }) => {
         {/* list item - init check state */}
         <button 
           type='button'
-          title={isChecked ? 'Mark as incomplete' : 'Mark as complete'}
-          className={'absolute inset-0 right-auto px-1 hidden peer-focus:block ' + (input.length > 0 ? '!block' : '')}
-          onClick={() => setIsChecked(!isChecked)}
+          className={'absolute inset-0 hidden right-auto px-1 pointer-events-none peer-focus:block ' + (input.length > 0 ? '!block' : '')}
         >
           {/* border */}
-          <div className='group grid place-items-center m-2 w-[18px] h-[18px] border-2 border-slate-700 rounded-full'>
-            {/* check mark */}
-            <div className={
-              'w-2 h-2 bg-slate-700/80 rounded-full transition-all group-hover:opacity-100 ' +
-              (isChecked ? 'opacity-100 group-active:scale-50' : 'opacity-0 group-active:scale-150')
-            } />
-          </div>
+          <div className='group grid place-items-center m-2 w-[18px] h-[18px] border-2 border-slate-700 rounded-full' />
         </button>
 
         {/* submit */}
         <button
           type='submit'
           title={input.trim().length > 0 ? 'Add new list item' : 'Invalid input'}
-          className={'absolute inset-0 px-2 left-auto cursor-pointer hidden peer-focus:block ' + (input.trim().length > 0 ? '!block' : '!cursor-not-allowed')}
+          className={'absolute inset-0 hidden px-2 left-auto cursor-pointer peer-focus:block ' + (input.trim().length > 0 ? '!block' : '!cursor-not-allowed')}
           disabled={input.trim().length < 1}
         >
           {/* <span>↑</span> */}
           <span className={'text-xl leading-none ' + (input.trim().length > 0 ? 'opacity-90' : 'opacity-30')}>⬆️</span> 
         </button>
-
-        <input 
-          name='is_checked'
-          type='checkbox'  
-          className='hidden'
-          aria-hidden='true'
-          value={isChecked}
-        />
       </form>
     </footer>
   )
