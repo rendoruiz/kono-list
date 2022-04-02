@@ -589,12 +589,12 @@ const ListItemViewForm = ({ selectedListData }) => {
         {/* submit */}
         <button
           type='submit'
-          title={input.length > 0 ? 'Add new list item' : 'Invalid input'}
-          className={'absolute inset-0 px-2 left-auto cursor-pointer hidden peer-focus:block ' + (input.length > 0 ? '!block' : '!cursor-not-allowed')}
-          disabled={input.length < 1}
+          title={input.trim().length > 0 ? 'Add new list item' : 'Invalid input'}
+          className={'absolute inset-0 px-2 left-auto cursor-pointer hidden peer-focus:block ' + (input.trim().length > 0 ? '!block' : '!cursor-not-allowed')}
+          disabled={input.trim().length < 1}
         >
           {/* <span>↑</span> */}
-          <span className={'text-xl leading-none ' + (input.length > 0 ? 'opacity-90' : 'opacity-30')}>⬆️</span> 
+          <span className={'text-xl leading-none ' + (input.trim().length > 0 ? 'opacity-90' : 'opacity-30')}>⬆️</span> 
         </button>
 
         <input 
