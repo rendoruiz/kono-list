@@ -347,7 +347,7 @@ const ListView = ({ isOpen, listRowsData, selectedListData, onToggleView, onSele
       >
         <div className='flex items-center rounded w-full group-hover:bg-slate-500/10'>
           <div className='flex-none grid place-items-center w-10 h-10'>
-            <span className='font-mono font-bold text-xl leading-none'>+</span>
+            <span className='pb-[2px] font-mono text-2xl leading-none'>+</span>
           </div>
           <p className='flex-1 text-left'>New list</p>
         </div>
