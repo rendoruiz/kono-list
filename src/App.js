@@ -223,21 +223,19 @@ const App = () => {
     handleToggleListEditorView();
     event.preventDefault();
   }
-  const handleUpdateList = (event) => {
-    const { name, badge } = event.target;
+  const handleUpdateList = (listData) => {
     dispatchListRows({
       type: 'LIST_UPDATE',
       payload: {
         ...selectedListData,
-        name: name.value.trim().length > 0 ? name.value.trim() : name.placeholder,
-        badge: badge.value.trim().length > 0 ? badge.value.trim() : badge.placeholder,
+        name: listData.name.trim().length > 0 ? listData.name : defaultListRow.name,
+        badge: listData.badge,
       },
     });
 
     // close editor
     setCompletedSelectedListData();
     handleToggleListEditorView();
-    event.preventDefault();
   }
   const handleDeleteList = (event) => {
     if (window.confirm('Are you sure you want to delete this list?')) {
@@ -415,43 +413,61 @@ const ListViewRow = ({ data, selectedListData, onSelectList }) => (
 );
 
 const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
+  const [name, setName] = React.useState(listData?.name);
+  const [badge, setBadge] = React.useState(listData?.badge);
+
+  const handleSubmit = (event) => {
+    onUpdateList({
+      ...listData,
+      name: name.trim(),
+      badge: badge.trim(),
+    });
+    event.preventDefault();
+  }
+
   return isOpen && (
     <div
       className='fixed inset-0 z-50 grid place-items-center bg-black/40'
-      onClick={onUpdateList}
+      onClick={handleSubmit}
     >
       <form 
         className=' rounded px-4 py-3 bg-white'
         onClick={(e) => e.stopPropagation()}
-        onSubmit={onUpdateList}
+        onSubmit={handleSubmit}
       >
         <h2 className='font-medium text-lg'>{!listData.date_updated ? 'New' : 'Rename'} list</h2>
         <div className='flex mt-3 w-full'>
           <input 
             name='badge'
-            type="text" 
+            type='text' 
             maxLength={1}
-            autoComplete='off'
             placeholder={defaultListRow.badge}
-            className='flex-none w-8 h-8 text-lg text-center leading-none appearance-none outline-none active:select-all'
-            defaultValue={listData.badge}
+            autoComplete='off'
+            className='flex-none border-b-2 border-b-blue-600 rounded-b w-8 h-8 text-lg text-center leading-none appearance-none outline-none active:select-all'
+            value={badge}
+            onChange={(e) => setBadge(e.target.value)}
           />
           
           <input 
             name='name'
-            type="text"
-            className='flex-1 border-b-2 border-b-blue-600 ml-1 appearance-none outline-none'
+            type='text'
+            minLength={1}
             placeholder={defaultListRow.name}
-            defaultValue={listData.name}
+            autoComplete='off'
+            className='flex-1 border-b-2 border-b-blue-600 rounded-b ml-2 px-1 w-full appearance-none outline-none'
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div className='grid grid-flow-col items-center justify-end gap-1 mt-4 text-sm'>
           <input 
-            type="submit" 
+            type='submit' 
             value={!listData.date_updated ? 'Create List' : 'Save'} 
             className='rounded px-2 py-1 font-medium text-blue-600 uppercase cursor-pointer hover:bg-black/10'
+            disabled={name.trim().length < 1}
           />
           <button 
+            type='button'
             onClick={onCancelCreate}
             className='-order-1 rounded px-2 py-1 font-medium uppercase hover:bg-black/10'
           >
@@ -560,7 +576,7 @@ const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedLis
                 data={listItem}
                 selectedListItemData={selectedListItemData}
                 onSelectListItem={onSelectListItem}
-              onUpdateListItemCheckState={onUpdateListItemCheckState}
+                onUpdateListItemCheckState={onUpdateListItemCheckState}
               />
             ))}
           </ul>
