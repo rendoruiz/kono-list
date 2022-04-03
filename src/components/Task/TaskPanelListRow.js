@@ -19,7 +19,7 @@ const TaskPanelListRow = ({
     >
       {/* border */}
       <div className='group grid place-items-center w-[18px] h-[18px] border-2 border-slate-700 rounded-full'>
-        {/* check mark */}
+        {/* complete mark */}
         <div className={
           'w-2 h-2 bg-slate-700/80 rounded-full transition-all group-hover:opacity-100 ' +
           (task.is_complete ? 'opacity-100 group-active:scale-50' : 'opacity-0 group-active:scale-150')
@@ -34,7 +34,9 @@ const TaskPanelListRow = ({
       onClick={() => onSelectTask(task)}
       className='flex-1 py-3 pr-2 text-sm text-left'
     >
-      <p className={task.is_complete ? 'opacity-60 line-through' : ''}>{task?.title}</p>
+      <p className={task.is_complete ? 'opacity-60 line-through' : ''}>
+        {task?.title}
+      </p>
     </button>
   </li>
 );
