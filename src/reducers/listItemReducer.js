@@ -1,4 +1,4 @@
-import { listItemTemplate } from "../data/listItem";
+import { listTemplate } from "../data/listItem";
 
 const listItemReducer = (state, action) => {
   let newState;
@@ -6,7 +6,7 @@ const listItemReducer = (state, action) => {
   switch(action.type) {
     case 'LIST_CREATE':
       const newList = {
-        ...listItemTemplate,
+        ...listTemplate,
         id: action.payload.id,
       };
       newState = { 

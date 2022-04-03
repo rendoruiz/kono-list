@@ -1,4 +1,4 @@
-import { taskItemTemplate } from "../data/taskItem";
+import { taskTemplate } from "../data/taskItem";
 
 const taskItemReducer = (state, action) => {
   let newState;
@@ -6,7 +6,7 @@ const taskItemReducer = (state, action) => {
   switch(action.type) {
     case 'TASK_CREATE':
       const newTask = {
-        ...taskItemTemplate,
+        ...taskTemplate,
         id: action.payload.id,
         list_id: action.payload.list_id,
         title: action.payload.title,

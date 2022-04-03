@@ -9,7 +9,7 @@ import TaskEditorPanel from '../Task/TaskEditorPanel';
 import useLocalState from '../../hooks/useLocalState';
 import listItemReducer from '../../reducers/listItemReducer';
 import taskItemReducer from '../../reducers/taskItemReducer';
-import { listItemTemplate, initialListItems } from '../../data/listItem';
+import { listTemplate, initialListItems } from '../../data/listItem';
 import { initialTaskItems  } from '../../data/taskItem';
 
 const App = () => {
@@ -76,8 +76,8 @@ const App = () => {
       type: 'LIST_UPDATE',
       payload: {
         ...selectedList,
-        name: name.trim().length > 0 ? name : listItemTemplate.name,
-        badge: badge.trim().length > 0 ? badge : listItemTemplate.badge,
+        name: name.trim().length > 0 ? name : listTemplate.name,
+        badge: badge.trim().length > 0 ? badge : listTemplate.badge,
       },
     });
     updateSelectedList();

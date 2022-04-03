@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { listItemTemplate } from '../../data/listItem';
+import { listTemplate } from '../../data/listItem';
 
 const ListEditorPopup = ({ 
   isOpen, 
@@ -54,7 +54,7 @@ const ListEditorPopup = ({
             name='badge'
             type='text' 
             maxLength={1}
-            placeholder={listItemTemplate.badge}
+            placeholder={listTemplate.badge}
             autoComplete='off'
             className='flex-none border-b-2 border-b-blue-600 rounded-b w-8 h-8 text-lg text-center leading-none appearance-none outline-none active:select-all'
             value={badge}
@@ -64,7 +64,7 @@ const ListEditorPopup = ({
           <input 
             name='name'
             type='text'
-            placeholder={listItemTemplate.name}
+            placeholder={listTemplate.name}
             autoComplete='off'
             className='flex-1 border-b-2 border-b-blue-600 rounded-b ml-2 px-1 w-full appearance-none outline-none'
             value={name}

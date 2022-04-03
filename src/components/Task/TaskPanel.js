@@ -1,4 +1,4 @@
-import { listItemTemplate } from "../../data/listItem";
+import { listTemplate } from "../../data/listItem";
 import TaskCreatorPanel from "./TaskCreatorPanel";
 import TaskPanelList from "./TaskPanelList";
 
@@ -40,13 +40,13 @@ const TaskPanel = ({
           {/* list badge */}
           <div className='grid place-items-center w-10 h-10'>
             <span className='font-mono font-bold text-2xl leading-none'>
-              {selectedList?.badge ?? listItemTemplate.badge}
+              {selectedList?.badge ?? listTemplate.badge}
             </span>
           </div>
           
           {/* list name */}
           <h2 className='pl-1 pr-2 font-medium text-2xl text-left truncate'>
-            {selectedList?.name ?? listItemTemplate.name}
+            {selectedList?.name ?? listTemplate.name}
           </h2>
         </button>
         

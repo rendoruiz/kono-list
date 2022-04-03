@@ -1,4 +1,4 @@
-const listItemTemplate = {
+const listTemplate = {
   id: null,
   name: 'Untitled list',
   badge: '📃',
@@ -9,11 +9,11 @@ const listItemTemplate = {
 
 const initialListItems = [
   {
-    ...listItemTemplate,
+    ...listTemplate,
     id: 0,
     name: "Tasks",
     badge: "⭐",
   },
 ];
 
-export { listItemTemplate, initialListItems }
+export { listTemplate, initialListItems }

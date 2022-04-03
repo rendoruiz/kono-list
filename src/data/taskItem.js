@@ -1,4 +1,4 @@
-const taskItemTemplate = {
+const taskTemplate = {
   id: null,
   list_id: null,
   title: null,
@@ -10,14 +10,14 @@ const taskItemTemplate = {
 
 const initialTaskItems = [
   {
-    ...taskItemTemplate,
+    ...taskTemplate,
     id: 0,
     list_id: 0,
     title: 'List Item 1',
     note: 'List Item 1 note',
   },
   {
-    ...taskItemTemplate,
+    ...taskTemplate,
     id: 1,
     list_id: 0,
     title: 'List Item 2',
@@ -25,7 +25,7 @@ const initialTaskItems = [
     note: 'List Item 2 note',
   },
   {
-    ...taskItemTemplate,
+    ...taskTemplate,
     id: 2,
     list_id: 0,
     title: 'List Item 3',
@@ -33,4 +33,4 @@ const initialTaskItems = [
   },
 ];
 
-export { taskItemTemplate, initialTaskItems }
+export { taskTemplate, initialTaskItems }
