@@ -609,12 +609,13 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem, onUpdat
     (data.id === selectedListItemData?.id ? 'bg-white' : 'bg-white/70')
   }>
     {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(data).replaceAll(',"', ', "')}</p> */}
+
     {/* toggle is_checked */}
     <button
       type='button'
       title={data.is_checked ? 'Mark as incomplete' : 'Mark as complete'}
       onClick={() => onUpdateListItemCheckState(data)}
-      className="group shrink-0 px-3 py-4"
+      className="group shrink-0 px-3 py-4 self-start"
     >
       {/* border */}
       <div className='group grid place-items-center w-[18px] h-[18px] border-2 border-slate-700 rounded-full'>
@@ -631,7 +632,7 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem, onUpdat
       type='button'
       title='Select list item'
       onClick={() => onSelectListItem(data)}
-      className='flex-1 py-2 pr-2 text-sm text-left'
+      className='flex-1 py-3 pr-2 text-sm text-left'
     >
       <p className={data.is_checked ? 'opacity-60 line-through' : ''}>{data?.title}</p>
     </button>
