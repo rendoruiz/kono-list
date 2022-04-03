@@ -34,9 +34,9 @@ const TaskPanel = ({
         {/* edit list */}
         <button 
           type='button'
-          onClick={onToggleListEditorPanel}
-          title='Edit list'
+          title='Click to rename'
           className='grid grid-cols-[auto,1fr] items-center rounded hover:bg-slate-500/40'
+          onClick={onToggleListEditorPanel}
         >
           {/* list icon */}
           <div className='grid place-items-center w-10 h-10'>
@@ -56,9 +56,9 @@ const TaskPanel = ({
           {/* edit list */}
           <button
             type='button'
-            onClick={onToggleListEditorPanel}
             title='Edit list'
             className='grid place-items-center rounded w-8 h-8 bg-white/50 leading-none hover:bg-white/80'
+            onClick={onToggleListEditorPanel}
           >
             <span>✏️</span>
           </button>
@@ -66,9 +66,9 @@ const TaskPanel = ({
           {/* delete list */}
           <button
             type='button'
-            onClick={onDeleteList}
             title='Delete list'
             className='grid place-items-center rounded w-8 h-8 bg-white/50 leading-none hover:bg-white/80'
+            onClick={onDeleteList}
           >
             <span>🗑️</span>
           </button>

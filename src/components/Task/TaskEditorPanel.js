@@ -16,7 +16,7 @@ const TaskEditorPanel = ({
   }
 
   return task && (
-    <div className='grid gap-2 content-start px-2 w-80 max-h-screen bg-white/50 overflow-scroll'>
+    <div className='relative grid grid-rows-[auto,1fr,auto] gap-2 w-80 h-full max-h-screen bg-slate-100 overflow-scroll'>
       {/* debug */}
       {/* <p className='font-mono font-medium text-xs uppercase break-word'>
           {JSON.stringify(selectedList)?.replaceAll(',"', ', "')}
@@ -26,7 +26,7 @@ const TaskEditorPanel = ({
       </p>  */}
 
       {/* mobile navigation & list name / close panel */}
-      <header className='grid grid-cols-[auto,1fr] items-center pt-1 pb-3 sm:grid-cols-1 sm:justify-items-end sm:pb-0'>
+      <header className='sticky top-0 grid grid-cols-[auto,1fr] items-center pt-1 pb-3 px-2 bg-inherit sm:grid-cols-1 sm:justify-items-end sm:pb-0 sm:px-3'>
         <button 
           type='button'
           className='grid place-items-center rounded w-8 h-8 text-lg leading-none hover:bg-slate-500/10 active:bg-slate-500/20'
@@ -40,7 +40,7 @@ const TaskEditorPanel = ({
         </p>
       </header>
 
-      <main>
+      <main className='px-2 sm:px-3'>
         <form 
           onSubmit={handleSubmit}
           className='grid gap-3'
@@ -77,8 +77,18 @@ const TaskEditorPanel = ({
       </main>
 
       {/* date created, delete */}
-      <footer>
+      <footer className='sticky bottom-0 grid grid-cols-[1fr,auto] items-center gap-1 border-t-2 py-[2px] pl-3 pr-1 bg-inherit sm:justify-items-center'>
+        <div className='grid text-sm text-black/70 leading-none'>
+          {task.is_complete ? `Completed ${task.date_updated}` : `Created ${task.date_created}`}
+        </div>
 
+        <button
+          type='button'
+          title='Delete task'
+          className='group grid place-content-center rounded p-1 w-10 h-10  text-xl leading-none hover:bg-slate-500/10 active:bg-slate-500/20'
+        >
+          🗑️
+        </button>
       </footer>
     </div>
   )

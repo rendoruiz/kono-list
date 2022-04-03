@@ -28,6 +28,7 @@ const ListPanel = ({
     <footer className='sticky bottom-0 border-t-2 py-[2px] bg-slate-100'>
       {/* add new list button */}
       <button 
+        title='New list: Add a list'
         onClick={onCreateList}
         className='group w-full px-1 py-[2px]'
       >
