@@ -27,7 +27,7 @@ const TaskEditorPanel = ({
       setTitle(task.title ?? "");
       setNote(task.note ?? "")
     }
-  }, [task])
+  }, [task]);
 
   return task && (
     <div className='relative grid grid-rows-[auto,1fr,auto] gap-2 w-80 h-full max-h-screen bg-slate-100 overflow-scroll'>
