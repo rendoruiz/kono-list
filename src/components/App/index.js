@@ -164,6 +164,7 @@ const App = () => {
     dispatchTaskItems({
       type: 'TASK_UPDATE',
       payload: {
+        ...selectedTask,
         id: task.id,
         is_complete: !task.is_complete,
       }

@@ -22,8 +22,8 @@ const TaskPanelListRow = ({
     <button
       type='button'
       title='Select task'
-      onClick={() => onSelectTask(task)}
       className='flex-1 grid content-center pr-2 text-sm text-left'
+      onClick={() => onSelectTask(task)}
     >
       {/* title */}
       <p className={task.is_complete ? 'opacity-60 line-through' : ''}>
