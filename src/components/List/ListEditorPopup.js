@@ -19,6 +19,14 @@ const ListEditorPopup = ({
     }
   }, [isOpen, list]);
 
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  }
+
+  const handleBadgeChange = (e) => {
+    setBadge(e.target.value);
+  }
+
   const handleSubmit = (event) => {
     onUpdateList({
       name: name.trim(),
@@ -58,7 +66,7 @@ const ListEditorPopup = ({
             autoComplete='off'
             className='flex-none border-b-2 border-b-blue-600 rounded-b w-8 h-8 text-lg text-center leading-none appearance-none outline-none active:select-all'
             value={badge}
-            onChange={(e) => setBadge(e.target.value)}
+            onChange={handleBadgeChange}
           />
           
           <input 
@@ -68,7 +76,7 @@ const ListEditorPopup = ({
             autoComplete='off'
             className='flex-1 border-b-2 border-b-blue-600 rounded-b ml-2 px-1 w-full appearance-none outline-none'
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={handleNameChange}
           />
         </div>
         <div className='grid grid-flow-col items-center justify-end gap-1 mt-4 text-sm'>
