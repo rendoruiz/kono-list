@@ -1,7 +1,7 @@
 import * as React from 'react';
-import ResponsiveTextArea from '../ResponsiveTextArea';
 
 import TaskCompleteToggleButton from "./TaskCompleteToggleButton";
+import ResponsiveTextArea from '../ResponsiveTextArea';
 
 const TaskEditorPanel = ({ 
   task, 
