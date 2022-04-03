@@ -45,8 +45,8 @@ const App = () => {
 
   // list - handlers
   // set selected list, reset selected task, close task editor panel
-  const handleSelectList = (listData) => {
-    setSelectedList(listData);
+  const handleSelectList = (list) => {
+    setSelectedList(list);
     setSelectedTask(null);
     setIsTaskEditorPanelOpen(false);
   }
@@ -148,12 +148,12 @@ const App = () => {
     event.preventDefault();
   }
   // toggle is_complete boolean value of a task
-  const handleToggleTaskCompleteState = (listItemData) => {
+  const handleToggleTaskCompleteState = (task) => {
     dispatchTaskItems({
       type: 'TASK_UPDATE',
       payload: {
-        id: listItemData.id,
-        is_complete: !listItemData.is_complete,
+        id: task.id,
+        is_complete: !task.is_complete,
       }
     });
   }
