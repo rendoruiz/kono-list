@@ -72,14 +72,14 @@ const App = () => {
     handleToggleListEditorPanel();
     event.preventDefault();
   }
-  // update selected list with given name and badge, update selected list, close list editor panel
-  const handleUpdateList = ({ name, badge }) => {
+  // update selected list with given name and icon, update selected list, close list editor panel
+  const handleUpdateList = ({ name, icon }) => {
     dispatchListItems({
       type: 'LIST_UPDATE',
       payload: {
         ...selectedList,
         name: name.trim().length > 0 ? name.trim() : listTemplate.name,
-        badge: badge,
+        icon: icon,
       },
     });
     updateSelectedList();

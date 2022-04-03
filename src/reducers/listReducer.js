@@ -23,7 +23,7 @@ const listReducer = (state, action) => {
             return {
               ...list,
               name: action.payload.name ?? list.name,
-              badge: action.payload.badge ?? list.badge,
+              icon: action.payload.icon ?? list.icon,
               is_completed_hidden: action.payload.is_completed_hidden ?? list.is_completed_hidden,
               date_updated: Date.now(),
             }

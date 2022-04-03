@@ -1,7 +1,7 @@
 const listTemplate = {
   id: null,
   name: 'Untitled list',
-  badge: '📃',
+  icon: '📃',
   date_created: Date.now(),
   date_updated: null,
   is_completed_hidden: false,
@@ -12,7 +12,7 @@ const initialListItems = [
     ...listTemplate,
     id: 0,
     name: "Tasks",
-    badge: "⭐",
+    icon: "⭐",
     date_updated: Date.now(),
   },
 ];

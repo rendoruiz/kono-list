@@ -38,10 +38,10 @@ const TaskPanel = ({
           title='Edit list'
           className='grid grid-cols-[auto,1fr] items-center rounded hover:bg-slate-500/40'
         >
-          {/* list badge */}
+          {/* list icon */}
           <div className='grid place-items-center w-10 h-10'>
             <span className='font-mono font-bold text-2xl leading-none'>
-              {selectedList?.badge ?? listTemplate.badge}
+              {selectedList?.icon ?? listTemplate.icon}
             </span>
           </div>
           

@@ -12,10 +12,10 @@ const ListPanelRow = ({
         'relative flex items-center rounded w-full group-hover:bg-slate-500/10 ' + 
         (selectedList?.id === list.id ? ' bg-slate-500/20 before:left-0 before:inset-y-3 before:w-1 before:absolute before:bg-blue-600 before:rounded-full' : '')}
       >
-        {/* list badge */}
+        {/* list icon */}
         <div className='flex-none grid place-items-center w-10 h-10'>
           <span className='font-mono text-lg leading-none'>
-            {list.badge}
+            {list.icon}
           </span>
         </div>
         
