@@ -14,8 +14,8 @@ const ListEditorPopup = ({
   // make sure the form fields are up to date whenever the editor is opened
   React.useEffect(() => {
     if (isOpen && list) {
-      setName(list.name);
-      setBadge(list.badge);
+      setName(list.name ?? "");
+      setBadge(list.badge ?? "");
     }
   }, [isOpen, list]);
 
@@ -59,7 +59,7 @@ const ListEditorPopup = ({
             maxLength={1}
             placeholder={listTemplate.badge}
             autoComplete='off'
-            className='flex-none border-b-2 border-b-blue-600 rounded-b w-8 h-8 text-lg text-center leading-none appearance-none outline-none active:select-all'
+            className='flex-none border-b-2 border-b-blue-600 rounded-b w-8 h-8 text-lg text-center leading-none appearance-none outline-none placeholder:opacity-30 active:select-all'
             value={badge}
             onChange={handleBadgeChange}
           />
@@ -75,12 +75,13 @@ const ListEditorPopup = ({
           />
         </div>
         <div className='grid grid-flow-col items-center justify-end gap-1 mt-4 text-sm'>
-          <input 
+          <button 
             type='submit' 
-            value={!list.date_updated ? 'Create List' : 'Save'} 
             className='rounded px-2 py-1 font-medium text-blue-600 uppercase cursor-pointer hover:bg-black/10'
             disabled={name?.trim().length < 1}
-          />
+          >
+            {!list.date_updated ? 'Create List' : 'Save'} 
+          </button>
           <button 
             type='button'
             onClick={onCancelEdit}

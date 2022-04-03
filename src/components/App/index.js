@@ -78,8 +78,8 @@ const App = () => {
       type: 'LIST_UPDATE',
       payload: {
         ...selectedList,
-        name: name.trim().length > 0 ? name : listTemplate.name,
-        badge: badge.trim().length > 0 ? badge : listTemplate.badge,
+        name: name.trim().length > 0 ? name.trim() : listTemplate.name,
+        badge: badge,
       },
     });
     updateSelectedList();
