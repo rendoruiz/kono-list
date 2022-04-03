@@ -2,7 +2,12 @@ import * as React from 'react';
 
 import { listItemTemplate } from '../../data/listItem';
 
-const ListEditorPopup = ({ isOpen, list, onUpdateList, onCancelCreate }) => {
+const ListEditorPopup = ({ 
+  isOpen, 
+  list, 
+  onUpdateList, 
+  onCancelCreateList 
+}) => {
   const [name, setName] = React.useState(list.name);
   const [badge, setBadge] = React.useState(list.badge);
 
@@ -75,7 +80,7 @@ const ListEditorPopup = ({ isOpen, list, onUpdateList, onCancelCreate }) => {
           />
           <button 
             type='button'
-            onClick={onCancelCreate}
+            onClick={onCancelCreateList}
             className='-order-1 rounded px-2 py-1 font-medium uppercase hover:bg-black/10'
           >
             Cancel

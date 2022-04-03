@@ -175,7 +175,7 @@ const App = () => {
         isOpen={isListEditorPanelOpen}
         list={selectedList}
         onUpdateList={handleUpdateList}
-        onCancelCreate={handleCancelCreateList}
+        onCancelCreateList={handleCancelCreateList}
       />
 
       {/* task middle panel */}
