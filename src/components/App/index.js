@@ -1,52 +1,13 @@
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import useLocalState from '../../hooks/useLocalState';
-import listItemReducer from '../../reducers/listItemReducer';
-import { listItemTemplate, initialListItems } from '../List/data';
-import ListEditorPopup from '../List/ListEditorPopup';
 import ListPanel from '../List/ListPanel';
+import ListEditorPopup from '../List/ListEditorPopup';
+import useLocalState from '../../hooks/useLocalState';
+import { listItemTemplate, initialListItems } from '../../data/listItem';
+import { taskItemTemplate, initialTaskItems  } from '../../data/taskItem';
+import listItemReducer from '../../reducers/listItemReducer';
 
-
-const defaultListItemRow = {
-  id: null,
-  list_id: null,
-  is_checked: false,
-  date_created: Date.now(),
-  date_updated: null,
-  title: null,
-  note: null,
-}
-
-const initialListItemRows = [
-  {
-    id: 0,
-    list_id: 0,
-    is_checked: false,
-    date_created: Date.now(),
-    date_updated: null,
-    title: 'List Item 1',
-    note: 'List Item 1 note',
-  },
-  {
-    id: 1,
-    list_id: 0,
-    is_checked: true,
-    date_created: Date.now(),
-    date_updated: null,
-    title: 'List Item 2',
-    note: 'List Item 2 note',
-  },
-  {
-    id: 2,
-    list_id: 0,
-    is_checked: false,
-    date_created: Date.now(),
-    date_updated: null,
-    title: 'List Item 3',
-    note: 'List Item 3 note',
-  },
-];
 
 const listItemRowsReducer = (state, action) => {
   let newState;
@@ -54,7 +15,7 @@ const listItemRowsReducer = (state, action) => {
   switch(action.type) {
     case 'LIST_ITEM_CREATE':
       const newListItem = {
-        ...defaultListItemRow,
+        ...taskItemTemplate,
         id: action.payload.id,
         list_id: action.payload.list_id,
         title: action.payload.title,
@@ -205,13 +166,13 @@ const App = () => {
   const [listItemRows, dispatchListItemRows] = React.useReducer(
     listItemRowsReducer,
     {
-      data: JSON.parse(localStorage.getItem('list_items')) ?? initialListItemRows,
+      data: JSON.parse(localStorage.getItem('list_items')) ?? initialTaskItems,
       localKey: 'list_items',
     }
   );
 
   // list item - states
-  const [selectedListItemData, setSelectedListItemData] = useLocalState('selected_list_item', initialListItemRows[0]);
+  const [selectedListItemData, setSelectedListItemData] = useLocalState('selected_list_item', initialTaskItems[0]);
   
   // list item - handlers
   const handleSelectListItem = (listItemData) => {

@@ -1,4 +1,4 @@
-import { listItemTemplate } from "../components/List/data";
+import { listItemTemplate } from "../data/listItem";
 
 const listItemReducer = (state, action) => {
   let newState;

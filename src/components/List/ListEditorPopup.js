@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { listItemTemplate } from './data';
+import { listItemTemplate } from '../../data/listItem';
 
 const ListEditorPopup = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
   const [name, setName] = React.useState(listData.name);
