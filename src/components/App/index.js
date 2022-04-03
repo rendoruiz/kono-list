@@ -1,17 +1,7 @@
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-const useLocalState = (key, initialState) => {
-  const [value, setValue] = React.useState(
-    JSON.parse(localStorage.getItem(key)) || initialState
-  );
-
-  React.useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
-  }, [key, value]);
-
-  return [value, setValue];
-}
+import useLocalState from '../../hooks/useLocalState';
 
 const initialListRows = [
   {
