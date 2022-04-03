@@ -192,13 +192,13 @@ const App = () => {
   }
 
   return (
-    <div className='grid grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
+    <div className='grid sm:grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
       {/* list left panel */}
       <ListPanel
         isOpen={isListPanelOpen} 
         listItems={listItems.data}
         selectedList={selectedList}
-        onToggleView={handleToggleListPanel} 
+        onTogglePanel={handleToggleListPanel} 
         onSelectList={handleSelectList}
         onCreateList={handleCreateList}
       />
@@ -220,6 +220,7 @@ const App = () => {
         onCreateTask={handleCreateTask}
         onToggleTaskCompleteState={handleToggleTaskCompleteState}
         onDeleteList={handleDeleteList}
+        onToggleListPanel={handleToggleListPanel}
         onToggleListEditorPanel={handleToggleListEditorPanel}
         onToggleListHideCompletedState={handleToggleListHideCompletedState}
       />

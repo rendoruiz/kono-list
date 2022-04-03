@@ -10,6 +10,7 @@ const TaskPanel = ({
   onCreateTask, 
   onToggleTaskCompleteState, 
   onDeleteList, 
+  onToggleListPanel,
   onToggleListEditorPanel, 
   onToggleListHideCompletedState 
 }) => (
@@ -30,6 +31,15 @@ const TaskPanel = ({
 
     {/* selected list */}
     <header className='-order-1 sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
+      
+      <button
+        onClick={onToggleListPanel}
+      >
+        toggle
+      </button>
+
+
+
       {/* edit list */}
       <button 
         type='button'
