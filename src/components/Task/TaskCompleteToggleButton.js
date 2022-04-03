@@ -11,12 +11,15 @@ const TaskCompleteToggleButton = ({
     {...props}
   >
     {/* border */}
-    <div className='group grid place-items-center w-[18px] h-[18px] border-2 border-slate-700 rounded-full'>
+    <div className={
+      'group grid place-items-center border-2 rounded-full w-[18px] h-[18px] transition-colors ' +
+      (task.is_complete ? 'border-blue-600' : 'border-slate-700')
+    }>
       {/* complete mark */}
       {!props.disabled && (
         <div className={
-          'w-2 h-2 bg-slate-700/80 rounded-full transition-all group-hover:opacity-100 ' +
-          (task.is_complete ? 'opacity-100 group-active:scale-50' : 'opacity-0 group-active:scale-150')
+          'rounded-full w-1 h-1 transition-all group-hover:opacity-100 ' +
+          (task.is_complete ? 'bg-blue-600/80 opacity-100 scale-[1.75] group-active:scale-110' : 'bg-slate-700/80 opacity-0 scale-150 group-active:scale-110')
         } />
       )}
     </div>
