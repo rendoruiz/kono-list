@@ -9,6 +9,7 @@ import taskItemReducer from '../../reducers/taskItemReducer';
 import { listItemTemplate, initialListItems } from '../../data/listItem';
 import { initialTaskItems  } from '../../data/taskItem';
 import TaskPanel from '../Task/TaskPanel';
+import TaskEditorPanel from '../Task/TaskEditorPanel';
 
 const App = () => {
   // view toggle states
@@ -199,23 +200,13 @@ const App = () => {
       />
 
       {/* list item editor view */}
-      <ListItemEditorView
+      <TaskEditorPanel
         isOpen={isListItemEditorViewOpen}
         listItemData={selectedListItemData}
         onToggleView={handleToggleListItemEditorView}
       />
     </div>
   );
-}
-
-
-
-const ListItemEditorView = ({ listItemData, isOpen, onToggleView }) => {
-  return isOpen && (
-    <div className='w-80 max-h-screen bg-green-300/30'>
-      <p className='font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(listItemData)?.replaceAll(',"', ', "')}</p>
-    </div>
-  )
 }
 
 export default App;
