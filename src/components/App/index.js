@@ -228,7 +228,7 @@ const App = () => {
         task={selectedTask}
         selectedList={selectedList}
         onClosePanel={handleCloseTaskEditorPanel}
-        onUpdateTask={null}
+        onUpdateTask={handleUpdateTask}
         onDeleteTask={handleDeleteTask}
         onToggleTaskCompleteState={handleToggleTaskCompleteState}
       />

@@ -2,18 +2,18 @@ import * as React from 'react';
 
 const ResponsiveTextArea = ({ 
   value,
+  onChange,
   onEnter,
   ...props 
 }) => {
   const ref = React.useRef(null);
-  const [text, setText] = React.useState("");
 
   React.useEffect(() => {
-    setText(value ?? "");
+    onChange(value ?? "");
   }, [value])
   
   const handleChange = (e) => {
-    setText(e.target.value);
+    onChange(e.target.value);
     ref.current.style.height = 'auto';
     ref.current.style.height = ref.current.scrollHeight + 'px';
   }
@@ -30,7 +30,7 @@ const ResponsiveTextArea = ({
       {...props}
       rows={1}
       ref={ref}
-      value={text}
+      value={value}
       onChange={handleChange}
       onKeyDown={onEnter && handleEnterKeyPress}
     />

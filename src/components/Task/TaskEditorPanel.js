@@ -11,11 +11,23 @@ const TaskEditorPanel = ({
   onDeleteTask,
   onToggleTaskCompleteState
 }) => {
-  const handleSubmit = (e) => {
-    console.log("Task changed!");
+  const [title, setTitle] = React.useState("");
+  const [note, setNote] = React.useState("");
 
-    e?.preventDefault();
+  const handleSubmit = (e) => {
+    onUpdateTask({
+      title: title,
+      note: note,
+    });
+    e.preventDefault();
   }
+
+  React.useEffect(() => {
+    if (task) {
+      setTitle(task.title ?? "");
+      setNote(task.note ?? "")
+    }
+  }, [task])
 
   return task && (
     <div className='relative grid grid-rows-[auto,1fr,auto] gap-2 w-80 h-full max-h-screen bg-slate-100 overflow-scroll'>
@@ -53,6 +65,7 @@ const TaskEditorPanel = ({
               task={task}
               onToggle={() => onToggleTaskCompleteState(task)}
             />
+
             <ResponsiveTextArea
               name='name'
               onBlur={handleSubmit}
@@ -60,8 +73,10 @@ const TaskEditorPanel = ({
                 'py-2 pr-3 bg-transparent font-medium text-lg leading-snug resize-none outline-none appearance-none ' +
                 (task.is_complete ? 'line-through focus:no-underline' : '')
               }
-              value={task.title}
+              value={title}
+              onChange={setTitle}
               onEnter={handleSubmit}
+
             />
           </div>
 
@@ -72,7 +87,8 @@ const TaskEditorPanel = ({
               placeholder='Add note'
               onBlur={handleSubmit}
               className='p-3 pb-8 bg-transparent text-sm resize-none outline-none appearance-none'
-              value={task.note}
+              value={note}
+              onChange={setNote}
             />
           </div>
         </form>
