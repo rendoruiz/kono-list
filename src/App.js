@@ -238,7 +238,7 @@ const App = () => {
     handleToggleListEditorView();
   }
   const handleDeleteList = (event) => {
-    if (window.confirm('Are you sure you want to delete this list?')) {
+    if (window.confirm(`Are you sure you want to delete this list: "${selectedListData.name}"?`)) {
       dispatchListRows({
         type: 'LIST_DELETE',
         payload: { id: selectedListData.id }
