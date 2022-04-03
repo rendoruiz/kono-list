@@ -206,6 +206,7 @@ const App = () => {
       {/* task editor right panel */}
       <TaskEditorPanel
         task={selectedTask}
+        selectedList={selectedList}
         onClosePanel={handleCloseTaskEditorPanel}
         onToggleTaskCompleteState={handleToggleTaskCompleteState}
       />
