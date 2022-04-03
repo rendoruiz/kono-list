@@ -19,13 +19,8 @@ const ListEditorPopup = ({
     }
   }, [isOpen, list]);
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  }
-
-  const handleBadgeChange = (e) => {
-    setBadge(e.target.value);
-  }
+  const handleNameChange = (e) => setName(e.target.value);
+  const handleBadgeChange = (e) => setBadge(e.target.value);
 
   const handleSubmit = (event) => {
     onUpdateList({
