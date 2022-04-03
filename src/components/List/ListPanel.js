@@ -1,4 +1,4 @@
-import ListPanelItem from "./ListPanelItem";
+import ListPanelRow from "./ListPanelRow";
 
 const ListPanel = ({ 
   isOpen, 
@@ -10,9 +10,10 @@ const ListPanel = ({
 }) => (
   <div className='relative grid grid-rows-[auto,1fr,auto] w-80 h-full max-h-screen overflow-scroll'>
     <main>
+      {/* list items */}
       <ul className='grid py-1'>
         {listItems.map((list) => (
-          <ListPanelItem
+          <ListPanelRow
             key={list.id}
             list={list}
             selectedList={selectedList}
@@ -25,6 +26,7 @@ const ListPanel = ({
     <header className='-order-1 sticky top-0 border-b-2 py-3 px-5 bg-slate-100'>Local Data</header>
 
     <footer className='sticky bottom-0 border-t-2 py-[2px] bg-slate-100'>
+      {/* add new list button */}
       <button 
         onClick={onCreateList}
         className='group w-full px-1 py-[2px]'
