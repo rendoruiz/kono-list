@@ -13,68 +13,66 @@ const TaskPanel = ({
   onToggleListEditorPanel, 
   onToggleListHideCompletedState 
 }) => (
-  <div className='grid pt-2 max-h-screen'>
-    <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-xl px-10 overflow-scroll bg-blue-200'>
-      <TaskPanelList
-        taskItems={taskItems}
-        selectedTask={selectedTask}
-        selectedList={selectedList}
-        onSelectTask={onSelectTask}
-        onToggleTaskCompleteState={onToggleTaskCompleteState}
-        onToggleListHideCompletedState={onToggleListHideCompletedState}
-      />
-      
-      <TaskCreatorPanel
-        selectedList={selectedList}
-        onCreateTask={onCreateTask}
-      />
+  <div className='relative grid grid-rows-[auto,1fr,auto] px-10 max-h-screen bg-blue-200 overflow-scroll sm:rounded-tl-xl'>
+    <TaskPanelList
+      taskItems={taskItems}
+      selectedTask={selectedTask}
+      selectedList={selectedList}
+      onSelectTask={onSelectTask}
+      onToggleTaskCompleteState={onToggleTaskCompleteState}
+      onToggleListHideCompletedState={onToggleListHideCompletedState}
+    />
+    
+    <TaskCreatorPanel
+      selectedList={selectedList}
+      onCreateTask={onCreateTask}
+    />
 
-      {/* selected list */}
-      <header className='-order-1 sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
+    {/* selected list */}
+    <header className='-order-1 sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
+      {/* edit list */}
+      <button 
+        type='button'
+        title='Click to rename'
+        className='grid grid-cols-[auto,1fr] items-center rounded hover:bg-slate-500/40'
+        onClick={onToggleListEditorPanel}
+      >
+        {/* list icon */}
+        <div className='grid place-items-center w-10 h-10'>
+          <span className='font-mono font-bold text-2xl leading-none'>
+            {selectedList?.icon ?? listTemplate.icon}
+          </span>
+        </div>
+        
+        {/* list name */}
+        <h2 className='pl-1 pr-2 font-medium text-2xl text-left truncate'>
+          {selectedList?.name ?? listTemplate.name}
+        </h2>
+      </button>
+      
+      {/* list actions */}
+      <div className='shrink-0 grid grid-flow-col gap-2'>
         {/* edit list */}
-        <button 
+        <button
           type='button'
-          title='Click to rename'
-          className='grid grid-cols-[auto,1fr] items-center rounded hover:bg-slate-500/40'
+          title='Edit list'
+          className='grid place-items-center rounded w-8 h-8 bg-white/50 leading-none hover:bg-white/80'
           onClick={onToggleListEditorPanel}
         >
-          {/* list icon */}
-          <div className='grid place-items-center w-10 h-10'>
-            <span className='font-mono font-bold text-2xl leading-none'>
-              {selectedList?.icon ?? listTemplate.icon}
-            </span>
-          </div>
-          
-          {/* list name */}
-          <h2 className='pl-1 pr-2 font-medium text-2xl text-left truncate'>
-            {selectedList?.name ?? listTemplate.name}
-          </h2>
+          <span>✏️</span>
         </button>
-        
-        {/* list actions */}
-        <div className='shrink-0 grid grid-flow-col gap-2'>
-          {/* edit list */}
-          <button
-            type='button'
-            title='Edit list'
-            className='grid place-items-center rounded w-8 h-8 bg-white/50 leading-none hover:bg-white/80'
-            onClick={onToggleListEditorPanel}
-          >
-            <span>✏️</span>
-          </button>
 
-          {/* delete list */}
-          <button
-            type='button'
-            title='Delete list'
-            className='grid place-items-center rounded w-8 h-8 bg-white/50 leading-none hover:bg-white/80'
-            onClick={onDeleteList}
-          >
-            <span>🗑️</span>
-          </button>
-        </div>
-      </header>
-    </div>
+        {/* delete list */}
+        <button
+          type='button'
+          title='Delete list'
+          className='grid place-items-center rounded w-8 h-8 bg-white/50 leading-none hover:bg-white/80'
+          onClick={onDeleteList}
+        >
+          <span>🗑️</span>
+        </button>
+      </div>
+    </header>
   </div>
 );
  
