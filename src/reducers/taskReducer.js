@@ -3,7 +3,7 @@ import { taskTemplate } from "../data/task";
 const taskReducer = (state, action) => {
   let newState;
 
-  switch(action.type) {
+  switch (action.type) {
     case 'TASK_CREATE':
       const newTask = {
         ...taskTemplate,

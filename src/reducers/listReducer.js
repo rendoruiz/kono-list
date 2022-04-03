@@ -3,7 +3,7 @@ import { listTemplate } from "../data/list";
 const listReducer = (state, action) => {
   let newState;
 
-  switch(action.type) {
+  switch (action.type) {
     case 'LIST_CREATE':
       const newList = {
         ...listTemplate,
