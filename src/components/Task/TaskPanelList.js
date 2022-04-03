@@ -14,8 +14,10 @@ const TaskPanelList = ({
   const [incompleteTasks, setIncompleteTasks] = React.useState(null);
 
   React.useEffect(() => {
-    setCompletedTasks(taskItems.filter((task) => task.is_complete && task.list_id === selectedList.id));
-    setIncompleteTasks(taskItems.filter((task) => !task.is_complete && task.list_id === selectedList.id));
+    if (selectedList && taskItems) {
+      setCompletedTasks(taskItems.filter((task) => task.is_complete && task.list_id === selectedList.id));
+      setIncompleteTasks(taskItems.filter((task) => !task.is_complete && task.list_id === selectedList.id));
+    }
   }, [taskItems, selectedList]);
 
   return (
@@ -62,7 +64,7 @@ const TaskPanelList = ({
           </button>
 
           {/* tasks - completed */}
-          {!selectedList.is_completed_hidden && (
+          {!selectedList?.is_completed_hidden && (
             <ul className='grid gap-[3px]'>
               {completedTasks && completedTasks.map((task) => (
                 <TaskPanelListRow

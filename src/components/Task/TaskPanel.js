@@ -6,11 +6,11 @@ const TaskPanel = ({
   taskItems, 
   selectedTask, 
   selectedList, 
-  onToggleTaskEditorPanel, 
   onSelectTask, 
   onCreateTask, 
   onToggleTaskCompleteState, 
   onDeleteList, 
+  onToggleListEditorPanel, 
   onToggleListHideCompletedState 
 }) => (
   <div className='grid pt-2 max-h-screen'>
@@ -33,7 +33,8 @@ const TaskPanel = ({
       <header className='-order-1 sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
         {/* edit list */}
         <button 
-          onClick={onToggleTaskEditorPanel}
+          type='button'
+          onClick={onToggleListEditorPanel}
           title='Edit list'
           className='grid grid-cols-[auto,1fr] items-center rounded hover:bg-slate-500/40'
         >
@@ -50,16 +51,28 @@ const TaskPanel = ({
           </h2>
         </button>
         
-        {/* delete list */}
-        <button
-          onClick={onDeleteList}
-          title='Delete list'
-          className='shrink-0 grid place-items-center rounded w-8 h-8 bg-white/50 hover:bg-white/80'
-        >
-          <span className='leading-none'>
-            🗑️
-          </span>
-        </button>
+        {/* list actions */}
+        <div className='shrink-0 grid grid-flow-col gap-2'>
+          {/* edit list */}
+          <button
+            type='button'
+            onClick={onToggleListEditorPanel}
+            title='Edit list'
+            className='grid place-items-center rounded w-8 h-8 bg-white/50 leading-none hover:bg-white/80'
+          >
+            <span>✏️</span>
+          </button>
+
+          {/* delete list */}
+          <button
+            type='button'
+            onClick={onDeleteList}
+            title='Delete list'
+            className='grid place-items-center rounded w-8 h-8 bg-white/50 leading-none hover:bg-white/80'
+          >
+            <span>🗑️</span>
+          </button>
+        </div>
       </header>
     </div>
   </div>

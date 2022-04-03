@@ -6,14 +6,14 @@ const ListEditorPopup = ({
   isOpen, 
   list, 
   onUpdateList, 
-  onCancelCreateList 
+  onCancelEdit
 }) => {
-  const [name, setName] = React.useState(list.name);
-  const [badge, setBadge] = React.useState(list.badge);
+  const [name, setName] = React.useState("");
+  const [badge, setBadge] = React.useState("");
 
   // make sure the form fields are up to date whenever the editor is opened
   React.useEffect(() => {
-    if (isOpen) {
+    if (isOpen && list) {
       setName(list.name);
       setBadge(list.badge);
     }
@@ -80,7 +80,7 @@ const ListEditorPopup = ({
           />
           <button 
             type='button'
-            onClick={onCancelCreateList}
+            onClick={onCancelEdit}
             className='-order-1 rounded px-2 py-1 font-medium uppercase hover:bg-black/10'
           >
             Cancel

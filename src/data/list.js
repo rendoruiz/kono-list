@@ -13,6 +13,7 @@ const initialListItems = [
     id: 0,
     name: "Tasks",
     badge: "⭐",
+    date_updated: Date.now(),
   },
 ];
 

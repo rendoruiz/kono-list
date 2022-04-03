@@ -8,11 +8,16 @@ const TaskEditorPanel = ({
 }) => {
   return task && (
     <div className='w-full max-w-xs max-h-screen bg-green-300/30'>
-      {/* mobile navigation & list name / close panel */}
-      <header>
-        <p className='font-mono font-medium text-xs uppercase break-word'>
+      {/* debug */}
+      <p className='font-mono font-medium text-xs uppercase break-word'>
           {JSON.stringify(task)?.replaceAll(',"', ', "')}
-        </p>
+      </p>
+
+      {/* mobile navigation & list name / close panel */}
+      <header className="grid grid-cols-[auto,1fr] items-center sm:grid-cols-1">
+        <button className=" leading-none">
+          <span>⬅️</span>
+        </button>
       </header>
 
       <main className="grid">

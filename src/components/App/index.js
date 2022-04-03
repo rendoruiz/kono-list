@@ -59,13 +59,16 @@ const App = () => {
     setSelectedList({ id: newListId });
     handleToggleListEditorPanel();
   }
-  // delete list templete, assign list before it as selected list, close list editor panel 
-  const handleCancelCreateList = (event) => {
-    dispatchListItems({
-      type: 'LIST_DELETE',
-      payload: { id: selectedList.id }
-    });
-    updateSelectedList(true);
+  // delete list & assign list before it as selected list if its newly created
+  // close list editor panel afterwards
+  const handleListEditorCancelEdit = (event) => {
+    if (!selectedList.date_updated) {
+      dispatchListItems({
+        type: 'LIST_DELETE',
+        payload: { id: selectedList.id }
+      });
+      updateSelectedList(true);
+    }
     handleToggleListEditorPanel();
     event.preventDefault();
   }
@@ -111,13 +114,16 @@ const App = () => {
   }
 
   // list - effects
-  // makes sure the selected list object data is always up to date
+  // makes sure the selected list & task object data is always up to date
   React.useEffect(() => {
-    setSelectedList(listItems.data.find((list) => list.id === selectedList.id));
+    if (selectedList) {
+      setSelectedList(listItems.data.find((list) => list.id === selectedList.id));
+    }
   }, [listItems.data, selectedList]);
-  // makes sure the selected task object data is always up to date
   React.useEffect(() => {
-    setSelectedTask(taskItems.data.find((task) => task.id === selectedTask.id));
+    if (selectedTask) {
+      setSelectedTask(taskItems.data.find((task) => task.id === selectedTask.id));
+    }
   }, [taskItems.data, selectedTask]);
   
   // task - handlers
@@ -173,7 +179,7 @@ const App = () => {
         isOpen={isListEditorPanelOpen}
         list={selectedList}
         onUpdateList={handleUpdateList}
-        onCancelCreateList={handleCancelCreateList}
+        onCancelEdit={handleListEditorCancelEdit}
       />
 
       {/* task middle panel */}
@@ -181,11 +187,11 @@ const App = () => {
         taskItems={taskItems.data}
         selectedTask={selectedTask}
         selectedList={selectedList}
-        onToggleTaskEditorPanel={handleToggleListEditorPanel}
         onSelectTask={handleSelectTask}
         onCreateTask={handleCreateTask}
         onToggleTaskCompleteState={handleToggleTaskCompleteState}
         onDeleteList={handleDeleteList}
+        onToggleListEditorPanel={handleToggleListEditorPanel}
         onToggleListHideCompletedState={handleToggleListHideCompletedState}
       />
 
