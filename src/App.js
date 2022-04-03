@@ -651,9 +651,9 @@ const ListItemViewForm = ({ selectedListData, onCreateListItem }) => {
   const [input, setInput] = React.useState("");
 
   return (
-    <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90 sh'>
+    <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90'>
       <form 
-        className='relative overflow-hidden'
+        className='relative overflow-hidden bg-blue-200'
         onSubmit={onCreateListItem}
         onReset={() => setInput("")}
       >
