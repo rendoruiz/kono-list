@@ -10,8 +10,8 @@ import TaskEditorPanel from '../Task/TaskEditorPanel';
 import useLocalState from '../../hooks/useLocalState';
 import listReducer from '../../reducers/listReducer';
 import taskReducer from '../../reducers/taskReducer';
-import { listTemplate, initialListItems } from '../../data/listItem';
-import { initialTaskItems } from '../../data/taskItem';
+import { listTemplate, initialListItems } from '../../data/list';
+import { initialTaskItems } from '../../data/task';
 
 const App = () => {
   // panel toggle states

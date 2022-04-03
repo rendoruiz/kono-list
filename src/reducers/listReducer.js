@@ -1,4 +1,4 @@
-import { listTemplate } from "../data/listItem";
+import { listTemplate } from "../data/list";
 
 const listReducer = (state, action) => {
   let newState;

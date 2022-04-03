@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { listTemplate } from '../../data/listItem';
+import { listTemplate } from '../../data/list';
 
 const ListEditorPopup = ({ 
   isOpen, 

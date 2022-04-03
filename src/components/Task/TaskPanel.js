@@ -1,4 +1,4 @@
-import { listTemplate } from "../../data/listItem";
+import { listTemplate } from "../../data/list";
 import TaskCreatorPanel from "./TaskCreatorPanel";
 import TaskPanelList from "./TaskPanelList";
 

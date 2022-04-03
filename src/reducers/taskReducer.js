@@ -1,4 +1,4 @@
-import { taskTemplate } from "../data/taskItem";
+import { taskTemplate } from "../data/task";
 
 const taskReducer = (state, action) => {
   let newState;
