@@ -6,12 +6,12 @@ const TaskPanel = ({
   taskItems, 
   selectedTask, 
   selectedList, 
-  onToggleListEditView, 
-  onSelectListItem, 
-  onCreateListItem, 
-  onUpdateListItemCheckState, 
+  onToggleTaskEditorPanel, 
+  onSelectTask, 
+  onCreateTask, 
+  onToggleTaskCompleteState, 
   onDeleteList, 
-  onUpdateListCheckedItemState 
+  onToggleListHideCompletedState 
 }) => (
   <div className='grid pt-2 max-h-screen'>
     <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-xl px-10 overflow-scroll bg-blue-200'>
@@ -19,20 +19,20 @@ const TaskPanel = ({
         taskItems={taskItems}
         selectedTask={selectedTask}
         selectedList={selectedList}
-        onSelectListItem={onSelectListItem}
-        onUpdateListItemCheckState={onUpdateListItemCheckState}
-        onUpdateListCheckedItemState={onUpdateListCheckedItemState}
+        onSelectTask={onSelectTask}
+        onToggleTaskCompleteState={onToggleTaskCompleteState}
+        onToggleListHideCompletedState={onToggleListHideCompletedState}
       />
       
       <TaskCreatorPanel
         selectedList={selectedList}
-        onCreateListItem={onCreateListItem}
+        onCreateTask={onCreateTask}
       />
 
       <header className='-order-1 sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
         {/* edit list */}
         <button 
-          onClick={onToggleListEditView}
+          onClick={onToggleTaskEditorPanel}
           title='Edit list'
           className='grid grid-cols-[auto,1fr] items-center rounded hover:bg-slate-500/40'
         >

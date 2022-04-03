@@ -1,16 +1,19 @@
 import * as React from 'react';
 
-const TaskCreatorPanel = ({ selectedList, onCreateListItem }) => {
+const TaskCreatorPanel = ({ 
+  selectedList, 
+  onCreateTask 
+}) => {
   const [input, setInput] = React.useState("");
 
   return (
     <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90'>
       <form 
         className='relative overflow-hidden bg-blue-200'
-        onSubmit={onCreateListItem}
+        onSubmit={onCreateTask}
         onReset={() => setInput("")}
       >
-        {/* list item - title */}
+        {/* task - title */}
         <input 
           name='title'
           type='text' 
@@ -23,7 +26,7 @@ const TaskCreatorPanel = ({ selectedList, onCreateListItem }) => {
           onChange={(e) => setInput(e.target.value)}
         />
 
-        {/* list item - unchecked state (decorative) */}
+        {/* task - default is_complete state (decorative) */}
         <div className={
           'absolute inset-0 right-auto hidden items-center px-3 pointer-events-none peer-focus:grid ' + 
           (input.length > 0 ? '!grid' : '')
@@ -34,7 +37,7 @@ const TaskCreatorPanel = ({ selectedList, onCreateListItem }) => {
         {/* submit */}
         <button
           type='submit'
-          title={input.trim().length > 0 ? 'Add new list item' : 'Invalid input'}
+          title={input.trim().length > 0 ? 'Add new task' : 'Invalid input'}
           className={
             'absolute inset-0 left-auto hidden px-2 cursor-pointer peer-focus:block ' + 
             (input.trim().length > 0 ? '!block' : '!cursor-not-allowed')

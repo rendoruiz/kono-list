@@ -188,18 +188,18 @@ const App = () => {
         taskItems={taskItems.data}
         selectedTask={selectedTask}
         selectedList={selectedList}
-        onToggleListEditView={handleToggleListEditorPanel}
-        onSelectListItem={handleSelectListItem}
-        onCreateListItem={handleCreateListItem}
-        onUpdateListItemCheckState={handleUpdateListItemCheckState}
+        onToggleTaskEditorPanel={handleToggleListEditorPanel}
+        onSelectTask={handleSelectListItem}
+        onCreateTask={handleCreateListItem}
+        onToggleTaskCompleteState={handleUpdateListItemCheckState}
         onDeleteList={handleDeleteList}
-        onUpdateListCheckedItemState={handleUpdateListCheckedItemState}
+        onToggleListHideCompletedState={handleUpdateListCheckedItemState}
       />
 
       {/* list item editor view */}
       <TaskEditorPanel
         isOpen={isTaskEditorPanelOpen}
-        listItemData={selectedTask}
+        task={selectedTask}
         onToggleView={handleToggleTaskEditorPanel}
       />
     </div>

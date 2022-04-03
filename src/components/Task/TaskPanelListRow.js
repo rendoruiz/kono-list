@@ -1,15 +1,20 @@
-const TaskPanelListRow = ({ data, selectedTask, onSelectListItem, onUpdateListItemCheckState }) => (
+const TaskPanelListRow = ({ 
+  task, 
+  selectedTask, 
+  onSelectTask, 
+  onToggleTaskCompleteState 
+}) => (
   <li className={
     'flex rounded-md cursor-pointer hover:bg-white/90 ' + 
-    (data.id === selectedTask?.id ? 'bg-white' : 'bg-white/70')
+    (task.id === selectedTask?.id ? 'bg-white' : 'bg-white/70')
   }>
-    {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(data).replaceAll(',"', ', "')}</p> */}
+    {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(task).replaceAll(',"', ', "')}</p> */}
 
-    {/* toggle is_complete */}
+    {/* toggle task is_complete */}
     <button
       type='button'
-      title={data.is_complete ? 'Mark as incomplete' : 'Mark as complete'}
-      onClick={() => onUpdateListItemCheckState(data)}
+      title={task.is_complete ? 'Mark as incomplete' : 'Mark as complete'}
+      onClick={() => onToggleTaskCompleteState(task)}
       className="group shrink-0 px-3 py-4 self-start"
     >
       {/* border */}
@@ -17,19 +22,19 @@ const TaskPanelListRow = ({ data, selectedTask, onSelectListItem, onUpdateListIt
         {/* check mark */}
         <div className={
           'w-2 h-2 bg-slate-700/80 rounded-full transition-all group-hover:opacity-100 ' +
-          (data.is_complete ? 'opacity-100 group-active:scale-50' : 'opacity-0 group-active:scale-150')
+          (task.is_complete ? 'opacity-100 group-active:scale-50' : 'opacity-0 group-active:scale-150')
         } />
       </div>
     </button>
 
-    {/* select list item */}
+    {/* select task */}
     <button
       type='button'
-      title='Select list item'
-      onClick={() => onSelectListItem(data)}
+      title='Select task'
+      onClick={() => onSelectTask(task)}
       className='flex-1 py-3 pr-2 text-sm text-left'
     >
-      <p className={data.is_complete ? 'opacity-60 line-through' : ''}>{data?.title}</p>
+      <p className={task.is_complete ? 'opacity-60 line-through' : ''}>{task?.title}</p>
     </button>
   </li>
 );

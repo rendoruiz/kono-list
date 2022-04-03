@@ -6,16 +6,16 @@ const TaskPanelList = ({
   taskItems, 
   selectedTask, 
   selectedList, 
-  onSelectListItem, 
-  onUpdateListItemCheckState, 
-  onUpdateListCheckedItemState 
+  onSelectTask, 
+  onToggleTaskCompleteState, 
+  onToggleListHideCompletedState 
 }) => {
-  const [checkedItems, setCheckedItems] = React.useState(null);
-  const [uncheckedItems, setUncheckedItems] = React.useState(null);
+  const [completedTasks, setCompletedTasks] = React.useState(null);
+  const [incompleteTasks, setIncompleteTasks] = React.useState(null);
 
   React.useEffect(() => {
-    setCheckedItems(taskItems.filter((listItem) => listItem.is_complete && listItem.list_id === selectedList.id));
-    setUncheckedItems(taskItems.filter((listItem) => !listItem.is_complete && listItem.list_id === selectedList.id));
+    setCompletedTasks(taskItems.filter((task) => task.is_complete && task.list_id === selectedList.id));
+    setIncompleteTasks(taskItems.filter((task) => !task.is_complete && task.list_id === selectedList.id));
   }, [taskItems, selectedList]);
 
   return (
@@ -23,26 +23,27 @@ const TaskPanelList = ({
       {/* debug list */}
       {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedList).replaceAll(',"', ', "')}</p> */}
 
-      {/* list item - unchecked */}
+      {/* tasks - incomplete */}
       <ul className='grid gap-[3px]'>
-        {uncheckedItems && uncheckedItems.map((listItem) => (
+        {incompleteTasks && incompleteTasks.map((task) => (
           <TaskPanelListRow
-            key={listItem.id}
-            data={listItem}
+            key={task.id}
+            task={task}
             selectedTask={selectedTask}
-            onSelectListItem={onSelectListItem}
-            onUpdateListItemCheckState={onUpdateListItemCheckState}
+            onSelectTask={onSelectTask}
+            onToggleTaskCompleteState={onToggleTaskCompleteState}
           />
         ))}
       </ul>
 
-      {checkedItems?.length !== 0 && (
+      {/* completed tasks section */}
+      {completedTasks?.length !== 0 && (
         <>
-          {/* checked list item toggle */}
+          {/* is_complete task toggle */}
           <button 
             type='button'
             className='flex items-center rounded my-2 px-2 py-1 bg-white/50 text-sm hover:bg-white/80'
-            onClick={onUpdateListCheckedItemState}
+            onClick={onToggleListHideCompletedState}
           >
             {/* caret */}
             <span className={
@@ -53,19 +54,19 @@ const TaskPanelList = ({
             </span>
             <p className='ml-1 mr-2'>Completed</p>
             {/* completed task count */}
-            <span>{checkedItems?.length}</span>
+            <span>{completedTasks?.length}</span>
           </button>
 
-          {/* list item - checked */}
+          {/* tasks - completed */}
           {!selectedList.is_completed_hidden && (
             <ul className='grid gap-[3px]'>
-              {checkedItems && checkedItems.map((listItem) => (
+              {completedTasks && completedTasks.map((task) => (
                 <TaskPanelListRow
-                  key={listItem.id}
-                  data={listItem}
+                  key={task.id}
+                  task={task}
                   selectedTask={selectedTask}
-                  onSelectListItem={onSelectListItem}
-                  onUpdateListItemCheckState={onUpdateListItemCheckState}
+                  onSelectTask={onSelectTask}
+                  onToggleTaskCompleteState={onToggleTaskCompleteState}
                 />
               ))}
             </ul>
