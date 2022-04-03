@@ -73,6 +73,7 @@ const App = () => {
     event.preventDefault();
   }
   // update selected list with given name and icon, update selected list, close list editor panel
+  // close task editor if list is newly created
   const handleUpdateList = ({ name, icon }) => {
     dispatchListItems({
       type: 'LIST_UPDATE',
@@ -84,6 +85,9 @@ const App = () => {
     });
     updateSelectedList();
     handleToggleListEditorPanel();
+    if (!selectedList.date_updated) {
+      setSelectedTask(null);
+    }
   }
   // delete selected list and its tasks with prompt, assign list before is as selected list
   const handleDeleteList = (event) => {
