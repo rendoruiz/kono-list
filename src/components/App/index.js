@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
+
 // components
 import ListPanel from '../List/ListPanel';
 import ListEditorPopup from '../List/ListEditorPopup';
@@ -10,7 +11,7 @@ import useLocalState from '../../hooks/useLocalState';
 import listItemReducer from '../../reducers/listItemReducer';
 import taskItemReducer from '../../reducers/taskItemReducer';
 import { listTemplate, initialListItems } from '../../data/listItem';
-import { initialTaskItems  } from '../../data/taskItem';
+import { initialTaskItems } from '../../data/taskItem';
 
 const App = () => {
   // panel toggle states
