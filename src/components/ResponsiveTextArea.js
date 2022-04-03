@@ -7,17 +7,12 @@ const ResponsiveTextArea = ({
   ...props 
 }) => {
   const ref = React.useRef(null);
-
-  React.useEffect(() => {
-    onChange(value ?? "");
-  }, [value])
   
   const handleChange = (e) => {
     onChange(e.target.value);
     ref.current.style.height = 'auto';
     ref.current.style.height = ref.current.scrollHeight + 'px';
   }
-
   const handleEnterKeyPress = (e) => {
     if (e.which === 13) {
       e.preventDefault();
