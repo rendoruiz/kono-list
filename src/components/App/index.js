@@ -2,72 +2,11 @@ import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import useLocalState from '../../hooks/useLocalState';
+import listItemReducer from '../../reducers/listItemReducer';
+import { listItemTemplate, initialListItems } from '../List/data';
+import ListEditorPopup from '../List/ListEditorPopup';
+import ListPanel from '../List/ListPanel';
 
-const initialListRows = [
-  {
-    id: 0,
-    name: "Tasks",
-    date_created: Date.now(),
-    date_updated: null,
-    badge: "⭐",
-    is_checked_hidden: false,
-  },
-];
-
-const defaultListRow = {
-  id: null,
-  name: 'Untitled list',
-  badge: '📃',
-  date_created: Date.now(),
-  date_updated: null,
-}
-
-const listRowsReducer = (state, action) => {
-  let newState;
-
-  switch(action.type) {
-    case 'LIST_CREATE':
-      const newList = {
-        ...defaultListRow,
-        id: action.payload.id,
-      };
-      newState = { 
-        ...state,
-        data: [...state.data, newList],
-      };
-      break;
-    case 'LIST_UPDATE':
-      newState = {
-        ...state,
-        data: state.data.map((list) => {
-          if (list.id === action.payload.id) {
-            return {
-              ...list,
-              name: action.payload.name ?? list.name,
-              badge: action.payload.badge ?? list.badge,
-              is_checked_hidden: action.payload.is_checked_hidden ?? list.is_checked_hidden,
-              date_updated: Date.now(),
-            }
-          }
-          return list;
-        }),
-    }
-      break;
-    case 'LIST_DELETE':
-      newState = {
-        ...state,
-        data: state.data.filter(
-          (list) => list.id !== action.payload.id
-        ),
-      };
-      break;
-    default:
-      throw new Error();
-  }
-
-  localStorage.setItem(state.localKey, JSON.stringify(newState.data));
-  return newState;
-}
 
 const defaultListItemRow = {
   id: null,
@@ -172,15 +111,15 @@ const App = () => {
   
   // list - reducers
   const [listRows, dispatchListRows] = React.useReducer(
-    listRowsReducer,
+    listItemReducer,
     { 
-      data: JSON.parse(localStorage.getItem('lists')) ?? initialListRows, 
-      localKey: 'lists',
+      data: JSON.parse(localStorage.getItem('list_items')) ?? initialListItems, 
+      localKey: 'list_items',
     }
   );
 
   // list - states
-  const [selectedListData, setSelectedListData] = useLocalState('selected_list', initialListRows[0]);
+  const [selectedListData, setSelectedListData] = useLocalState('selected_list', initialListItems[0]);
 
   // list - handlers
   const handleSelectList = (listData) => {
@@ -218,8 +157,8 @@ const App = () => {
       type: 'LIST_UPDATE',
       payload: {
         ...selectedListData,
-        name: name.trim().length > 0 ? name : defaultListRow.name,
-        badge: badge.trim().length > 0 ? badge : defaultListRow.badge,
+        name: name.trim().length > 0 ? name : listItemTemplate.name,
+        badge: badge.trim().length > 0 ? badge : listItemTemplate.badge,
       },
     });
 
@@ -317,7 +256,7 @@ const App = () => {
   return (
     <div className='grid grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
       {/* list view */}
-      <ListView 
+      <ListPanel
         isOpen={isListViewOpen} 
         listRowsData={listRows.data}
         selectedListData={selectedListData}
@@ -327,7 +266,7 @@ const App = () => {
       />
 
       {/* list row editor popup */}
-      <ListEditorView
+      <ListEditorPopup
         isOpen={isListEditorViewOpen}
         listData={selectedListData}
         onUpdateList={handleUpdateList}
@@ -358,143 +297,6 @@ const App = () => {
 }
 
 
-const ListView = ({ isOpen, listRowsData, selectedListData, onToggleView, onSelectList, onCreateList }) => (
-  <div className='relative grid grid-rows-[auto,1fr,auto] w-80 h-full max-h-screen overflow-scroll'>
-    <main>
-      <ul className='grid py-1'>
-        {listRowsData.map((list) => (
-          <ListViewRow
-            key={list.id}
-            data={list}
-            selectedListData={selectedListData}
-            onSelectList={onSelectList}
-          />
-        ))}
-      </ul>
-    </main>
-
-    <header className='-order-1 sticky top-0 border-b-2 py-3 px-5 bg-slate-100'>Local Data</header>
-
-    <footer className='sticky bottom-0 border-t-2 py-[2px] bg-slate-100'>
-      <button 
-        onClick={onCreateList}
-        className='group w-full px-1 py-[2px]'
-      >
-        <div className='flex items-center rounded w-full group-hover:bg-slate-500/10'>
-          <div className='flex-none grid place-items-center w-10 h-10'>
-            <span className='pb-[2px] font-mono text-2xl leading-none'>+</span>
-          </div>
-          <p className='flex-1 text-left'>New list</p>
-        </div>
-      </button>
-    </footer>
-  </div>
-);
-
-const ListViewRow = ({ data, selectedListData, onSelectList }) => (
-  <li>
-    <button 
-      className='group w-full px-2 py-[2px]'
-      onClick={() => onSelectList(data)}
-    >
-      <div className={
-        'relative flex items-center rounded w-full group-hover:bg-slate-500/10 ' + 
-        (selectedListData?.id === data.id ? ' bg-slate-500/20 before:left-0 before:inset-y-3 before:w-1 before:absolute before:bg-blue-600 before:rounded-full' : '')}
-      >
-        <div className='flex-none grid place-items-center w-10 h-10'>
-          <span className='font-mono text-lg leading-none'>{data.badge}</span>
-        </div>
-        <p className='flex-1 text-left truncate w-1'>{data.name}</p>
-      </div>
-    </button>
-  </li>
-);
-
-const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
-  const [name, setName] = React.useState(listData.name);
-  const [badge, setBadge] = React.useState(listData.badge);
-
-  // make sure the form fields are up to date whenever the editor is opened
-  React.useEffect(() => {
-    if (isOpen) {
-      setName(listData.name);
-      setBadge(listData.badge);
-    }
-  }, [isOpen, listData]);
-
-  const handleSubmit = (event) => {
-    onUpdateList({
-      name: name.trim(),
-      badge: badge.trim(),
-    });
-    if (event) {
-      event.target.reset();
-      event.preventDefault();
-    } else {
-      handleReset();
-    }
-  }
-
-  const handleReset = () => {
-    setName("");
-    setBadge("");
-  }
-
-  return isOpen && (
-    <div
-      className='fixed inset-0 z-50 grid place-items-center bg-black/40'
-      onClick={() => handleSubmit()}
-    >
-      <form 
-        className=' rounded px-4 py-3 bg-white'
-        onClick={(e) => e.stopPropagation()}
-        onSubmit={handleSubmit}
-        onReset={handleReset}
-      >
-        <h2 className='font-medium text-lg'>{!listData.date_updated ? 'New' : 'Rename'} list</h2>
-        <div className='flex mt-3 w-full'>
-          <input 
-            name='badge'
-            type='text' 
-            maxLength={1}
-            placeholder={defaultListRow.badge}
-            autoComplete='off'
-            className='flex-none border-b-2 border-b-blue-600 rounded-b w-8 h-8 text-lg text-center leading-none appearance-none outline-none active:select-all'
-            value={badge}
-            onChange={(e) => setBadge(e.target.value)}
-          />
-          
-          <input 
-            name='name'
-            type='text'
-            placeholder={defaultListRow.name}
-            autoComplete='off'
-            className='flex-1 border-b-2 border-b-blue-600 rounded-b ml-2 px-1 w-full appearance-none outline-none'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className='grid grid-flow-col items-center justify-end gap-1 mt-4 text-sm'>
-          <input 
-            type='submit' 
-            value={!listData.date_updated ? 'Create List' : 'Save'} 
-            className='rounded px-2 py-1 font-medium text-blue-600 uppercase cursor-pointer hover:bg-black/10'
-            disabled={name?.trim().length < 1}
-          />
-          <button 
-            type='button'
-            onClick={onCancelCreate}
-            className='-order-1 rounded px-2 py-1 font-medium uppercase hover:bg-black/10'
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-  )
-}
-
-
 const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onCreateListItem, onUpdateListItemCheckState, onDeleteList, onUpdateListCheckedItemState }) => (
   <div className='grid pt-2 max-h-screen'>
     <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-xl px-10 overflow-scroll bg-blue-200'>
@@ -522,12 +324,12 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
           {/* list badge */}
           <div className='grid place-items-center w-10 h-10'>
             <span className='font-mono font-bold text-2xl leading-none'>
-              {selectedListData?.badge ?? defaultListRow.badge}
+              {selectedListData?.badge ?? listItemTemplate.badge}
             </span>
           </div>
           {/* list name */}
           <h2 className='pl-1 pr-2 font-medium text-2xl text-left truncate'>
-            {selectedListData?.name ?? defaultListRow.name}
+            {selectedListData?.name ?? listItemTemplate.name}
           </h2>
         </button>
         
