@@ -7,6 +7,11 @@ const ResponsiveTextArea = ({
   ...props 
 }) => {
   const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    ref.current.style.height = 'auto';
+    ref.current.style.height = ref.current.scrollHeight + 'px';
+  }, [value]);
   
   const handleChange = (e) => {
     onChange(e.target.value);
