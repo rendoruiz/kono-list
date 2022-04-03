@@ -45,6 +45,15 @@ const taskReducer = (state, action) => {
       };
       break;
 
+    case 'LIST_TASKS_DELETE':
+      newState = {
+        ...state,
+        data: state.data.filter(
+          (task) => task.list_id !== action.payload.list_id
+        ),
+      }
+      break;
+
     default:
       throw new Error();
   }

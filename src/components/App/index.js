@@ -85,12 +85,16 @@ const App = () => {
     updateSelectedList();
     handleToggleListEditorPanel();
   }
-  // delete selected list with prompt, assign list before is as selected list
+  // delete selected list and its tasks with prompt, assign list before is as selected list
   const handleDeleteList = (event) => {
     if (window.confirm(`Are you sure you want to delete this list: "${selectedList.name}"?`)) {
       dispatchListItems({
         type: 'LIST_DELETE',
-        payload: { id: selectedList.id }
+        payload: { id: selectedList.id },
+      });
+      dispatchTaskItems({
+        type: 'LIST_TASKS_DELETE',
+        payload: { list_id: selectedList.id },
       });
       updateSelectedList(true);
     }
