@@ -44,35 +44,33 @@ const App = () => {
   );
 
   // list - handlers
+  // set selected list, reset selected task, close task editor panel
   const handleSelectList = (listData) => {
     setSelectedList(listData);
-    // reset list item selection & close editor
     setSelectedTask(null);
     setIsTaskEditorPanelOpen(false);
   }
+  // create id, create list template, assign as selected list, close list editor panel
   const handleCreateList = () => {
-    // create unique id and create temp list
     const newListId = uuidv4();
     dispatchListItems({
       type: 'LIST_CREATE',
       payload: { id: newListId }
     });
-    // set created id as selected list and close editor
     setSelectedList({ id: newListId });
     handleToggleListEditorPanel();
   }
+  // delete list templete, assign list before it as selected list, close list editor panel 
   const handleCancelCreateList = (event) => {
-    // delete recently created list
     dispatchListItems({
       type: 'LIST_DELETE',
       payload: { id: selectedList.id }
     });
-    // assign the list before the recently created list as the selected list
-    setCompletedSelectedListData(true);
-    // close list editor
+    updateSelectedList(true);
     handleToggleListEditorPanel();
     event.preventDefault();
   }
+  // update selected list with given name and badge, update selected list, close list editor panel
   const handleUpdateList = ({ name, badge }) => {
     dispatchListItems({
       type: 'LIST_UPDATE',
@@ -82,29 +80,28 @@ const App = () => {
         badge: badge.trim().length > 0 ? badge : listItemTemplate.badge,
       },
     });
-
-    // close editor
-    setCompletedSelectedListData();
+    updateSelectedList();
     handleToggleListEditorPanel();
   }
+  // delete selected list with prompt, assign list before is as selected list
   const handleDeleteList = (event) => {
     if (window.confirm(`Are you sure you want to delete this list: "${selectedList.name}"?`)) {
       dispatchListItems({
         type: 'LIST_DELETE',
         payload: { id: selectedList.id }
       });
-      setCompletedSelectedListData(true);
+      updateSelectedList(true);
     }
-    // assign the list before the recently created list as the selected list
     event.preventDefault();
   }
-  const setCompletedSelectedListData = (goBackward = false) => {
+  // refreshes selected list data.
+  const updateSelectedList = (goBackward = false) => {
     const index = listItems.data.findIndex((list) => list.id === selectedList.id);
-    const newdata = listItems.data[index - (goBackward ? 1 : 0)]
+    const newdata = listItems.data[index - (goBackward ? 1 : 0)];
     setSelectedList({...selectedList, ...newdata});
-    // setSelectedListId(listItems.data[selectedListIndex - (goBackward ? 1 : 0)])
   }
-  const handleUpdateListCheckedItemState = () => {
+  // toggle is_completed_hidden boolean value of a list
+  const handleToggleListHideCompletedState = () => {
     dispatchListItems({
       type: 'LIST_UPDATE',
       payload: {
@@ -115,25 +112,27 @@ const App = () => {
   }
 
   // list - effects
+  // makes sure the selected list object data is always up to date
   React.useEffect(() => {
-    // keep selectedlistdata up to date with listrows record it is referencing.
     const index = listItems.data.findIndex((list) => list.id === selectedList.id);
     setSelectedList({...selectedList, ...listItems.data[index]});
   }, [listItems.data]);
 
-
   
-  // list item - handlers
-  const handleSelectListItem = (listItemData) => {
-    if (selectedTask && listItemData.id === selectedTask.id) {
+  // task - handlers
+  // remove selected task & close task editor panel if the newly selected task is the same
+  // else, assign newly selected task as the selected task & close editor panel
+  const handleSelectTask = (task) => {
+    if (selectedTask && task.id === selectedTask.id) {
       setSelectedTask(null);
-    setIsTaskEditorPanelOpen(false);
+      setIsTaskEditorPanelOpen(false);
     } else {
-      setSelectedTask(listItemData);
+      setSelectedTask(task);
       setIsTaskEditorPanelOpen(true);
     }
   }
-  const handleCreateListItem = (event) => {
+  // create id, create new task with given data, reset form fields, close task editor, remove selected task
+  const handleCreateTask = (event) => {
     const newListItemId = uuidv4();
     dispatchTaskItems({
       type: 'TASK_CREATE',
@@ -143,15 +142,13 @@ const App = () => {
         title: event.target.title.value,
       }
     });
-    // reset form fields
-    event.target.reset();
-
-    // close list item editor and deselect current list item
     setIsTaskEditorPanelOpen(false);
     setSelectedTask(null);
+    event.target.reset();
     event.preventDefault();
   }
-  const handleUpdateListItemCheckState = (listItemData) => {
+  // toggle is_complete boolean value of a task
+  const handleToggleTaskCompleteState = (listItemData) => {
     dispatchTaskItems({
       type: 'TASK_UPDATE',
       payload: {
@@ -161,11 +158,9 @@ const App = () => {
     });
   }
 
-  // list item - effects
-
   return (
     <div className='grid grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
-      {/* list view */}
+      {/* list left panel */}
       <ListPanel
         isOpen={isListPanelOpen} 
         listItems={listItems.data}
@@ -175,7 +170,7 @@ const App = () => {
         onCreateList={handleCreateList}
       />
 
-      {/* list row editor popup */}
+      {/* list editor popup */}
       <ListEditorPopup
         isOpen={isListEditorPanelOpen}
         list={selectedList}
@@ -183,20 +178,20 @@ const App = () => {
         onCancelCreate={handleCancelCreateList}
       />
 
-      {/* list item view */}
+      {/* task middle panel */}
       <TaskPanel
         taskItems={taskItems.data}
         selectedTask={selectedTask}
         selectedList={selectedList}
         onToggleTaskEditorPanel={handleToggleListEditorPanel}
-        onSelectTask={handleSelectListItem}
-        onCreateTask={handleCreateListItem}
-        onToggleTaskCompleteState={handleUpdateListItemCheckState}
+        onSelectTask={handleSelectTask}
+        onCreateTask={handleCreateTask}
+        onToggleTaskCompleteState={handleToggleTaskCompleteState}
         onDeleteList={handleDeleteList}
-        onToggleListHideCompletedState={handleUpdateListCheckedItemState}
+        onToggleListHideCompletedState={handleToggleListHideCompletedState}
       />
 
-      {/* list item editor view */}
+      {/* task editor right panel */}
       <TaskEditorPanel
         isOpen={isTaskEditorPanelOpen}
         task={selectedTask}
