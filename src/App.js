@@ -508,7 +508,21 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
 const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onCreateListItem, onUpdateListItemCheckState, onDeleteList, onUpdateListCheckedItemState }) => (
   <div className='grid pt-2 max-h-screen'>
     <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-xl px-10 overflow-scroll bg-blue-200'>
-      <header className='sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
+      <ListItemViewLists
+        listItemRowsData={listItemRowsData}
+        selectedListItemData={selectedListItemData}
+        selectedListData={selectedListData}
+        onSelectListItem={onSelectListItem}
+        onUpdateListItemCheckState={onUpdateListItemCheckState}
+        onUpdateListCheckedItemState={onUpdateListCheckedItemState}
+      />
+      
+      <ListItemViewForm
+        selectedListData={selectedListData}
+        onCreateListItem={onCreateListItem}
+      />
+
+      <header className='-order-1 sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
         {/* edit list */}
         <button 
           onClick={onToggleListEditView}
@@ -536,20 +550,6 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
           <span className='leading-none'>🗑️</span>
         </button>
       </header>
-
-      <ListItemViewLists
-        listItemRowsData={listItemRowsData}
-        selectedListItemData={selectedListItemData}
-        selectedListData={selectedListData}
-        onSelectListItem={onSelectListItem}
-        onUpdateListItemCheckState={onUpdateListItemCheckState}
-        onUpdateListCheckedItemState={onUpdateListCheckedItemState}
-      />
-      
-      <ListItemViewForm
-        selectedListData={selectedListData}
-        onCreateListItem={onCreateListItem}
-      />
     </div>
   </div>
 );
