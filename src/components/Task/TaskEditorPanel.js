@@ -60,7 +60,7 @@ const TaskEditorPanel = ({
           className='grid gap-3'
         >
           {/* task toggle & name */}
-          <div className='grid grid-cols-[auto,1fr] items-start border-[1.5px] border-slate-200 rounded bg-white/50'>
+          <div className='grid grid-cols-[auto,1fr] items-start border-[1.5px] border-slate-200 rounded py-3 bg-white/50'>
             <TaskCompleteToggleButton
               task={task}
               onToggle={() => onToggleTaskCompleteState(task)}
@@ -70,7 +70,7 @@ const TaskEditorPanel = ({
               name='name'
               onBlur={handleSubmit}
               className={
-                'py-2 pr-3 bg-transparent font-medium text-lg leading-snug resize-none outline-none appearance-none ' +
+                'pr-3 bg-transparent font-medium text-lg leading-snug resize-none outline-none appearance-none ' +
                 (task.is_complete ? 'line-through focus:no-underline' : '')
               }
               value={title}

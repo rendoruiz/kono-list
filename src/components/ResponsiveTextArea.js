@@ -29,6 +29,7 @@ const ResponsiveTextArea = ({
     <textarea
       {...props}
       rows={1}
+      autoComplete='off'
       ref={ref}
       value={value}
       onChange={handleChange}
