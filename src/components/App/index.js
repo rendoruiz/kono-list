@@ -17,16 +17,15 @@ const App = () => {
   // panel toggle states
   const [isListPanelOpen, setIsListPanelOpen] = React.useState(true);
   const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
-  const [isTaskEditorPanelOpen, setIsTaskEditorPanelOpen] = useLocalState('is_task_editor_open', false);
 
   // panel toggle handlers
   const handleToggleListPanel = () => setIsListPanelOpen(!isListPanelOpen);
   const handleToggleListEditorPanel = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
-  const handleToggleTaskEditorPanel = () => setIsTaskEditorPanelOpen(!isTaskEditorPanelOpen);
+  const handleCloseTaskEditorPanel = () => setSelectedTask(null);
   
   // list & task states
   const [selectedList, setSelectedList] = useLocalState('selected_list', initialListItems[0]);
-  const [selectedTask, setSelectedTask] = useLocalState('selected_task', initialTaskItems[0]);
+  const [selectedTask, setSelectedTask] = useLocalState('selected_task', null);
 
   // list & task reducers
   const [listItems, dispatchListItems] = React.useReducer(
@@ -49,7 +48,6 @@ const App = () => {
   const handleSelectList = (list) => {
     setSelectedList(list);
     setSelectedTask(null);
-    setIsTaskEditorPanelOpen(false);
   }
   // create id, create list template, assign as selected list, close list editor panel
   const handleCreateList = () => {
@@ -61,35 +59,46 @@ const App = () => {
     setSelectedList({ id: newListId });
     handleToggleListEditorPanel();
   }
-  // delete list templete, assign list before it as selected list, close list editor panel 
-  const handleCancelCreateList = (event) => {
-    dispatchListItems({
-      type: 'LIST_DELETE',
-      payload: { id: selectedList.id }
-    });
-    updateSelectedList(true);
+  // delete list & assign list before it as selected list if its newly created
+  // close list editor panel afterwards
+  const handleListEditorCancelEdit = (event) => {
+    if (!selectedList.date_updated) {
+      dispatchListItems({
+        type: 'LIST_DELETE',
+        payload: { id: selectedList.id }
+      });
+      updateSelectedList(true);
+    }
     handleToggleListEditorPanel();
     event.preventDefault();
   }
-  // update selected list with given name and badge, update selected list, close list editor panel
-  const handleUpdateList = ({ name, badge }) => {
+  // update selected list with given name and icon, update selected list, close list editor panel
+  // close task editor if list is newly created
+  const handleUpdateList = ({ name, icon }) => {
     dispatchListItems({
       type: 'LIST_UPDATE',
       payload: {
         ...selectedList,
-        name: name.trim().length > 0 ? name : listTemplate.name,
-        badge: badge.trim().length > 0 ? badge : listTemplate.badge,
+        name: name.trim().length > 0 ? name.trim() : listTemplate.name,
+        icon: icon,
       },
     });
     updateSelectedList();
     handleToggleListEditorPanel();
+    if (!selectedList.date_updated) {
+      setSelectedTask(null);
+    }
   }
-  // delete selected list with prompt, assign list before is as selected list
+  // delete selected list and its tasks with prompt, assign list before is as selected list
   const handleDeleteList = (event) => {
     if (window.confirm(`Are you sure you want to delete this list: "${selectedList.name}"?`)) {
       dispatchListItems({
         type: 'LIST_DELETE',
-        payload: { id: selectedList.id }
+        payload: { id: selectedList.id },
+      });
+      dispatchTaskItems({
+        type: 'LIST_TASKS_DELETE',
+        payload: { list_id: selectedList.id },
       });
       updateSelectedList(true);
     }
@@ -113,12 +122,17 @@ const App = () => {
   }
 
   // list - effects
-  // makes sure the selected list object data is always up to date
+  // makes sure the selected list & task object data is always up to date
   React.useEffect(() => {
-    const index = listItems.data.findIndex((list) => list.id === selectedList.id);
-    setSelectedList({...selectedList, ...listItems.data[index]});
-  }, [listItems.data]);
-
+    if (selectedList) {
+      setSelectedList(listItems.data.find((list) => list.id === selectedList.id));
+    }
+  }, [listItems.data, selectedList]);
+  React.useEffect(() => {
+    if (selectedTask) {
+      setSelectedTask(taskItems.data.find((task) => task.id === selectedTask.id));
+    }
+  }, [taskItems.data, selectedTask]);
   
   // task - handlers
   // remove selected task & close task editor panel if the newly selected task is the same
@@ -126,10 +140,8 @@ const App = () => {
   const handleSelectTask = (task) => {
     if (selectedTask && task.id === selectedTask.id) {
       setSelectedTask(null);
-      setIsTaskEditorPanelOpen(false);
     } else {
       setSelectedTask(task);
-      setIsTaskEditorPanelOpen(true);
     }
   }
   // create id, create new task with given data, reset form fields, close task editor, remove selected task
@@ -143,7 +155,6 @@ const App = () => {
         title: event.target.title.value,
       }
     });
-    setIsTaskEditorPanelOpen(false);
     setSelectedTask(null);
     event.target.reset();
     event.preventDefault();
@@ -153,10 +164,31 @@ const App = () => {
     dispatchTaskItems({
       type: 'TASK_UPDATE',
       payload: {
+        ...selectedTask,
         id: task.id,
         is_complete: !task.is_complete,
       }
     });
+  }
+  //
+  const handleUpdateTask = ({ title, note }) => {
+    dispatchTaskItems({
+      type: 'TASK_UPDATE',
+      payload: {
+        ...selectedTask,
+        title: title?.trim().length > 0 ? title?.trim() : selectedTask.title,
+        note: note?.trim(),
+      },
+    });
+  }
+  //
+  const handleDeleteTask = (event) => {
+    dispatchTaskItems({
+      type: 'TASK_DELETE',
+      payload: { id: selectedTask.id },
+    });
+    setSelectedTask(null);
+    event.preventDefault();
   }
 
   return (
@@ -176,7 +208,7 @@ const App = () => {
         isOpen={isListEditorPanelOpen}
         list={selectedList}
         onUpdateList={handleUpdateList}
-        onCancelCreateList={handleCancelCreateList}
+        onCancelEdit={handleListEditorCancelEdit}
       />
 
       {/* task middle panel */}
@@ -184,19 +216,22 @@ const App = () => {
         taskItems={taskItems.data}
         selectedTask={selectedTask}
         selectedList={selectedList}
-        onToggleTaskEditorPanel={handleToggleListEditorPanel}
         onSelectTask={handleSelectTask}
         onCreateTask={handleCreateTask}
         onToggleTaskCompleteState={handleToggleTaskCompleteState}
         onDeleteList={handleDeleteList}
+        onToggleListEditorPanel={handleToggleListEditorPanel}
         onToggleListHideCompletedState={handleToggleListHideCompletedState}
       />
 
       {/* task editor right panel */}
       <TaskEditorPanel
-        isOpen={isTaskEditorPanelOpen}
         task={selectedTask}
-        onToggleView={handleToggleTaskEditorPanel}
+        selectedList={selectedList}
+        onClosePanel={handleCloseTaskEditorPanel}
+        onUpdateTask={handleUpdateTask}
+        onDeleteTask={handleDeleteTask}
+        onToggleTaskCompleteState={handleToggleTaskCompleteState}
       />
     </div>
   );

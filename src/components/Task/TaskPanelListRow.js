@@ -1,3 +1,5 @@
+import TaskCompleteToggleButton from "./TaskCompleteToggleButton";
+
 const TaskPanelListRow = ({ 
   task, 
   selectedTask, 
@@ -5,38 +7,36 @@ const TaskPanelListRow = ({
   onToggleTaskCompleteState 
 }) => (
   <li className={
-    'flex rounded-md cursor-pointer hover:bg-white/90 ' + 
+    'grid grid-cols-[auto,1fr] rounded-md py-1 min-h-[50px] cursor-pointer hover:bg-white/90 ' + 
     (task.id === selectedTask?.id ? 'bg-white' : 'bg-white/70')
   }>
     {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(task).replaceAll(',"', ', "')}</p> */}
 
     {/* toggle task is_complete */}
-    <button
-      type='button'
-      title={task.is_complete ? 'Mark as incomplete' : 'Mark as complete'}
-      onClick={() => onToggleTaskCompleteState(task)}
-      className="group shrink-0 px-3 py-4 self-start"
-    >
-      {/* border */}
-      <div className='group grid place-items-center w-[18px] h-[18px] border-2 border-slate-700 rounded-full'>
-        {/* complete mark */}
-        <div className={
-          'w-2 h-2 bg-slate-700/80 rounded-full transition-all group-hover:opacity-100 ' +
-          (task.is_complete ? 'opacity-100 group-active:scale-50' : 'opacity-0 group-active:scale-150')
-        } />
-      </div>
-    </button>
+    <TaskCompleteToggleButton
+      task={task}
+      onToggle={onToggleTaskCompleteState}
+    />
 
     {/* select task */}
     <button
       type='button'
       title='Select task'
+      className='flex-1 grid content-center pr-2 text-sm text-left'
       onClick={() => onSelectTask(task)}
-      className='flex-1 py-3 pr-2 text-sm text-left'
     >
+      {/* title */}
       <p className={task.is_complete ? 'opacity-60 line-through' : ''}>
         {task?.title}
       </p>
+
+      {/* note presence indicator */}
+      {task.note && task.note.length > 0 && (
+        <p className=' mt-[2px] text-xs'>
+          <span>📝</span>
+          <span className="ml-[2px] text-black/60">Note</span>
+        </p>
+      )}
     </button>
   </li>
 );

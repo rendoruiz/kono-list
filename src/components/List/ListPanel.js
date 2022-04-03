@@ -28,10 +28,11 @@ const ListPanel = ({
     <footer className='sticky bottom-0 border-t-2 py-[2px] bg-slate-100'>
       {/* add new list button */}
       <button 
+        title='New list: Add a list'
         onClick={onCreateList}
         className='group w-full px-1 py-[2px]'
       >
-        <div className='flex items-center rounded w-full group-hover:bg-slate-500/10'>
+        <div className='flex items-center rounded w-full group-hover:bg-slate-500/10 group-active:bg-slate-500/30'>
           <div className='flex-none grid place-items-center w-10 h-10'>
             <span className='pb-[2px] font-mono text-2xl leading-none'>+</span>
           </div>
