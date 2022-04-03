@@ -26,7 +26,7 @@ const taskItemReducer = (state, action) => {
               ...task,
               list_id: action.payload.list_id ?? task.list_id,
               title: action.payload.title ?? task.title,
-              is_checked: action.payload.is_checked ?? task.is_checked,
+              is_complete: action.payload.is_complete ?? task.is_complete,
               note: action.payload.note ?? task.note,
               date_updated: Date.now(),
             }
@@ -44,7 +44,7 @@ const taskItemReducer = (state, action) => {
         ),
       };
       break;
-      
+
     default:
       throw new Error();
   }

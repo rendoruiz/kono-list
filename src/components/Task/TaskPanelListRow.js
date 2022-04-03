@@ -1,14 +1,14 @@
-const TaskPanelListRow = ({ data, selectedListItemData, onSelectListItem, onUpdateListItemCheckState }) => (
+const TaskPanelListRow = ({ data, selectedTask, onSelectListItem, onUpdateListItemCheckState }) => (
   <li className={
     'flex rounded-md cursor-pointer hover:bg-white/90 ' + 
-    (data.id === selectedListItemData?.id ? 'bg-white' : 'bg-white/70')
+    (data.id === selectedTask?.id ? 'bg-white' : 'bg-white/70')
   }>
     {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(data).replaceAll(',"', ', "')}</p> */}
 
-    {/* toggle is_checked */}
+    {/* toggle is_complete */}
     <button
       type='button'
-      title={data.is_checked ? 'Mark as incomplete' : 'Mark as complete'}
+      title={data.is_complete ? 'Mark as incomplete' : 'Mark as complete'}
       onClick={() => onUpdateListItemCheckState(data)}
       className="group shrink-0 px-3 py-4 self-start"
     >
@@ -17,7 +17,7 @@ const TaskPanelListRow = ({ data, selectedListItemData, onSelectListItem, onUpda
         {/* check mark */}
         <div className={
           'w-2 h-2 bg-slate-700/80 rounded-full transition-all group-hover:opacity-100 ' +
-          (data.is_checked ? 'opacity-100 group-active:scale-50' : 'opacity-0 group-active:scale-150')
+          (data.is_complete ? 'opacity-100 group-active:scale-50' : 'opacity-0 group-active:scale-150')
         } />
       </div>
     </button>
@@ -29,7 +29,7 @@ const TaskPanelListRow = ({ data, selectedListItemData, onSelectListItem, onUpda
       onClick={() => onSelectListItem(data)}
       className='flex-1 py-3 pr-2 text-sm text-left'
     >
-      <p className={data.is_checked ? 'opacity-60 line-through' : ''}>{data?.title}</p>
+      <p className={data.is_complete ? 'opacity-60 line-through' : ''}>{data?.title}</p>
     </button>
   </li>
 );

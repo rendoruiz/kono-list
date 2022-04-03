@@ -2,17 +2,17 @@ import * as React from 'react';
 
 import { listItemTemplate } from '../../data/listItem';
 
-const ListEditorPopup = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
-  const [name, setName] = React.useState(listData.name);
-  const [badge, setBadge] = React.useState(listData.badge);
+const ListEditorPopup = ({ isOpen, list, onUpdateList, onCancelCreate }) => {
+  const [name, setName] = React.useState(list.name);
+  const [badge, setBadge] = React.useState(list.badge);
 
   // make sure the form fields are up to date whenever the editor is opened
   React.useEffect(() => {
     if (isOpen) {
-      setName(listData.name);
-      setBadge(listData.badge);
+      setName(list.name);
+      setBadge(list.badge);
     }
-  }, [isOpen, listData]);
+  }, [isOpen, list]);
 
   const handleSubmit = (event) => {
     onUpdateList({
@@ -43,7 +43,7 @@ const ListEditorPopup = ({ isOpen, listData, onUpdateList, onCancelCreate }) => 
         onSubmit={handleSubmit}
         onReset={handleReset}
       >
-        <h2 className='font-medium text-lg'>{!listData.date_updated ? 'New' : 'Rename'} list</h2>
+        <h2 className='font-medium text-lg'>{!list.date_updated ? 'New' : 'Rename'} list</h2>
         <div className='flex mt-3 w-full'>
           <input 
             name='badge'
@@ -69,7 +69,7 @@ const ListEditorPopup = ({ isOpen, listData, onUpdateList, onCancelCreate }) => 
         <div className='grid grid-flow-col items-center justify-end gap-1 mt-4 text-sm'>
           <input 
             type='submit' 
-            value={!listData.date_updated ? 'Create List' : 'Save'} 
+            value={!list.date_updated ? 'Create List' : 'Save'} 
             className='rounded px-2 py-1 font-medium text-blue-600 uppercase cursor-pointer hover:bg-black/10'
             disabled={name?.trim().length < 1}
           />

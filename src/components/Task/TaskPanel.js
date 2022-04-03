@@ -3,9 +3,9 @@ import TaskCreatorPanel from "./TaskCreatorPanel";
 import TaskPanelList from "./TaskPanelList";
 
 const TaskPanel = ({ 
-  listItemRowsData, 
-  selectedListItemData, 
-  selectedListData, 
+  taskItems, 
+  selectedTask, 
+  selectedList, 
   onToggleListEditView, 
   onSelectListItem, 
   onCreateListItem, 
@@ -16,16 +16,16 @@ const TaskPanel = ({
   <div className='grid pt-2 max-h-screen'>
     <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-xl px-10 overflow-scroll bg-blue-200'>
       <TaskPanelList
-        listItemRowsData={listItemRowsData}
-        selectedListItemData={selectedListItemData}
-        selectedListData={selectedListData}
+        taskItems={taskItems}
+        selectedTask={selectedTask}
+        selectedList={selectedList}
         onSelectListItem={onSelectListItem}
         onUpdateListItemCheckState={onUpdateListItemCheckState}
         onUpdateListCheckedItemState={onUpdateListCheckedItemState}
       />
       
       <TaskCreatorPanel
-        selectedListData={selectedListData}
+        selectedList={selectedList}
         onCreateListItem={onCreateListItem}
       />
 
@@ -39,12 +39,12 @@ const TaskPanel = ({
           {/* list badge */}
           <div className='grid place-items-center w-10 h-10'>
             <span className='font-mono font-bold text-2xl leading-none'>
-              {selectedListData?.badge ?? listItemTemplate.badge}
+              {selectedList?.badge ?? listItemTemplate.badge}
             </span>
           </div>
           {/* list name */}
           <h2 className='pl-1 pr-2 font-medium text-2xl text-left truncate'>
-            {selectedListData?.name ?? listItemTemplate.name}
+            {selectedList?.name ?? listItemTemplate.name}
           </h2>
         </button>
         

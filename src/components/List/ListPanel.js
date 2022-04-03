@@ -1,14 +1,21 @@
 import ListPanelItem from "./ListPanelItem";
 
-const ListPanel = ({ isOpen, listRowsData, selectedListData, onToggleView, onSelectList, onCreateList }) => (
+const ListPanel = ({ 
+  isOpen, 
+  listItems, 
+  selectedList, 
+  onToggleView, 
+  onSelectList, 
+  onCreateList 
+}) => (
   <div className='relative grid grid-rows-[auto,1fr,auto] w-80 h-full max-h-screen overflow-scroll'>
     <main>
       <ul className='grid py-1'>
-        {listRowsData.map((list) => (
+        {listItems.map((list) => (
           <ListPanelItem
             key={list.id}
-            data={list}
-            selectedListData={selectedListData}
+            list={list}
+            selectedList={selectedList}
             onSelectList={onSelectList}
           />
         ))}

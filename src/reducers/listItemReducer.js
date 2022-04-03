@@ -24,7 +24,7 @@ const listItemReducer = (state, action) => {
               ...list,
               name: action.payload.name ?? list.name,
               badge: action.payload.badge ?? list.badge,
-              is_checked_hidden: action.payload.is_checked_hidden ?? list.is_checked_hidden,
+              is_completed_hidden: action.payload.is_completed_hidden ?? list.is_completed_hidden,
               date_updated: Date.now(),
             }
           }

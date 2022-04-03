@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const TaskCreatorPanel = ({ selectedListData, onCreateListItem }) => {
+const TaskCreatorPanel = ({ selectedList, onCreateListItem }) => {
   const [input, setInput] = React.useState("");
 
   return (
@@ -17,7 +17,7 @@ const TaskCreatorPanel = ({ selectedListData, onCreateListItem }) => {
           minLength={1}
           placeholder='Add a task'
           autoComplete='off'
-          title={`Add a task in "${selectedListData.name}"`}
+          title={`Add a task in "${selectedList.name}"`}
           className='peer rounded-md py-4 px-11 w-full bg-white/50 text-sm leading-none appearance-none outline-none placeholder:text-black/90 hover:bg-white/80 active:bg-white focus:bg-white'
           value={input}
           onChange={(e) => setInput(e.target.value)}

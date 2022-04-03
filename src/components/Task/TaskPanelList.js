@@ -3,9 +3,9 @@ import * as React from 'react';
 import TaskPanelListRow from './TaskPanelListRow';
 
 const TaskPanelList = ({ 
-  listItemRowsData, 
-  selectedListItemData, 
-  selectedListData, 
+  taskItems, 
+  selectedTask, 
+  selectedList, 
   onSelectListItem, 
   onUpdateListItemCheckState, 
   onUpdateListCheckedItemState 
@@ -14,14 +14,14 @@ const TaskPanelList = ({
   const [uncheckedItems, setUncheckedItems] = React.useState(null);
 
   React.useEffect(() => {
-    setCheckedItems(listItemRowsData.filter((listItem) => listItem.is_checked && listItem.list_id === selectedListData.id));
-    setUncheckedItems(listItemRowsData.filter((listItem) => !listItem.is_checked && listItem.list_id === selectedListData.id));
-  }, [listItemRowsData, selectedListData]);
+    setCheckedItems(taskItems.filter((listItem) => listItem.is_complete && listItem.list_id === selectedList.id));
+    setUncheckedItems(taskItems.filter((listItem) => !listItem.is_complete && listItem.list_id === selectedList.id));
+  }, [taskItems, selectedList]);
 
   return (
     <main className=''>
       {/* debug list */}
-      {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p> */}
+      {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedList).replaceAll(',"', ', "')}</p> */}
 
       {/* list item - unchecked */}
       <ul className='grid gap-[3px]'>
@@ -29,7 +29,7 @@ const TaskPanelList = ({
           <TaskPanelListRow
             key={listItem.id}
             data={listItem}
-            selectedListItemData={selectedListItemData}
+            selectedTask={selectedTask}
             onSelectListItem={onSelectListItem}
             onUpdateListItemCheckState={onUpdateListItemCheckState}
           />
@@ -47,7 +47,7 @@ const TaskPanelList = ({
             {/* caret */}
             <span className={
               'px-1 scale-y-125 origin-center ' + 
-              (!selectedListData.is_checked_hidden ? 'rotate-90' : '')}
+              (!selectedList?.is_completed_hidden ? 'rotate-90' : '')}
             >
               &gt;
             </span>
@@ -57,13 +57,13 @@ const TaskPanelList = ({
           </button>
 
           {/* list item - checked */}
-          {!selectedListData.is_checked_hidden && (
+          {!selectedList.is_completed_hidden && (
             <ul className='grid gap-[3px]'>
               {checkedItems && checkedItems.map((listItem) => (
                 <TaskPanelListRow
                   key={listItem.id}
                   data={listItem}
-                  selectedListItemData={selectedListItemData}
+                  selectedTask={selectedTask}
                   onSelectListItem={onSelectListItem}
                   onUpdateListItemCheckState={onUpdateListItemCheckState}
                 />

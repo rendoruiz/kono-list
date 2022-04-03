@@ -13,17 +13,21 @@ import { listItemTemplate, initialListItems } from '../../data/listItem';
 import { initialTaskItems  } from '../../data/taskItem';
 
 const App = () => {
-  // view toggle states
+  // panel toggle states
   const [isListPanelOpen, setIsListPanelOpen] = React.useState(true);
   const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
   const [isTaskEditorPanelOpen, setIsTaskEditorPanelOpen] = useLocalState('is_task_editor_open', false);
 
-  // view toggle handlers
+  // panel toggle handlers
   const handleToggleListPanel = () => setIsListPanelOpen(!isListPanelOpen);
   const handleToggleListEditorPanel = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
   const handleToggleTaskEditorPanel = () => setIsTaskEditorPanelOpen(!isTaskEditorPanelOpen);
   
-  // list - reducers
+  // list & task states
+  const [selectedList, setSelectedList] = useLocalState('selected_list', initialListItems[0]);
+  const [selectedTask, setSelectedTask] = useLocalState('selected_task', initialTaskItems[0]);
+
+  // list & task reducers
   const [listItems, dispatchListItems] = React.useReducer(
     listItemReducer,
     { 
@@ -31,15 +35,19 @@ const App = () => {
       localKey: 'lists',
     }
   );
-
-  // list - states
-  const [selectedListData, setSelectedListData] = useLocalState('selected_list', initialListItems[0]);
+  const [taskItems, dispatchTaskItems] = React.useReducer(
+    taskItemReducer,
+    {
+      data: JSON.parse(localStorage.getItem('tasks')) ?? initialTaskItems,
+      localKey: 'tasks',
+    }
+  );
 
   // list - handlers
   const handleSelectList = (listData) => {
-    setSelectedListData(listData);
+    setSelectedList(listData);
     // reset list item selection & close editor
-    setSelectedListItemData(null);
+    setSelectedTask(null);
     setIsTaskEditorPanelOpen(false);
   }
   const handleCreateList = () => {
@@ -50,15 +58,14 @@ const App = () => {
       payload: { id: newListId }
     });
     // set created id as selected list and close editor
-
-    setSelectedListData({ id: newListId });
+    setSelectedList({ id: newListId });
     handleToggleListEditorPanel();
   }
   const handleCancelCreateList = (event) => {
     // delete recently created list
     dispatchListItems({
       type: 'LIST_DELETE',
-      payload: { id: selectedListData.id }
+      payload: { id: selectedList.id }
     });
     // assign the list before the recently created list as the selected list
     setCompletedSelectedListData(true);
@@ -70,7 +77,7 @@ const App = () => {
     dispatchListItems({
       type: 'LIST_UPDATE',
       payload: {
-        ...selectedListData,
+        ...selectedList,
         name: name.trim().length > 0 ? name : listItemTemplate.name,
         badge: badge.trim().length > 0 ? badge : listItemTemplate.badge,
       },
@@ -81,10 +88,10 @@ const App = () => {
     handleToggleListEditorPanel();
   }
   const handleDeleteList = (event) => {
-    if (window.confirm(`Are you sure you want to delete this list: "${selectedListData.name}"?`)) {
+    if (window.confirm(`Are you sure you want to delete this list: "${selectedList.name}"?`)) {
       dispatchListItems({
         type: 'LIST_DELETE',
-        payload: { id: selectedListData.id }
+        payload: { id: selectedList.id }
       });
       setCompletedSelectedListData(true);
     }
@@ -92,17 +99,17 @@ const App = () => {
     event.preventDefault();
   }
   const setCompletedSelectedListData = (goBackward = false) => {
-    const index = listItems.data.findIndex((list) => list.id === selectedListData.id);
+    const index = listItems.data.findIndex((list) => list.id === selectedList.id);
     const newdata = listItems.data[index - (goBackward ? 1 : 0)]
-    setSelectedListData({...selectedListData, ...newdata});
+    setSelectedList({...selectedList, ...newdata});
     // setSelectedListId(listItems.data[selectedListIndex - (goBackward ? 1 : 0)])
   }
   const handleUpdateListCheckedItemState = () => {
     dispatchListItems({
       type: 'LIST_UPDATE',
       payload: {
-        id: selectedListData.id,
-        is_checked_hidden: !selectedListData.is_checked_hidden,
+        id: selectedList.id,
+        is_completed_hidden: !selectedList.is_completed_hidden,
       }
     });
   }
@@ -110,40 +117,29 @@ const App = () => {
   // list - effects
   React.useEffect(() => {
     // keep selectedlistdata up to date with listrows record it is referencing.
-    const index = listItems.data.findIndex((list) => list.id === selectedListData.id);
-    setSelectedListData({...selectedListData, ...listItems.data[index]});
+    const index = listItems.data.findIndex((list) => list.id === selectedList.id);
+    setSelectedList({...selectedList, ...listItems.data[index]});
   }, [listItems.data]);
 
 
-  // list item - reducers
-  const [listItemRows, dispatchListItemRows] = React.useReducer(
-    taskItemReducer,
-    {
-      data: JSON.parse(localStorage.getItem('list_items')) ?? initialTaskItems,
-      localKey: 'list_items',
-    }
-  );
-
-  // list item - states
-  const [selectedListItemData, setSelectedListItemData] = useLocalState('selected_list_item', initialTaskItems[0]);
   
   // list item - handlers
   const handleSelectListItem = (listItemData) => {
-    if (selectedListItemData && listItemData.id === selectedListItemData.id) {
-      setSelectedListItemData(null);
+    if (selectedTask && listItemData.id === selectedTask.id) {
+      setSelectedTask(null);
     setIsTaskEditorPanelOpen(false);
     } else {
-      setSelectedListItemData(listItemData);
+      setSelectedTask(listItemData);
       setIsTaskEditorPanelOpen(true);
     }
   }
   const handleCreateListItem = (event) => {
     const newListItemId = uuidv4();
-    dispatchListItemRows({
+    dispatchTaskItems({
       type: 'TASK_CREATE',
       payload: {
         id: newListItemId,
-        list_id: selectedListData.id,
+        list_id: selectedList.id,
         title: event.target.title.value,
       }
     });
@@ -152,15 +148,15 @@ const App = () => {
 
     // close list item editor and deselect current list item
     setIsTaskEditorPanelOpen(false);
-    setSelectedListItemData(null);
+    setSelectedTask(null);
     event.preventDefault();
   }
   const handleUpdateListItemCheckState = (listItemData) => {
-    dispatchListItemRows({
+    dispatchTaskItems({
       type: 'TASK_UPDATE',
       payload: {
         id: listItemData.id,
-        is_checked: !listItemData.is_checked,
+        is_complete: !listItemData.is_complete,
       }
     });
   }
@@ -172,8 +168,8 @@ const App = () => {
       {/* list view */}
       <ListPanel
         isOpen={isListPanelOpen} 
-        listRowsData={listItems.data}
-        selectedListData={selectedListData}
+        listItems={listItems.data}
+        selectedList={selectedList}
         onToggleView={handleToggleListPanel} 
         onSelectList={handleSelectList}
         onCreateList={handleCreateList}
@@ -182,16 +178,16 @@ const App = () => {
       {/* list row editor popup */}
       <ListEditorPopup
         isOpen={isListEditorPanelOpen}
-        listData={selectedListData}
+        list={selectedList}
         onUpdateList={handleUpdateList}
         onCancelCreate={handleCancelCreateList}
       />
 
       {/* list item view */}
       <TaskPanel
-        listItemRowsData={listItemRows.data}
-        selectedListItemData={selectedListItemData}
-        selectedListData={selectedListData}
+        taskItems={taskItems.data}
+        selectedTask={selectedTask}
+        selectedList={selectedList}
         onToggleListEditView={handleToggleListEditorPanel}
         onSelectListItem={handleSelectListItem}
         onCreateListItem={handleCreateListItem}
@@ -203,7 +199,7 @@ const App = () => {
       {/* list item editor view */}
       <TaskEditorPanel
         isOpen={isTaskEditorPanelOpen}
-        listItemData={selectedListItemData}
+        listItemData={selectedTask}
         onToggleView={handleToggleTaskEditorPanel}
       />
     </div>
