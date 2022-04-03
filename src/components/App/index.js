@@ -1,26 +1,27 @@
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-
+// components
 import ListPanel from '../List/ListPanel';
 import ListEditorPopup from '../List/ListEditorPopup';
+import TaskPanel from '../Task/TaskPanel';
+import TaskEditorPanel from '../Task/TaskEditorPanel';
+// hooks, reducers, data
 import useLocalState from '../../hooks/useLocalState';
 import listItemReducer from '../../reducers/listItemReducer';
 import taskItemReducer from '../../reducers/taskItemReducer';
 import { listItemTemplate, initialListItems } from '../../data/listItem';
 import { initialTaskItems  } from '../../data/taskItem';
-import TaskPanel from '../Task/TaskPanel';
-import TaskEditorPanel from '../Task/TaskEditorPanel';
 
 const App = () => {
   // view toggle states
-  const [isListViewOpen, setIsListViewOpen] = React.useState(true);
-  const [isListEditorViewOpen, setIsListEditorViewOpen] = React.useState(false);
-  const [isListItemEditorViewOpen, setIsListItemEditorViewOpen] = useLocalState('isListItemEditorViewOpen', false);
+  const [isListPanelOpen, setIsListPanelOpen] = React.useState(true);
+  const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
+  const [isTaskEditorPanelOpen, setIsTaskEditorPanelOpen] = useLocalState('is_task_editor_open', false);
 
   // view toggle handlers
-  const handleToggleListView = () => setIsListViewOpen(!isListViewOpen);
-  const handleToggleListEditorView = () => setIsListEditorViewOpen(!isListEditorViewOpen);
-  const handleToggleListItemEditorView = () => setIsListItemEditorViewOpen(!isListItemEditorViewOpen);
+  const handleToggleListView = () => setIsListPanelOpen(!isListPanelOpen);
+  const handleToggleListEditorView = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
+  const handleToggleListItemEditorView = () => setIsTaskEditorPanelOpen(!isTaskEditorPanelOpen);
   
   // list - reducers
   const [listRows, dispatchListRows] = React.useReducer(
@@ -39,7 +40,7 @@ const App = () => {
     setSelectedListData(listData);
     // reset list item selection & close editor
     setSelectedListItemData(null);
-    setIsListItemEditorViewOpen(false);
+    setIsTaskEditorPanelOpen(false);
   }
   const handleCreateList = () => {
     // create unique id and create temp list
@@ -130,10 +131,10 @@ const App = () => {
   const handleSelectListItem = (listItemData) => {
     if (selectedListItemData && listItemData.id === selectedListItemData.id) {
       setSelectedListItemData(null);
-    setIsListItemEditorViewOpen(false);
+    setIsTaskEditorPanelOpen(false);
     } else {
       setSelectedListItemData(listItemData);
-      setIsListItemEditorViewOpen(true);
+      setIsTaskEditorPanelOpen(true);
     }
   }
   const handleCreateListItem = (event) => {
@@ -150,7 +151,7 @@ const App = () => {
     event.target.reset();
 
     // close list item editor and deselect current list item
-    setIsListItemEditorViewOpen(false);
+    setIsTaskEditorPanelOpen(false);
     setSelectedListItemData(null);
     event.preventDefault();
   }
@@ -170,7 +171,7 @@ const App = () => {
     <div className='grid grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
       {/* list view */}
       <ListPanel
-        isOpen={isListViewOpen} 
+        isOpen={isListPanelOpen} 
         listRowsData={listRows.data}
         selectedListData={selectedListData}
         onToggleView={handleToggleListView} 
@@ -180,7 +181,7 @@ const App = () => {
 
       {/* list row editor popup */}
       <ListEditorPopup
-        isOpen={isListEditorViewOpen}
+        isOpen={isListEditorPanelOpen}
         listData={selectedListData}
         onUpdateList={handleUpdateList}
         onCancelCreate={handleCancelCreateList}
@@ -201,7 +202,7 @@ const App = () => {
 
       {/* list item editor view */}
       <TaskEditorPanel
-        isOpen={isListItemEditorViewOpen}
+        isOpen={isTaskEditorPanelOpen}
         listItemData={selectedListItemData}
         onToggleView={handleToggleListItemEditorView}
       />
