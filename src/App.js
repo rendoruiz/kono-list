@@ -20,6 +20,7 @@ const initialListRows = [
     date_created: Date.now(),
     date_updated: null,
     badge: "⭐",
+    is_checked_hidden: false,
   },
 ];
 
@@ -54,6 +55,7 @@ const listRowsReducer = (state, action) => {
               ...list,
               name: action.payload.name ?? list.name,
               badge: action.payload.badge ?? list.badge,
+              is_checked_hidden: action.payload.is_checked_hidden ?? list.is_checked_hidden,
               date_updated: Date.now(),
             }
           }
@@ -221,24 +223,22 @@ const App = () => {
     handleToggleListEditorView();
     event.preventDefault();
   }
-  const handleUpdateList = (event) => {
-    const { name, badge } = event.target;
+  const handleUpdateList = ({ name, badge }) => {
     dispatchListRows({
       type: 'LIST_UPDATE',
       payload: {
         ...selectedListData,
-        name: name.value.trim().length > 0 ? name.value.trim() : name.placeholder,
-        badge: badge.value.trim().length > 0 ? badge.value.trim() : badge.placeholder,
+        name: name.trim().length > 0 ? name : defaultListRow.name,
+        badge: badge.trim().length > 0 ? badge : defaultListRow.badge,
       },
     });
 
     // close editor
     setCompletedSelectedListData();
     handleToggleListEditorView();
-    event.preventDefault();
   }
   const handleDeleteList = (event) => {
-    if (window.confirm('Are you sure you want to delete this list?')) {
+    if (window.confirm(`Are you sure you want to delete this list: "${selectedListData.name}"?`)) {
       dispatchListRows({
         type: 'LIST_DELETE',
         payload: { id: selectedListData.id }
@@ -253,6 +253,15 @@ const App = () => {
     const newdata = listRows.data[index - (goBackward ? 1 : 0)]
     setSelectedListData({...selectedListData, ...newdata});
     // setSelectedListId(listRows.data[selectedListIndex - (goBackward ? 1 : 0)])
+  }
+  const handleUpdateListCheckedItemState = () => {
+    dispatchListRows({
+      type: 'LIST_UPDATE',
+      payload: {
+        id: selectedListData.id,
+        is_checked_hidden: !selectedListData.is_checked_hidden,
+      }
+    });
   }
 
   // list - effects
@@ -276,7 +285,15 @@ const App = () => {
   const [selectedListItemData, setSelectedListItemData] = useLocalState('selected_list_item', initialListItemRows[0]);
   
   // list item - handlers
-  const handleSelectListItem = (listItemData) => setSelectedListItemData(listItemData);
+  const handleSelectListItem = (listItemData) => {
+    if (selectedListItemData && listItemData.id === selectedListItemData.id) {
+      setSelectedListItemData(null);
+    setIsListItemEditorViewOpen(false);
+    } else {
+      setSelectedListItemData(listItemData);
+      setIsListItemEditorViewOpen(true);
+    }
+  }
   const handleCreateListItem = (event) => {
     const newListItemId = uuidv4();
     dispatchListItemRows({
@@ -303,12 +320,9 @@ const App = () => {
         is_checked: !listItemData.is_checked,
       }
     });
-
-    console.log("updated!")
   }
 
   // list item - effects
-  
 
   return (
     <div className='grid grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
@@ -340,11 +354,13 @@ const App = () => {
         onCreateListItem={handleCreateListItem}
         onUpdateListItemCheckState={handleUpdateListItemCheckState}
         onDeleteList={handleDeleteList}
+        onUpdateListCheckedItemState={handleUpdateListCheckedItemState}
       />
 
       {/* list item editor view */}
       <ListItemEditorView
         isOpen={isListItemEditorViewOpen}
+        listItemData={selectedListItemData}
         onToggleView={handleToggleListItemEditorView}
       />
     </div>
@@ -405,41 +421,78 @@ const ListViewRow = ({ data, selectedListData, onSelectList }) => (
 );
 
 const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
+  const [name, setName] = React.useState(listData.name);
+  const [badge, setBadge] = React.useState(listData.badge);
+
+  // make sure the form fields are up to date whenever the editor is opened
+  React.useEffect(() => {
+    if (isOpen) {
+      setName(listData.name);
+      setBadge(listData.badge);
+    }
+  }, [isOpen, listData]);
+
+  const handleSubmit = (event) => {
+    onUpdateList({
+      name: name.trim(),
+      badge: badge.trim(),
+    });
+    if (event) {
+      event.target.reset();
+      event.preventDefault();
+    } else {
+      handleReset();
+    }
+  }
+
+  const handleReset = () => {
+    setName("");
+    setBadge("");
+  }
+
   return isOpen && (
     <div
       className='fixed inset-0 z-50 grid place-items-center bg-black/40'
-      onClick={onUpdateList}
+      onClick={() => handleSubmit()}
     >
       <form 
         className=' rounded px-4 py-3 bg-white'
         onClick={(e) => e.stopPropagation()}
-        onSubmit={onUpdateList}
+        onSubmit={handleSubmit}
+        onReset={handleReset}
       >
         <h2 className='font-medium text-lg'>{!listData.date_updated ? 'New' : 'Rename'} list</h2>
         <div className='flex mt-3 w-full'>
           <input 
             name='badge'
-            type="text" 
+            type='text' 
             maxLength={1}
-            autoComplete='off'
             placeholder={defaultListRow.badge}
-            className='flex-none w-8 h-8 text-lg text-center leading-none appearance-none outline-none active:select-all'
+            autoComplete='off'
+            className='flex-none border-b-2 border-b-blue-600 rounded-b w-8 h-8 text-lg text-center leading-none appearance-none outline-none active:select-all'
+            value={badge}
+            onChange={(e) => setBadge(e.target.value)}
           />
           
           <input 
             name='name'
-            type="text"
-            className='flex-1 border-b-2 border-b-blue-600 ml-1 appearance-none outline-none'
+            type='text'
             placeholder={defaultListRow.name}
+            autoComplete='off'
+            className='flex-1 border-b-2 border-b-blue-600 rounded-b ml-2 px-1 w-full appearance-none outline-none'
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div className='grid grid-flow-col items-center justify-end gap-1 mt-4 text-sm'>
           <input 
-            type="submit" 
+            type='submit' 
             value={!listData.date_updated ? 'Create List' : 'Save'} 
             className='rounded px-2 py-1 font-medium text-blue-600 uppercase cursor-pointer hover:bg-black/10'
+            disabled={name?.trim().length < 1}
           />
           <button 
+            type='button'
             onClick={onCancelCreate}
             className='-order-1 rounded px-2 py-1 font-medium uppercase hover:bg-black/10'
           >
@@ -452,24 +505,38 @@ const ListEditorView = ({ isOpen, listData, onUpdateList, onCancelCreate }) => {
 }
 
 
-const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onCreateListItem, onUpdateListItemCheckState, onDeleteList }) => (
-  <div className='grid pt-2'>
-    <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-2xl px-10 w-full h-full max-h-screen overflow-scroll bg-blue-200'>
-      <header className='sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
+const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onCreateListItem, onUpdateListItemCheckState, onDeleteList, onUpdateListCheckedItemState }) => (
+  <div className='grid pt-2 max-h-screen'>
+    <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-xl px-10 overflow-scroll bg-blue-200'>
+      <ListItemViewLists
+        listItemRowsData={listItemRowsData}
+        selectedListItemData={selectedListItemData}
+        selectedListData={selectedListData}
+        onSelectListItem={onSelectListItem}
+        onUpdateListItemCheckState={onUpdateListItemCheckState}
+        onUpdateListCheckedItemState={onUpdateListCheckedItemState}
+      />
+      
+      <ListItemViewForm
+        selectedListData={selectedListData}
+        onCreateListItem={onCreateListItem}
+      />
+
+      <header className='-order-1 sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
         {/* edit list */}
         <button 
           onClick={onToggleListEditView}
           title='Edit list'
-          className='flex items-center rounded hover:bg-slate-500/40'
+          className='grid grid-cols-[auto,1fr] items-center rounded hover:bg-slate-500/40'
         >
           {/* list badge */}
-          <div className='flex-none grid place-items-center w-10 h-10'>
+          <div className='grid place-items-center w-10 h-10'>
             <span className='font-mono font-bold text-2xl leading-none'>
               {selectedListData?.badge ?? defaultListRow.badge}
             </span>
           </div>
           {/* list name */}
-          <h2 className='flex-1 pl-1 pr-2 font-medium text-2xl text-left truncate'>
+          <h2 className='pl-1 pr-2 font-medium text-2xl text-left truncate'>
             {selectedListData?.name ?? defaultListRow.name}
           </h2>
         </button>
@@ -483,24 +550,11 @@ const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData
           <span className='leading-none'>🗑️</span>
         </button>
       </header>
-
-      <ListItemViewLists
-        listItemRowsData={listItemRowsData}
-        selectedListItemData={selectedListItemData}
-        selectedListData={selectedListData}
-        onSelectListItem={onSelectListItem}
-        onUpdateListItemCheckState={onUpdateListItemCheckState}
-      />
-      
-      <ListItemViewForm
-        selectedListData={selectedListData}
-        onCreateListItem={onCreateListItem}
-      />
     </div>
   </div>
 );
 
-const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedListData, onSelectListItem, onUpdateListItemCheckState }) => {
+const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedListData, onSelectListItem, onUpdateListItemCheckState, onUpdateListCheckedItemState }) => {
   const [checkedItems, setCheckedItems] = React.useState(null);
   const [uncheckedItems, setUncheckedItems] = React.useState(null);
 
@@ -529,22 +583,29 @@ const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedLis
 
       {checkedItems?.length !== 0 && (<>
         {/* checked list item toggle */}
-        <button className='flex items-center rounded my-2 px-2 py-1 bg-white/50 hover:bg-white/80'>
-          <span>&gt;</span>
-          <p className='ml-2 text-sm'>Completed</p>
+        <button 
+          type='button'
+          className='flex items-center rounded my-2 px-2 py-1 bg-white/50 text-sm hover:bg-white/80'
+          onClick={onUpdateListCheckedItemState}
+        >
+          <span className={'px-1 scale-y-125 origin-center ' + (!selectedListData.is_checked_hidden ? 'rotate-90' : '')}>&gt;</span>
+          <p className='ml-1 mr-2'>Completed</p>
+          <span>{checkedItems?.length}</span>
         </button>
         {/* list item - checked */}
-        <ul className='grid gap-[3px]'>
-          {checkedItems && checkedItems.map((listItem) => (
-            <ListItemViewRow
-              key={listItem.id}
-              data={listItem}
-              selectedListItemData={selectedListItemData}
-              onSelectListItem={onSelectListItem}
-            onUpdateListItemCheckState={onUpdateListItemCheckState}
-            />
-          ))}
-        </ul>
+        {!selectedListData.is_checked_hidden && (
+          <ul className='grid gap-[3px]'>
+            {checkedItems && checkedItems.map((listItem) => (
+              <ListItemViewRow
+                key={listItem.id}
+                data={listItem}
+                selectedListItemData={selectedListItemData}
+                onSelectListItem={onSelectListItem}
+                onUpdateListItemCheckState={onUpdateListItemCheckState}
+              />
+            ))}
+          </ul>
+        )}
       </>)}
     </main>
   )
@@ -556,12 +617,13 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem, onUpdat
     (data.id === selectedListItemData?.id ? 'bg-white' : 'bg-white/70')
   }>
     {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(data).replaceAll(',"', ', "')}</p> */}
+
     {/* toggle is_checked */}
     <button
       type='button'
       title={data.is_checked ? 'Mark as incomplete' : 'Mark as complete'}
       onClick={() => onUpdateListItemCheckState(data)}
-      className="group shrink-0 px-3 py-4"
+      className="group shrink-0 px-3 py-4 self-start"
     >
       {/* border */}
       <div className='group grid place-items-center w-[18px] h-[18px] border-2 border-slate-700 rounded-full'>
@@ -578,7 +640,7 @@ const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem, onUpdat
       type='button'
       title='Select list item'
       onClick={() => onSelectListItem(data)}
-      className='flex-1 text-sm text-left'
+      className='flex-1 py-3 pr-2 text-sm text-left'
     >
       <p className={data.is_checked ? 'opacity-60 line-through' : ''}>{data?.title}</p>
     </button>
@@ -589,9 +651,9 @@ const ListItemViewForm = ({ selectedListData, onCreateListItem }) => {
   const [input, setInput] = React.useState("");
 
   return (
-    <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90 sh'>
+    <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90'>
       <form 
-        className='relative overflow-hidden'
+        className='relative overflow-hidden bg-blue-200'
         onSubmit={onCreateListItem}
         onReset={() => setInput("")}
       >
@@ -629,13 +691,10 @@ const ListItemViewForm = ({ selectedListData, onCreateListItem }) => {
 }
 
 
-
-
-const ListItemEditorView = ({ isOpen, onToggleView }) => {
-  
-  return (
-    <div>
-
+const ListItemEditorView = ({ listItemData, isOpen, onToggleView }) => {
+  return isOpen && (
+    <div className='w-80 max-h-screen bg-green-300/30'>
+      <p className='font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(listItemData)?.replaceAll(',"', ', "')}</p>
     </div>
   )
 }
