@@ -8,6 +8,7 @@ import listItemReducer from '../../reducers/listItemReducer';
 import taskItemReducer from '../../reducers/taskItemReducer';
 import { listItemTemplate, initialListItems } from '../../data/listItem';
 import { initialTaskItems  } from '../../data/taskItem';
+import TaskPanel from '../Task/TaskPanel';
 
 const App = () => {
   // view toggle states
@@ -185,7 +186,7 @@ const App = () => {
       />
 
       {/* list item view */}
-      <ListItemView
+      <TaskPanel
         listItemRowsData={listItemRows.data}
         selectedListItemData={selectedListItemData}
         selectedListData={selectedListData}
@@ -207,191 +208,6 @@ const App = () => {
   );
 }
 
-
-const ListItemView = ({ listItemRowsData, selectedListItemData, selectedListData, onToggleListEditView, onSelectListItem, onCreateListItem, onUpdateListItemCheckState, onDeleteList, onUpdateListCheckedItemState }) => (
-  <div className='grid pt-2 max-h-screen'>
-    <div className='relative grid grid-rows-[auto,1fr,auto] rounded-tl-xl px-10 overflow-scroll bg-blue-200'>
-      <ListItemViewLists
-        listItemRowsData={listItemRowsData}
-        selectedListItemData={selectedListItemData}
-        selectedListData={selectedListData}
-        onSelectListItem={onSelectListItem}
-        onUpdateListItemCheckState={onUpdateListItemCheckState}
-        onUpdateListCheckedItemState={onUpdateListCheckedItemState}
-      />
-      
-      <ListItemViewForm
-        selectedListData={selectedListData}
-        onCreateListItem={onCreateListItem}
-      />
-
-      <header className='-order-1 sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
-        {/* edit list */}
-        <button 
-          onClick={onToggleListEditView}
-          title='Edit list'
-          className='grid grid-cols-[auto,1fr] items-center rounded hover:bg-slate-500/40'
-        >
-          {/* list badge */}
-          <div className='grid place-items-center w-10 h-10'>
-            <span className='font-mono font-bold text-2xl leading-none'>
-              {selectedListData?.badge ?? listItemTemplate.badge}
-            </span>
-          </div>
-          {/* list name */}
-          <h2 className='pl-1 pr-2 font-medium text-2xl text-left truncate'>
-            {selectedListData?.name ?? listItemTemplate.name}
-          </h2>
-        </button>
-        
-        {/* delete list */}
-        <button
-          onClick={onDeleteList}
-          title='Delete list'
-          className='shrink-0 grid place-items-center rounded w-8 h-8 bg-white/50 hover:bg-white/80'
-        >
-          <span className='leading-none'>🗑️</span>
-        </button>
-      </header>
-    </div>
-  </div>
-);
-
-const ListItemViewLists = ({ listItemRowsData, selectedListItemData, selectedListData, onSelectListItem, onUpdateListItemCheckState, onUpdateListCheckedItemState }) => {
-  const [checkedItems, setCheckedItems] = React.useState(null);
-  const [uncheckedItems, setUncheckedItems] = React.useState(null);
-
-  React.useEffect(() => {
-    setCheckedItems(listItemRowsData.filter((listItem) => listItem.is_checked && listItem.list_id === selectedListData.id));
-    setUncheckedItems(listItemRowsData.filter((listItem) => !listItem.is_checked && listItem.list_id === selectedListData.id));
-  }, [listItemRowsData, selectedListData]);
-
-  return (
-    <main className=''>
-      {/* debug list */}
-      {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedListData).replaceAll(',"', ', "')}</p> */}
-
-      {/* list item - unchecked */}
-      <ul className='grid gap-[3px]'>
-        {uncheckedItems && uncheckedItems.map((listItem) => (
-          <ListItemViewRow
-            key={listItem.id}
-            data={listItem}
-            selectedListItemData={selectedListItemData}
-            onSelectListItem={onSelectListItem}
-            onUpdateListItemCheckState={onUpdateListItemCheckState}
-          />
-        ))}
-      </ul>
-
-      {checkedItems?.length !== 0 && (<>
-        {/* checked list item toggle */}
-        <button 
-          type='button'
-          className='flex items-center rounded my-2 px-2 py-1 bg-white/50 text-sm hover:bg-white/80'
-          onClick={onUpdateListCheckedItemState}
-        >
-          <span className={'px-1 scale-y-125 origin-center ' + (!selectedListData.is_checked_hidden ? 'rotate-90' : '')}>&gt;</span>
-          <p className='ml-1 mr-2'>Completed</p>
-          <span>{checkedItems?.length}</span>
-        </button>
-        {/* list item - checked */}
-        {!selectedListData.is_checked_hidden && (
-          <ul className='grid gap-[3px]'>
-            {checkedItems && checkedItems.map((listItem) => (
-              <ListItemViewRow
-                key={listItem.id}
-                data={listItem}
-                selectedListItemData={selectedListItemData}
-                onSelectListItem={onSelectListItem}
-                onUpdateListItemCheckState={onUpdateListItemCheckState}
-              />
-            ))}
-          </ul>
-        )}
-      </>)}
-    </main>
-  )
-}
-
-const ListItemViewRow = ({ data, selectedListItemData, onSelectListItem, onUpdateListItemCheckState }) => (
-  <li className={
-    'flex rounded-md cursor-pointer hover:bg-white/90 ' + 
-    (data.id === selectedListItemData?.id ? 'bg-white' : 'bg-white/70')
-  }>
-    {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(data).replaceAll(',"', ', "')}</p> */}
-
-    {/* toggle is_checked */}
-    <button
-      type='button'
-      title={data.is_checked ? 'Mark as incomplete' : 'Mark as complete'}
-      onClick={() => onUpdateListItemCheckState(data)}
-      className="group shrink-0 px-3 py-4 self-start"
-    >
-      {/* border */}
-      <div className='group grid place-items-center w-[18px] h-[18px] border-2 border-slate-700 rounded-full'>
-        {/* check mark */}
-        <div className={
-          'w-2 h-2 bg-slate-700/80 rounded-full transition-all group-hover:opacity-100 ' +
-          (data.is_checked ? 'opacity-100 group-active:scale-50' : 'opacity-0 group-active:scale-150')
-        } />
-      </div>
-    </button>
-
-    {/* select list item */}
-    <button
-      type='button'
-      title='Select list item'
-      onClick={() => onSelectListItem(data)}
-      className='flex-1 py-3 pr-2 text-sm text-left'
-    >
-      <p className={data.is_checked ? 'opacity-60 line-through' : ''}>{data?.title}</p>
-    </button>
-  </li>
-);
-
-const ListItemViewForm = ({ selectedListData, onCreateListItem }) => {
-  const [input, setInput] = React.useState("");
-
-  return (
-    <footer className='sticky bottom-0 pt-2 pb-10 w-full bg-blue-200/90'>
-      <form 
-        className='relative overflow-hidden bg-blue-200'
-        onSubmit={onCreateListItem}
-        onReset={() => setInput("")}
-      >
-        {/* list item - title */}
-        <input 
-          name='title'
-          type='text' 
-          minLength={1}
-          placeholder='Add a task'
-          autoComplete='off'
-          title={`Add a task in "${selectedListData.name}"`}
-          className='peer rounded-md py-4 px-11 w-full bg-white/50 text-sm leading-none appearance-none outline-none placeholder:text-black/90 hover:bg-white/80 active:bg-white focus:bg-white'
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-
-        {/* list item - unchecked state (decorative) */}
-        <div className={'absolute inset-0 right-auto hidden items-center px-3 pointer-events-none peer-focus:grid ' + (input.length > 0 ? '!grid' : '')}>
-          <div className='w-[18px] h-[18px] border-2 border-slate-700 rounded-full' />
-        </div>
-
-        {/* submit */}
-        <button
-          type='submit'
-          title={input.trim().length > 0 ? 'Add new list item' : 'Invalid input'}
-          className={'absolute inset-0 left-auto hidden px-2 cursor-pointer peer-focus:block ' + (input.trim().length > 0 ? '!block' : '!cursor-not-allowed')}
-          disabled={input.trim().length < 1}
-        >
-          {/* <span>↑</span> */}
-          <span className={'text-xl leading-none ' + (input.trim().length > 0 ? 'opacity-90' : 'opacity-30')}>⬆️</span> 
-        </button>
-      </form>
-    </footer>
-  )
-}
 
 
 const ListItemEditorView = ({ listItemData, isOpen, onToggleView }) => {
