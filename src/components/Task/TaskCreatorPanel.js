@@ -13,7 +13,7 @@ const TaskCreatorPanel = ({
         onSubmit={onCreateTask}
         onReset={() => setInput("")}
       >
-        {/* task - title */}
+        {/* task title */}
         <input 
           name='title'
           type='text' 
@@ -26,7 +26,7 @@ const TaskCreatorPanel = ({
           onChange={(e) => setInput(e.target.value)}
         />
 
-        {/* task - default is_complete state (decorative) */}
+        {/* task - decorative is_complete default state */}
         <div className={
           'absolute inset-0 right-auto hidden items-center px-3 pointer-events-none peer-focus:grid ' + 
           (input.length > 0 ? '!grid' : '')
@@ -34,7 +34,7 @@ const TaskCreatorPanel = ({
           <div className='w-[18px] h-[18px] border-2 border-slate-700 rounded-full' />
         </div>
 
-        {/* submit */}
+        {/* submit task */}
         <button
           type='submit'
           title={input.trim().length > 0 ? 'Add new task' : 'Invalid input'}
