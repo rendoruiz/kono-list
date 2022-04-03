@@ -285,7 +285,15 @@ const App = () => {
   const [selectedListItemData, setSelectedListItemData] = useLocalState('selected_list_item', initialListItemRows[0]);
   
   // list item - handlers
-  const handleSelectListItem = (listItemData) => setSelectedListItemData(listItemData);
+  const handleSelectListItem = (listItemData) => {
+    if (selectedListItemData && listItemData.id === selectedListItemData.id) {
+      setSelectedListItemData(null);
+    setIsListItemEditorViewOpen(false);
+    } else {
+      setSelectedListItemData(listItemData);
+      setIsListItemEditorViewOpen(true);
+    }
+  }
   const handleCreateListItem = (event) => {
     const newListItemId = uuidv4();
     dispatchListItemRows({
@@ -315,7 +323,6 @@ const App = () => {
   }
 
   // list item - effects
-  
 
   return (
     <div className='grid grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
@@ -353,6 +360,7 @@ const App = () => {
       {/* list item editor view */}
       <ListItemEditorView
         isOpen={isListItemEditorViewOpen}
+        listItemData={selectedListItemData}
         onToggleView={handleToggleListItemEditorView}
       />
     </div>
@@ -683,11 +691,10 @@ const ListItemViewForm = ({ selectedListData, onCreateListItem }) => {
 }
 
 
-const ListItemEditorView = ({ isOpen, onToggleView }) => {
-  
-  return (
-    <div>
-
+const ListItemEditorView = ({ listItemData, isOpen, onToggleView }) => {
+  return isOpen && (
+    <div className='w-80 max-h-screen bg-green-300/30'>
+      <p className='font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(listItemData)?.replaceAll(',"', ', "')}</p>
     </div>
   )
 }
