@@ -17,16 +17,15 @@ const App = () => {
   // panel toggle states
   const [isListPanelOpen, setIsListPanelOpen] = React.useState(true);
   const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
-  const [isTaskEditorPanelOpen, setIsTaskEditorPanelOpen] = useLocalState('is_task_editor_open', false);
 
   // panel toggle handlers
   const handleToggleListPanel = () => setIsListPanelOpen(!isListPanelOpen);
   const handleToggleListEditorPanel = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
-  const handleToggleTaskEditorPanel = () => setIsTaskEditorPanelOpen(!isTaskEditorPanelOpen);
+  const handleCloseTaskEditorPanel = () => setSelectedTask(null);
   
   // list & task states
   const [selectedList, setSelectedList] = useLocalState('selected_list', initialListItems[0]);
-  const [selectedTask, setSelectedTask] = useLocalState('selected_task', initialTaskItems[0]);
+  const [selectedTask, setSelectedTask] = useLocalState('selected_task', null);
 
   // list & task reducers
   const [listItems, dispatchListItems] = React.useReducer(
@@ -49,7 +48,6 @@ const App = () => {
   const handleSelectList = (list) => {
     setSelectedList(list);
     setSelectedTask(null);
-    setIsTaskEditorPanelOpen(false);
   }
   // create id, create list template, assign as selected list, close list editor panel
   const handleCreateList = () => {
@@ -126,10 +124,8 @@ const App = () => {
   const handleSelectTask = (task) => {
     if (selectedTask && task.id === selectedTask.id) {
       setSelectedTask(null);
-      setIsTaskEditorPanelOpen(false);
     } else {
       setSelectedTask(task);
-      setIsTaskEditorPanelOpen(true);
     }
   }
   // create id, create new task with given data, reset form fields, close task editor, remove selected task
@@ -143,7 +139,6 @@ const App = () => {
         title: event.target.title.value,
       }
     });
-    setIsTaskEditorPanelOpen(false);
     setSelectedTask(null);
     event.target.reset();
     event.preventDefault();
@@ -194,9 +189,8 @@ const App = () => {
 
       {/* task editor right panel */}
       <TaskEditorPanel
-        isOpen={isTaskEditorPanelOpen}
         task={selectedTask}
-        onToggleView={handleToggleTaskEditorPanel}
+        onClosePanel={handleCloseTaskEditorPanel}
       />
     </div>
   );
