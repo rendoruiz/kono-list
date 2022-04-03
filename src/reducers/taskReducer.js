@@ -1,6 +1,6 @@
 import { taskTemplate } from "../data/taskItem";
 
-const taskItemReducer = (state, action) => {
+const taskReducer = (state, action) => {
   let newState;
 
   switch(action.type) {
@@ -53,4 +53,4 @@ const taskItemReducer = (state, action) => {
   return newState;
 }
  
-export default taskItemReducer;
+export default taskReducer;

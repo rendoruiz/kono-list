@@ -8,8 +8,8 @@ import TaskPanel from '../Task/TaskPanel';
 import TaskEditorPanel from '../Task/TaskEditorPanel';
 // hooks, reducers, data
 import useLocalState from '../../hooks/useLocalState';
-import listItemReducer from '../../reducers/listItemReducer';
-import taskItemReducer from '../../reducers/taskItemReducer';
+import listReducer from '../../reducers/listReducer';
+import taskReducer from '../../reducers/taskReducer';
 import { listTemplate, initialListItems } from '../../data/listItem';
 import { initialTaskItems } from '../../data/taskItem';
 
@@ -30,14 +30,14 @@ const App = () => {
 
   // list & task reducers
   const [listItems, dispatchListItems] = React.useReducer(
-    listItemReducer,
+    listReducer,
     { 
       data: JSON.parse(localStorage.getItem('lists')) ?? initialListItems, 
       localKey: 'lists',
     }
   );
   const [taskItems, dispatchTaskItems] = React.useReducer(
-    taskItemReducer,
+    taskReducer,
     {
       data: JSON.parse(localStorage.getItem('tasks')) ?? initialTaskItems,
       localKey: 'tasks',

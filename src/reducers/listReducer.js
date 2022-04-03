@@ -1,6 +1,6 @@
 import { listTemplate } from "../data/listItem";
 
-const listItemReducer = (state, action) => {
+const listReducer = (state, action) => {
   let newState;
 
   switch(action.type) {
@@ -50,4 +50,4 @@ const listItemReducer = (state, action) => {
   return newState;
 }
  
-export default listItemReducer;
+export default listReducer;
