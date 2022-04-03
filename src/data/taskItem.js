@@ -1,11 +1,11 @@
 const taskItemTemplate = {
   id: null,
   list_id: null,
+  title: null,
   is_checked: false,
+  note: null,
   date_created: Date.now(),
   date_updated: null,
-  title: null,
-  note: null,
 }
 
 const initialTaskItems = [
@@ -20,8 +20,8 @@ const initialTaskItems = [
     ...taskItemTemplate,
     id: 1,
     list_id: 0,
-    is_checked: true,
     title: 'List Item 2',
+    is_checked: true,
     note: 'List Item 2 note',
   },
   {

@@ -4,60 +4,10 @@ import { v4 as uuidv4 } from 'uuid';
 import ListPanel from '../List/ListPanel';
 import ListEditorPopup from '../List/ListEditorPopup';
 import useLocalState from '../../hooks/useLocalState';
-import { listItemTemplate, initialListItems } from '../../data/listItem';
-import { taskItemTemplate, initialTaskItems  } from '../../data/taskItem';
 import listItemReducer from '../../reducers/listItemReducer';
-
-
-const listItemRowsReducer = (state, action) => {
-  let newState;
-
-  switch(action.type) {
-    case 'LIST_ITEM_CREATE':
-      const newListItem = {
-        ...taskItemTemplate,
-        id: action.payload.id,
-        list_id: action.payload.list_id,
-        title: action.payload.title,
-      };
-      newState = { 
-        ...state,
-        data: [...state.data, newListItem],
-      };
-      break;
-    case 'LIST_ITEM_UPDATE':
-      newState = {
-        ...state,
-        data: state.data.map((listItem) => {
-          if (listItem.id === action.payload.id) {
-            return {
-              ...listItem,
-              list_id: action.payload.list_id ?? listItem.list_id,
-              is_checked: action.payload.is_checked ?? listItem.is_checked,
-              title: action.payload.title ?? listItem.title,
-              note: action.payload.note ?? listItem.note,
-              date_updated: Date.now(),
-            }
-          }
-          return listItem;
-        }),
-    }
-      break;
-    case 'LIST_ITEM_DELETE':
-      newState = {
-        ...state,
-        data: state.data.filter(
-          (listItem) => listItem.id !== action.payload.id
-        ),
-      };
-      break;
-    default:
-      throw new Error();
-  }
-
-  localStorage.setItem(state.localKey, JSON.stringify(newState.data));
-  return newState;
-}
+import taskItemReducer from '../../reducers/taskItemReducer';
+import { listItemTemplate, initialListItems } from '../../data/listItem';
+import { initialTaskItems  } from '../../data/taskItem';
 
 const App = () => {
   // view toggle states
@@ -164,7 +114,7 @@ const App = () => {
 
   // list item - reducers
   const [listItemRows, dispatchListItemRows] = React.useReducer(
-    listItemRowsReducer,
+    taskItemReducer,
     {
       data: JSON.parse(localStorage.getItem('list_items')) ?? initialTaskItems,
       localKey: 'list_items',
@@ -187,7 +137,7 @@ const App = () => {
   const handleCreateListItem = (event) => {
     const newListItemId = uuidv4();
     dispatchListItemRows({
-      type: 'LIST_ITEM_CREATE',
+      type: 'TASK_CREATE',
       payload: {
         id: newListItemId,
         list_id: selectedListData.id,
@@ -204,7 +154,7 @@ const App = () => {
   }
   const handleUpdateListItemCheckState = (listItemData) => {
     dispatchListItemRows({
-      type: 'LIST_ITEM_UPDATE',
+      type: 'TASK_UPDATE',
       payload: {
         id: listItemData.id,
         is_checked: !listItemData.is_checked,
