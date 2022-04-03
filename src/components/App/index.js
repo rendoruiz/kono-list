@@ -19,16 +19,16 @@ const App = () => {
   const [isTaskEditorPanelOpen, setIsTaskEditorPanelOpen] = useLocalState('is_task_editor_open', false);
 
   // view toggle handlers
-  const handleToggleListView = () => setIsListPanelOpen(!isListPanelOpen);
-  const handleToggleListEditorView = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
-  const handleToggleListItemEditorView = () => setIsTaskEditorPanelOpen(!isTaskEditorPanelOpen);
+  const handleToggleListPanel = () => setIsListPanelOpen(!isListPanelOpen);
+  const handleToggleListEditorPanel = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
+  const handleToggleTaskEditorPanel = () => setIsTaskEditorPanelOpen(!isTaskEditorPanelOpen);
   
   // list - reducers
-  const [listRows, dispatchListRows] = React.useReducer(
+  const [listItems, dispatchListItems] = React.useReducer(
     listItemReducer,
     { 
-      data: JSON.parse(localStorage.getItem('list_items')) ?? initialListItems, 
-      localKey: 'list_items',
+      data: JSON.parse(localStorage.getItem('lists')) ?? initialListItems, 
+      localKey: 'lists',
     }
   );
 
@@ -45,29 +45,29 @@ const App = () => {
   const handleCreateList = () => {
     // create unique id and create temp list
     const newListId = uuidv4();
-    dispatchListRows({
+    dispatchListItems({
       type: 'LIST_CREATE',
       payload: { id: newListId }
     });
     // set created id as selected list and close editor
 
     setSelectedListData({ id: newListId });
-    handleToggleListEditorView();
+    handleToggleListEditorPanel();
   }
   const handleCancelCreateList = (event) => {
     // delete recently created list
-    dispatchListRows({
+    dispatchListItems({
       type: 'LIST_DELETE',
       payload: { id: selectedListData.id }
     });
     // assign the list before the recently created list as the selected list
     setCompletedSelectedListData(true);
     // close list editor
-    handleToggleListEditorView();
+    handleToggleListEditorPanel();
     event.preventDefault();
   }
   const handleUpdateList = ({ name, badge }) => {
-    dispatchListRows({
+    dispatchListItems({
       type: 'LIST_UPDATE',
       payload: {
         ...selectedListData,
@@ -78,11 +78,11 @@ const App = () => {
 
     // close editor
     setCompletedSelectedListData();
-    handleToggleListEditorView();
+    handleToggleListEditorPanel();
   }
   const handleDeleteList = (event) => {
     if (window.confirm(`Are you sure you want to delete this list: "${selectedListData.name}"?`)) {
-      dispatchListRows({
+      dispatchListItems({
         type: 'LIST_DELETE',
         payload: { id: selectedListData.id }
       });
@@ -92,13 +92,13 @@ const App = () => {
     event.preventDefault();
   }
   const setCompletedSelectedListData = (goBackward = false) => {
-    const index = listRows.data.findIndex((list) => list.id === selectedListData.id);
-    const newdata = listRows.data[index - (goBackward ? 1 : 0)]
+    const index = listItems.data.findIndex((list) => list.id === selectedListData.id);
+    const newdata = listItems.data[index - (goBackward ? 1 : 0)]
     setSelectedListData({...selectedListData, ...newdata});
-    // setSelectedListId(listRows.data[selectedListIndex - (goBackward ? 1 : 0)])
+    // setSelectedListId(listItems.data[selectedListIndex - (goBackward ? 1 : 0)])
   }
   const handleUpdateListCheckedItemState = () => {
-    dispatchListRows({
+    dispatchListItems({
       type: 'LIST_UPDATE',
       payload: {
         id: selectedListData.id,
@@ -110,9 +110,9 @@ const App = () => {
   // list - effects
   React.useEffect(() => {
     // keep selectedlistdata up to date with listrows record it is referencing.
-    const index = listRows.data.findIndex((list) => list.id === selectedListData.id);
-    setSelectedListData({...selectedListData, ...listRows.data[index]});
-  }, [listRows.data]);
+    const index = listItems.data.findIndex((list) => list.id === selectedListData.id);
+    setSelectedListData({...selectedListData, ...listItems.data[index]});
+  }, [listItems.data]);
 
 
   // list item - reducers
@@ -172,9 +172,9 @@ const App = () => {
       {/* list view */}
       <ListPanel
         isOpen={isListPanelOpen} 
-        listRowsData={listRows.data}
+        listRowsData={listItems.data}
         selectedListData={selectedListData}
-        onToggleView={handleToggleListView} 
+        onToggleView={handleToggleListPanel} 
         onSelectList={handleSelectList}
         onCreateList={handleCreateList}
       />
@@ -192,7 +192,7 @@ const App = () => {
         listItemRowsData={listItemRows.data}
         selectedListItemData={selectedListItemData}
         selectedListData={selectedListData}
-        onToggleListEditView={handleToggleListEditorView}
+        onToggleListEditView={handleToggleListEditorPanel}
         onSelectListItem={handleSelectListItem}
         onCreateListItem={handleCreateListItem}
         onUpdateListItemCheckState={handleUpdateListItemCheckState}
@@ -204,7 +204,7 @@ const App = () => {
       <TaskEditorPanel
         isOpen={isTaskEditorPanelOpen}
         listItemData={selectedListItemData}
-        onToggleView={handleToggleListItemEditorView}
+        onToggleView={handleToggleTaskEditorPanel}
       />
     </div>
   );
