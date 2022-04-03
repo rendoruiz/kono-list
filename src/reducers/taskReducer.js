@@ -27,7 +27,7 @@ const taskReducer = (state, action) => {
               list_id: action.payload.list_id ?? task.list_id,
               title: action.payload.title ?? task.title,
               is_complete: action.payload.is_complete ?? task.is_complete,
-              note: action.payload.note ?? task.note,
+              note: action.payload.note ?? "",
               date_updated: Date.now(),
             }
           }

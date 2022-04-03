@@ -169,6 +169,26 @@ const App = () => {
       }
     });
   }
+  //
+  const handleUpdateTask = ({ title, note }) => {
+    dispatchTaskItems({
+      type: 'TASK_UPDATE',
+      payload: {
+        ...selectedTask,
+        title: title?.trim().length > 0 ? title?.trim() : selectedTask.title,
+        note: note?.trim(),
+      },
+    });
+  }
+  //
+  const handleDeleteTask = (event) => {
+    dispatchTaskItems({
+      type: 'TASK_DELETE',
+      payload: { id: selectedTask.id },
+    });
+    setSelectedTask(null);
+    event.preventDefault();
+  }
 
   return (
     <div className='grid grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
@@ -208,6 +228,8 @@ const App = () => {
         task={selectedTask}
         selectedList={selectedList}
         onClosePanel={handleCloseTaskEditorPanel}
+        onUpdateTask={null}
+        onDeleteTask={handleDeleteTask}
         onToggleTaskCompleteState={handleToggleTaskCompleteState}
       />
     </div>

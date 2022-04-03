@@ -23,6 +23,7 @@ const initialTaskItems = [
     title: 'List Item 2',
     is_complete: true,
     note: 'List Item 2 note',
+    date_updated: Date.now(),
   },
   {
     ...taskTemplate,

@@ -7,6 +7,8 @@ const TaskEditorPanel = ({
   task, 
   selectedList,
   onClosePanel,
+  onUpdateTask,
+  onDeleteTask,
   onToggleTaskCompleteState
 }) => {
   const handleSubmit = (e) => {
@@ -86,6 +88,7 @@ const TaskEditorPanel = ({
           type='button'
           title='Delete task'
           className='group grid place-content-center rounded p-1 w-10 h-10  text-xl leading-none hover:bg-slate-500/10 active:bg-slate-500/20'
+          onClick={onDeleteTask}
         >
           🗑️
         </button>
