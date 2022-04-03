@@ -113,10 +113,12 @@ const App = () => {
   // list - effects
   // makes sure the selected list object data is always up to date
   React.useEffect(() => {
-    const index = listItems.data.findIndex((list) => list.id === selectedList.id);
-    setSelectedList({...selectedList, ...listItems.data[index]});
-  }, [listItems.data]);
-
+    setSelectedList(listItems.data.find((list) => list.id === selectedList.id));
+  }, [listItems.data, selectedList]);
+  // makes sure the selected task object data is always up to date
+  React.useEffect(() => {
+    setSelectedTask(taskItems.data.find((task) => task.id === selectedTask.id));
+  }, [taskItems.data, selectedTask]);
   
   // task - handlers
   // remove selected task & close task editor panel if the newly selected task is the same
@@ -191,6 +193,7 @@ const App = () => {
       <TaskEditorPanel
         task={selectedTask}
         onClosePanel={handleCloseTaskEditorPanel}
+        onToggleTaskCompleteState={handleToggleTaskCompleteState}
       />
     </div>
   );
