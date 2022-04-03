@@ -31,7 +31,7 @@ const ListPanel = ({
         onClick={onCreateList}
         className='group w-full px-1 py-[2px]'
       >
-        <div className='flex items-center rounded w-full group-hover:bg-slate-500/10'>
+        <div className='flex items-center rounded w-full group-hover:bg-slate-500/10 group-active:bg-slate-500/30'>
           <div className='flex-none grid place-items-center w-10 h-10'>
             <span className='pb-[2px] font-mono text-2xl leading-none'>+</span>
           </div>
