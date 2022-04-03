@@ -29,6 +29,7 @@ const TaskPanel = ({
         onCreateTask={onCreateTask}
       />
 
+      {/* selected list */}
       <header className='-order-1 sticky top-0 flex items-center justify-between pt-10 pb-5 bg-blue-200/90'>
         {/* edit list */}
         <button 
@@ -42,6 +43,7 @@ const TaskPanel = ({
               {selectedList?.badge ?? listItemTemplate.badge}
             </span>
           </div>
+          
           {/* list name */}
           <h2 className='pl-1 pr-2 font-medium text-2xl text-left truncate'>
             {selectedList?.name ?? listItemTemplate.name}
@@ -54,7 +56,9 @@ const TaskPanel = ({
           title='Delete list'
           className='shrink-0 grid place-items-center rounded w-8 h-8 bg-white/50 hover:bg-white/80'
         >
-          <span className='leading-none'>🗑️</span>
+          <span className='leading-none'>
+            🗑️
+          </span>
         </button>
       </header>
     </div>

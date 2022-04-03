@@ -52,7 +52,11 @@ const TaskPanelList = ({
             >
               &gt;
             </span>
-            <p className='ml-1 mr-2'>Completed</p>
+
+            <p className='ml-1 mr-2'>
+              Completed
+            </p>
+            
             {/* completed task count */}
             <span>{completedTasks?.length}</span>
           </button>
