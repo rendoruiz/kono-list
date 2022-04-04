@@ -10,7 +10,7 @@ const TaskCreatorPanel = ({
   const handleReset = () => setInput("");
 
   return (
-    <footer className='sticky bottom-0  w-full bg-blue-200/90 md:pt-[6px] md:pb-10'>
+    <footer className='fixed bottom-0 w-full bg-blue-200/90 md:sticky md:pt-[6px] md:pb-10'>
       <form 
         className='relative overflow-hidden bg-blue-200'
         onSubmit={onCreateTask}

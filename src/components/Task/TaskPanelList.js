@@ -21,7 +21,7 @@ const TaskPanelList = ({
   }, [taskItems, selectedList]);
 
   return (
-    <main className='py-1 px-2 overflow-y-auto md:px-0'>
+    <main className='pt-1 pb-14 px-2 overflow-y-auto md:pb-1 md:px-0'>
       {/* debug list */}
       {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedList).replaceAll(',"', ', "')}</p> */}
 
