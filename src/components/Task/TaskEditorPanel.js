@@ -41,7 +41,7 @@ const TaskEditorPanel = ({
       />
 
       <div className={
-        'absolute inset-0 left-auto z-30 grid grid-rows-[auto,1fr,auto] gap-2 w-full h-full max-h-screen bg-slate-100 overflow-scroll transition-transform duration-200 bp520:w-80 lg:relative lg:translate-x-0 lg:transition-none ' +
+        'absolute inset-0 left-auto z-30 grid grid-rows-[auto,1fr,auto] w-full h-screen bg-slate-100  transition-transform duration-200 bp520:max-w-[340px] lg:relative lg:z-auto lg:translate-x-0 lg:transition-none ' +
         (task ? 'lg:translate-x-0' : 'translate-x-full lg:hidden')
       }>
         {/* debug */}
@@ -67,7 +67,7 @@ const TaskEditorPanel = ({
           </p>
         </header>
 
-        <main className='px-2 sm:px-3'>
+        <main className='p-2 sm:px-3  overflow-y-auto overflow-x-hidden'>
           <form 
             onSubmit={handleSubmit}
             className='grid gap-3'
