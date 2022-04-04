@@ -41,7 +41,7 @@ const TaskEditorPanel = ({
       />
 
       <div className={
-        'absolute inset-0 left-auto z-30 grid grid-rows-[auto,1fr,auto] w-full h-screen bg-slate-100  transition-transform duration-200 bp520:max-w-[340px] lg:relative lg:z-auto lg:translate-x-0 lg:transition-none ' +
+        'absolute inset-0 left-auto z-30 grid grid-rows-[auto,1fr,auto] w-full h-screen bg-slate-100 \ transition-transform duration-200 bp520:max-w-[340px] lg:relative lg:z-auto lg:translate-x-0 lg:transition-none ' +
         (task ? 'lg:translate-x-0' : 'translate-x-full lg:hidden')
       }>
         {/* debug */}
@@ -52,17 +52,17 @@ const TaskEditorPanel = ({
             {JSON.stringify(task)?.replaceAll(',"', ', "')}
         </p>  */}
 
-        {/* mobile navigation & list name / close panel */}
-        <header className='sticky top-0 grid grid-cols-[auto,1fr] items-center pt-1 pb-3 px-2 bg-inherit sm:grid-cols-1 sm:justify-items-end sm:pb-0 sm:px-3'>
+        {/* task editor panel close button */}
+        <header className='sticky top-0 grid grid-cols-[auto,1fr] items-center pt-[10px] pb-3 px-2 bg-inherit sm:grid-cols-1 sm:justify-items-end sm:pb-0 sm:px-3'>
           <button 
             type='button'
-            className='grid place-items-center rounded w-8 h-8 text-lg leading-none hover:bg-slate-500/10 active:bg-slate-500/20'
+            className='grid place-items-center rounded mr-2 w-9 h-9 text-2xl leading-none hover:bg-slate-500/10 active:bg-slate-500/20'
             onClick={onClosePanel}
           >
             <span className='sm:hidden'>⬅️</span>
             <span className='hidden sm:block'>❌</span>
           </button>
-          <p className='pl-1 text-lg truncate sm:hidden'>
+          <p className='font-bold text-lg truncate sm:hidden'>
             { selectedList.name }
           </p>
         </header>
