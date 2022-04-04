@@ -24,7 +24,7 @@ const TaskCreatorPanel = ({
           placeholder='Add a task'
           autoComplete='off'
           title={`Add a task on "${selectedList?.name}"`}
-          className='peer px-[50px] py-3 w-full bg-white text-sm leading-none appearance-none outline-none placeholder:text-black/90 md:px-11 md:py-4 md:rounded-md md:bg-white/50 md:hover:bg-white/80 md:active:bg-white md:focus:bg-white'
+          className='peer px-[50px] py-4 w-full bg-white text-sm leading-none appearance-none outline-none placeholder:text-black/90 md:px-11 md:rounded-md md:bg-white/50 md:hover:bg-white/80 md:active:bg-white md:focus:bg-white'
           value={input}
           onChange={handleInputChange}
         />

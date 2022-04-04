@@ -23,7 +23,7 @@ const ListPanel = ({
       'fixed inset-0 right-auto z-30 grid grid-rows-[1fr,auto] pt-2 w-full h-screen bg-slate-100 transition-transform duration-200 bp520:w-72 md:relative md:translate-x-0 md:transition-none  ' +
       (isOpen ? 'md:translate-x-0' : '-translate-x-full')
     }>
-      <main className='overflow-y-auto'>
+      <main className='overflow-y-auto pb-16 bp520:pb-0'>
         {/* list items */}
         <ul className='grid py-1'>
           {listItems.map((list) => (
@@ -39,12 +39,12 @@ const ListPanel = ({
 
       {/* <header className='-order-1 sticky top-0 border-b-2 py-3 px-5 '></header> */}
 
-      <footer className='sticky bottom-0 border-t-2 py-[2px]'>
+      <footer className='fixed inset-0 top-auto bottom-0 border-t-2 py-[2px] bg-inherit bp520:sticky'>
         {/* add new list button */}
         <button 
           title='New list: Add a list'
           onClick={onCreateList}
-          className='group w-full px-1 py-[2px]'
+          className='group w-full px-1 py-2 bp520:py-[2px]'
         >
           <div className='flex items-center rounded w-full group-hover:bg-slate-500/10 group-active:bg-slate-500/30'>
             <div className='flex-none grid place-items-center w-10 h-10'>

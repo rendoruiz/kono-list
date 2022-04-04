@@ -110,7 +110,7 @@ const TaskEditorPanel = ({
         </main>
 
         {/* date created, delete */}
-        <footer className='sticky bottom-0 grid grid-cols-[1fr,auto] items-center gap-1 border-t-2 py-[2px] pl-3 pr-1 bg-inherit sm:justify-items-center'>
+        <footer className='fixed inset-0 top-auto bottom-0 grid grid-cols-[1fr,auto] items-center gap-1 border-t-2 py-[2px] pl-3 pr-1 bg-inherit bp520:sticky bp520:justify-items-center'>
           <div className='grid text-sm text-black/70 leading-none'>
             {task?.is_complete ? `Completed ${task?.date_updated}` : `Created ${task?.date_created}`}
           </div>
