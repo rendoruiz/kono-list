@@ -15,12 +15,15 @@ const ListEditorPopup = ({
   React.useEffect(() => {
     if (isOpen && list) {
       setName(list.name ?? "");
-      setIcon(list.icon ?? "");
+      if (list.date_updated) {
+        setIcon(list.icon ?? "");
+      }
     }
   }, [isOpen, list]);
 
   const handleNameChange = (e) => setName(e.target.value);
   const handleBadgeChange = (e) => setIcon(e.target.value);
+  const handleClick = (e) => e.target.select();
 
   const handleSubmit = (event) => {
     onUpdateList({
@@ -62,18 +65,20 @@ const ListEditorPopup = ({
             maxLength={1}
             placeholder={listTemplate.icon}
             autoComplete='off'
-            className='flex-none border-b-2 border-b-blue-600 rounded-b w-8 h-8 text-lg text-center leading-none appearance-none outline-none placeholder:opacity-30 active:select-all'
+            className='flex-none border-b-2 border-b-blue-600 rounded-b-sm w-8 h-8 text-lg text-center leading-none appearance-none outline-none placeholder:opacity-40 active:select-all'
             value={icon}
             onChange={handleBadgeChange}
+            onClick={handleClick}
           />
           <input 
             name='name'
             type='text'
             placeholder={listTemplate.name}
             autoComplete='off'
-            className='flex-1 border-b-2 border-b-blue-600 rounded-b ml-2 px-1 w-full appearance-none outline-none'
+            className='flex-1 border-b-2 border-b-blue-600 rounded-b-sm ml-2 px-1 w-full appearance-none outline-none placeholder:opacity-40'
             value={name}
             onChange={handleNameChange}
+            onClick={handleClick}
           />
         </div>
 
