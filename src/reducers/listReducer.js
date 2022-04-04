@@ -1,4 +1,5 @@
 import { listTemplate } from "../data/list";
+import { encryptObject } from "../utils/cryptoJs";
 
 const listReducer = (state, action) => {
   let newState;
@@ -46,7 +47,7 @@ const listReducer = (state, action) => {
       throw new Error();
   }
 
-  localStorage.setItem(state.localKey, JSON.stringify(newState.data));
+  localStorage.setItem(state.localKey, encryptObject(newState.data));
   return newState;
 }
  

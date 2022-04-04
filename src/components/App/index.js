@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { v4 as uuidv4 } from 'uuid';
 
 // components
@@ -6,12 +7,13 @@ import ListPanel from '../List/ListPanel';
 import ListEditorPopup from '../List/ListEditorPopup';
 import TaskPanel from '../Task/TaskPanel';
 import TaskEditorPanel from '../Task/TaskEditorPanel';
-// hooks, reducers, data
+// hooks, reducers, data, utils
 import useLocalState from '../../hooks/useLocalState';
 import listReducer from '../../reducers/listReducer';
 import taskReducer from '../../reducers/taskReducer';
 import { listTemplate, initialListItems } from '../../data/list';
 import { initialTaskItems } from '../../data/task';
+import { decryptObject } from '../../utils/cryptoJs';
 
 const App = () => {
   // panel toggle states
@@ -24,22 +26,22 @@ const App = () => {
   const handleCloseTaskEditorPanel = () => setSelectedTask(null);
   
   // list & task states
-  const [selectedList, setSelectedList] = useLocalState('selected_list', initialListItems[0]);
-  const [selectedTask, setSelectedTask] = useLocalState('selected_task', null);
+  const [selectedList, setSelectedList] = useLocalState('sl', initialListItems[0]);
+  const [selectedTask, setSelectedTask] = useLocalState('st', null);
 
   // list & task reducers
   const [listItems, dispatchListItems] = React.useReducer(
     listReducer,
     { 
-      data: JSON.parse(localStorage.getItem('lists')) ?? initialListItems, 
-      localKey: 'lists',
+      data: decryptObject(localStorage.getItem('ls')) ?? initialListItems, 
+      localKey: 'ls',
     }
   );
   const [taskItems, dispatchTaskItems] = React.useReducer(
     taskReducer,
     {
-      data: JSON.parse(localStorage.getItem('tasks')) ?? initialTaskItems,
-      localKey: 'tasks',
+      data: decryptObject(localStorage.getItem('ts')) ?? initialTaskItems,
+      localKey: 'ts',
     }
   );
 
@@ -81,7 +83,7 @@ const App = () => {
       payload: {
         ...selectedList,
         name: name.trim().length > 0 ? name.trim() : listTemplate.name,
-        icon: icon,
+        icon: !selectedList.date_updated && !icon ? listTemplate.icon : icon,
       },
     });
     updateSelectedList();
