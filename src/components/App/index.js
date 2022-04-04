@@ -14,6 +14,8 @@ import { listTemplate, initialListItems } from '../../data/list';
 import { initialTaskItems } from '../../data/task';
 
 const App = () => {
+  console.log(process.env.REACT_APP_SECRET_KEY)
+
   // panel toggle states
   const [isListPanelOpen, setIsListPanelOpen] = React.useState(true);
   const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
@@ -24,8 +26,8 @@ const App = () => {
   const handleCloseTaskEditorPanel = () => setSelectedTask(null);
   
   // list & task states
-  const [selectedList, setSelectedList] = useLocalState('selected_list', initialListItems[0]);
-  const [selectedTask, setSelectedTask] = useLocalState('selected_task', null);
+  const [selectedList, setSelectedList] = useLocalState('slist', initialListItems[0]);
+  const [selectedTask, setSelectedTask] = useLocalState('stask', null);
 
   // list & task reducers
   const [listItems, dispatchListItems] = React.useReducer(
