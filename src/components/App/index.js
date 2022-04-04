@@ -131,12 +131,12 @@ const App = () => {
     if (selectedList) {
       setSelectedList(listItems.data.find((list) => list.id === selectedList.id));
     }
-  }, [listItems.data, selectedList]);
+  }, [listItems.data, selectedList, setSelectedList]);
   React.useEffect(() => {
     if (selectedTask) {
       setSelectedTask(taskItems.data.find((task) => task.id === selectedTask.id));
     }
-  }, [taskItems.data, selectedTask]);
+  }, [taskItems.data, selectedTask, setSelectedTask]);
   
   // task - handlers
   // remove selected task & close task editor panel if the newly selected task is the same
