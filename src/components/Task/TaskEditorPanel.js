@@ -34,14 +34,14 @@ const TaskEditorPanel = ({
       {/* mobile backdrop toggle */}
       <div 
         className={
-          'absolute inset-0 z-30 transition-opacity duration-300 bg-black/70 bp520:block lg:hidden ' +
+          'fixed inset-0 z-30 transition-opacity duration-300 bg-black/70 bp520:block lg:hidden ' +
           (task ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full')
         }
         onClick={onClosePanel}
       />
 
       <div className={
-        'absolute inset-0 left-auto z-30 grid grid-rows-[auto,1fr,auto] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:max-w-[340px] lg:relative lg:z-auto lg:translate-x-0 lg:transition-none ' +
+        'fixed inset-0 left-auto z-30 grid grid-rows-[auto,1fr,auto] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:max-w-[340px] lg:relative lg:z-auto lg:translate-x-0 lg:transition-none ' +
         (task ? 'lg:translate-x-0' : 'translate-x-full lg:hidden')
       }>
         {/* debug */}
@@ -53,7 +53,7 @@ const TaskEditorPanel = ({
         </p>  */}
 
         {/* task editor panel close button */}
-        <header className='sticky top-0 grid grid-cols-[auto,1fr] items-center pt-[10px] pb-3 px-2 bg-inherit sm:grid-cols-1 sm:justify-items-end sm:pb-0 sm:px-3'>
+        <header className='sticky top-0 grid grid-cols-[auto,1fr] items-center pt-[14px] pb-3 px-2 bg-inherit sm:grid-cols-1 sm:justify-items-end sm:pb-0 sm:px-3'>
           <button 
             type='button'
             className='grid place-items-center rounded mr-2 w-9 h-9 text-2xl leading-none hover:bg-slate-500/10 active:bg-slate-500/20 sm:mr-0 sm:w-8 sm:h-8 sm:text-lg'

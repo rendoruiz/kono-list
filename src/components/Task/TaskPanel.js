@@ -30,7 +30,7 @@ const TaskPanel = ({
     />
 
     {/* selected list */}
-    <header className='-order-1 sticky top-0 grid grid-cols-[auto,1fr,auto] items-center px-2 pt-2 pb-3 bg-blue-200/90 md:grid-cols-[1fr,auto] md:px-0 md:pt-10 md:pb-5'>
+    <header className='-order-1 sticky top-0 grid grid-cols-[auto,1fr,auto] items-center px-2 py-3 bg-blue-200/90 md:grid-cols-[1fr,auto] md:px-0 md:pt-10 md:pb-5'>
       {/* mobile - list panel toggle */}
       <button
         className='grid place-items-center rounded mr-2 w-9 h-9 text-2xl leading-none hover:bg-white/50 active:bg-white/70 md:hidden'

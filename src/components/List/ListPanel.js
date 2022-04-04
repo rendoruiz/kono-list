@@ -12,7 +12,7 @@ const ListPanel = ({
     {/* mobile backdrop toggle */}
     <div 
       className={
-        'absolute inset-0 z-30 transition-opacity duration-300 bg-black/70 md:hidden ' +
+        'fixed inset-0 z-30 transition-opacity duration-300 bg-black/70 md:hidden ' +
         (isOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full')
       }
       onClick={onTogglePanel}
@@ -20,7 +20,7 @@ const ListPanel = ({
 
     {/* panel */}
     <div className={
-      'absolute inset-0 right-auto z-30 grid grid-rows-[1fr,auto] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:w-72 md:relative md:translate-x-0 md:transition-none  ' +
+      'fixed inset-0 right-auto z-30 grid grid-rows-[1fr,auto] pt-2 w-full h-screen bg-slate-100 transition-transform duration-200 bp520:w-72 md:relative md:translate-x-0 md:transition-none  ' +
       (isOpen ? 'md:translate-x-0' : '-translate-x-full')
     }>
       <main className='overflow-y-auto'>

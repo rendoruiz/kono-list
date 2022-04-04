@@ -196,7 +196,7 @@ const App = () => {
   }
 
   return (
-    <div className='grid md:grid-cols-[auto,1fr,auto] h-screen w-full max-w-full bg-slate-100 overflow-hidden'>
+    <div className='grid md:grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
       {/* list left panel */}
       <ListPanel
         isOpen={isListPanelOpen} 
