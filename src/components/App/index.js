@@ -48,6 +48,7 @@ const App = () => {
   const handleSelectList = (list) => {
     setSelectedList(list);
     setSelectedTask(null);
+    handleToggleListPanel();
   }
   // create id, create list template, assign as selected list, close list editor panel
   const handleCreateList = () => {
@@ -192,7 +193,7 @@ const App = () => {
   }
 
   return (
-    <div className='grid sm:grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
+    <div className='grid md:grid-cols-[auto,1fr,auto] h-screen w-full max-w-full bg-slate-100 overflow-hidden'>
       {/* list left panel */}
       <ListPanel
         isOpen={isListPanelOpen} 

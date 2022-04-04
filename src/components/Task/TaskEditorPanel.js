@@ -34,14 +34,14 @@ const TaskEditorPanel = ({
       {/* mobile backdrop toggle */}
       <div 
         className={
-          ' absolute inset-0 z-30 transition-opacity duration-300 bg-black/70 lg:hidden ' +
+          'absolute inset-0 z-30 transition-opacity duration-300 bg-black/70 bp520:block lg:hidden ' +
           (task ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full')
         }
         onClick={onClosePanel}
       />
 
       <div className={
-        'absolute inset-0 left-auto z-30 grid grid-rows-[auto,1fr,auto] gap-2 w-80 h-full max-h-screen bg-slate-100 overflow-scroll transition-transform lg:relative lg:translate-x-0 lg:transition-none ' +
+        'absolute inset-0 left-auto z-30 grid grid-rows-[auto,1fr,auto] gap-2 w-full h-full max-h-screen bg-slate-100 overflow-scroll transition-transform duration-200 bp520:w-80 lg:relative lg:translate-x-0 lg:transition-none ' +
         (task ? 'lg:translate-x-0' : 'translate-x-full lg:hidden')
       }>
         {/* debug */}
