@@ -12,10 +12,9 @@ import listReducer from '../../reducers/listReducer';
 import taskReducer from '../../reducers/taskReducer';
 import { listTemplate, initialListItems } from '../../data/list';
 import { initialTaskItems } from '../../data/task';
+import { decryptObject } from '../../utils/cryptoJs';
 
 const App = () => {
-  console.log(process.env.REACT_APP_SECRET_KEY)
-
   // panel toggle states
   const [isListPanelOpen, setIsListPanelOpen] = React.useState(true);
   const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
@@ -26,22 +25,22 @@ const App = () => {
   const handleCloseTaskEditorPanel = () => setSelectedTask(null);
   
   // list & task states
-  const [selectedList, setSelectedList] = useLocalState('slist', initialListItems[0]);
-  const [selectedTask, setSelectedTask] = useLocalState('stask', null);
+  const [selectedList, setSelectedList] = useLocalState('sl', initialListItems[0]);
+  const [selectedTask, setSelectedTask] = useLocalState('st', null);
 
   // list & task reducers
   const [listItems, dispatchListItems] = React.useReducer(
     listReducer,
     { 
-      data: JSON.parse(localStorage.getItem('lists')) ?? initialListItems, 
-      localKey: 'lists',
+      data: decryptObject(localStorage.getItem('ls')) ?? initialListItems, 
+      localKey: 'ls',
     }
   );
   const [taskItems, dispatchTaskItems] = React.useReducer(
     taskReducer,
     {
-      data: JSON.parse(localStorage.getItem('tasks')) ?? initialTaskItems,
-      localKey: 'tasks',
+      data: decryptObject(localStorage.getItem('ts')) ?? initialTaskItems,
+      localKey: 'ts',
     }
   );
 

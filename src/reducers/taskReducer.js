@@ -1,4 +1,5 @@
 import { taskTemplate } from "../data/task";
+import { encryptObject } from "../utils/cryptoJs";
 
 const taskReducer = (state, action) => {
   let newState;
@@ -58,7 +59,7 @@ const taskReducer = (state, action) => {
       throw new Error();
   }
 
-  localStorage.setItem(state.localKey, JSON.stringify(newState.data));
+  localStorage.setItem(state.localKey, encryptObject(newState.data));
   return newState;
 }
  
