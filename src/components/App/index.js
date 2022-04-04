@@ -48,6 +48,7 @@ const App = () => {
   const handleSelectList = (list) => {
     setSelectedList(list);
     setSelectedTask(null);
+    setIsListPanelOpen(false);
   }
   // create id, create list template, assign as selected list, close list editor panel
   const handleCreateList = () => {
@@ -87,6 +88,7 @@ const App = () => {
     handleToggleListEditorPanel();
     if (!selectedList.date_updated) {
       setSelectedTask(null);
+      setIsListPanelOpen(false);
     }
   }
   // delete selected list and its tasks with prompt, assign list before is as selected list
@@ -192,13 +194,13 @@ const App = () => {
   }
 
   return (
-    <div className='grid grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
+    <div className='grid md:grid-cols-[auto,1fr,auto] h-screen w-full max-w-full bg-slate-100 overflow-hidden'>
       {/* list left panel */}
       <ListPanel
         isOpen={isListPanelOpen} 
         listItems={listItems.data}
         selectedList={selectedList}
-        onToggleView={handleToggleListPanel} 
+        onTogglePanel={handleToggleListPanel} 
         onSelectList={handleSelectList}
         onCreateList={handleCreateList}
       />
@@ -220,6 +222,7 @@ const App = () => {
         onCreateTask={handleCreateTask}
         onToggleTaskCompleteState={handleToggleTaskCompleteState}
         onDeleteList={handleDeleteList}
+        onToggleListPanel={handleToggleListPanel}
         onToggleListEditorPanel={handleToggleListEditorPanel}
         onToggleListHideCompletedState={handleToggleListHideCompletedState}
       />
