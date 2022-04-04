@@ -24,14 +24,14 @@ const TaskCreatorPanel = ({
           placeholder='Add a task'
           autoComplete='off'
           title={`Add a task on "${selectedList?.name}"`}
-          className='peer px-[50px] py-4 w-full bg-white text-sm leading-none appearance-none outline-none placeholder:text-black/90 md:px-11 md:rounded-md md:bg-white/50 md:hover:bg-white/80 md:active:bg-white md:focus:bg-white'
+          className='peer relative px-[50px] py-4 w-full bg-white text-sm leading-none appearance-none outline-none placeholder:text-black/90 md:px-11 md:rounded-md md:bg-white/50 md:hover:bg-white/80 md:active:bg-white md:focus:bg-white'
           value={input}
           onChange={handleInputChange}
         />
 
         {/* task - decorative is_complete default state */}
         <div className={
-          'absolute inset-0 right-auto hidden items-center px-5 pointer-events-none peer-focus:grid md:px-3 ' + 
+          'absolute inset-y-0 left-4 right-auto hidden items-center pointer-events-none peer-focus:grid md:left-4 ' + 
           (input.length > 0 ? '!grid' : '')
         }>
           <div className='w-[18px] h-[18px] border-2 border-slate-700 rounded-full' />

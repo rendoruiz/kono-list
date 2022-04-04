@@ -7,7 +7,7 @@ const TaskCompleteToggleButton = ({
     type='button'
     title={'Toggle complete task - mark as ' + (task?.is_complete ? 'incomplete' : 'complete')}
     onClick={() => onToggle(task)}
-    className="group py-1 px-3"
+    className="group py-1 px-4 bp520:px-3"
     {...props}
   >
     {/* border */}

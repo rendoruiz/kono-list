@@ -62,8 +62,8 @@ const TaskEditorPanel = ({
             onClick={onClosePanel}
           >
             <div className='grid place-items-center rounded w-12 h-12 text-2xl group-hover:bg-slate-500/10 group-active:bg-slate-500/30 bp520:w-8 bp520:h-8 bp520:text-lg'>
-              <span className='sm:hidden'>⬅️</span>
-              <span className='hidden sm:block'>❌</span>
+              <div className='sm:hidden'>⬅️</div>
+              <div className='hidden sm:block'>❌</div>
             </div>
           </button>
           <p className='pl-1 font-bold text-xl leading-none truncate sm:hidden'>
