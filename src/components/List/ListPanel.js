@@ -20,8 +20,8 @@ const ListPanel = ({
 
     {/* panel */}
     <div className={
-      'absolute inset-0 z-30 right-auto grid grid-rows-[auto,1fr,auto] w-80 h-full max-h-screen bg-slate-100 overflow-scroll transition-transform duration-150 sm:relative sm:translate-x-0 sm:transition-none ' +
-      (isOpen ? ' sm:translate-x-0' : ' -translate-x-full')
+      'absolute inset-0 right-auto z-30 grid grid-rows-[auto,1fr,auto] w-80 h-full max-h-screen bg-slate-100 overflow-scroll transition-transform duration-150 sm:relative sm:translate-x-0 sm:transition-none ' +
+      (isOpen ? 'sm:translate-x-0' : '-translate-x-full')
     }>
       <main>
         {/* list items */}
