@@ -76,7 +76,7 @@ const TaskEditorPanel = ({
             <div className='grid grid-cols-[auto,1fr] items-start border-[1.5px] border-slate-200 rounded py-3 bg-white/50'>
               <TaskCompleteToggleButton
                 task={task}
-                disabled={task}
+                disabled={!task}
                 onToggle={() => onToggleTaskCompleteState(task)}
               />
 
@@ -88,7 +88,7 @@ const TaskEditorPanel = ({
                   (task?.is_complete ? 'line-through focus:no-underline' : '')
                 }
                 value={title}
-                disabled={task}
+                disabled={!task}
                 onChange={setTitle}
                 onEnter={handleSubmit}
               />
@@ -102,7 +102,7 @@ const TaskEditorPanel = ({
                 onBlur={handleSubmit}
                 className='p-3 pb-8 bg-transparent text-sm resize-none outline-none appearance-none'
                 value={note}
-                disabled={task}
+                disabled={!task}
                 onChange={setNote}
               />
             </div>
@@ -119,7 +119,7 @@ const TaskEditorPanel = ({
             type='button'
             title='Delete task'
             className='group grid place-content-center rounded p-1 w-10 h-10  text-xl leading-none hover:bg-slate-500/10 active:bg-slate-500/20'
-            disabled={task}
+            disabled={!task}
             onClick={onDeleteTask}
           >
             🗑️
