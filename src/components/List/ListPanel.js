@@ -18,14 +18,14 @@ const ListPanel = ({
       onClick={onTogglePanel}
     />
 
-    {/* panel */}
+    {/* panel container */}
     <div className={
-      'fixed inset-0 right-auto z-30 grid grid-rows-[1fr,auto] pt-2 w-full h-screen bg-slate-100 transition-transform duration-200 bp520:w-72 md:relative md:translate-x-0 md:transition-none  ' +
+      'fixed inset-0 right-auto z-30 grid grid-rows-[1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[1fr,auto] bp520:w-72 md:relative md:translate-x-0 md:transition-none  ' +
       (isOpen ? 'md:translate-x-0' : '-translate-x-full')
     }>
-      <main className='overflow-y-auto pb-16 bp520:pb-0'>
-        {/* list items */}
-        <ul className='grid py-1'>
+      {/* list rows */}
+      <main className='overflow-y-auto pt-3 py-1 bp520:pt-2'>
+        <ul className='grid'>
           {listItems.map((list) => (
             <ListPanelRow
               key={list.id}
@@ -39,18 +39,29 @@ const ListPanel = ({
 
       {/* <header className='-order-1 sticky top-0 border-b-2 py-3 px-5 '></header> */}
 
-      <footer className='fixed inset-0 top-auto bottom-0 border-t-2 py-[2px] bg-inherit bp520:sticky'>
+      <footer className='fixed inset-0 top-auto grid grid-cols-[1fr,auto] border-t-2 py-[2px] bg-inherit bp520:sticky'>
         {/* add new list button */}
         <button 
-          title='New list: Add a list'
+          type='button'
+          title='New list: add a list'
           onClick={onCreateList}
-          className='group w-full px-1 py-2 bp520:py-[2px]'
+          className='group grid p-[2px] leading-none'
         >
-          <div className='flex items-center rounded w-full group-hover:bg-slate-500/10 group-active:bg-slate-500/30'>
-            <div className='flex-none grid place-items-center w-10 h-10'>
-              <span className='pb-[2px] font-mono text-2xl leading-none'>+</span>
+          <div className='grid grid-cols-[auto,1fr] items-center rounded w-full group-hover:bg-slate-500/10 group-active:bg-slate-500/30'>
+            <div className='grid place-items-center w-12 h-12 font-mono text-2xl bp520:w-10 bp520:h-10'>
+              +
             </div>
-            <p className='flex-1 text-left'>New list</p>
+            <span className='text-left'>New list</span>
+          </div>
+        </button>
+
+        <button
+          type='button'
+          title='Open settings'
+          className='group grid p-[2px] leading-none'
+        >
+          <div className='grid place-items-center rounded w-12 h-12 text-2xl group-hover:bg-slate-500/10 group-active:bg-slate-500/30 bp520:w-10 bp520:h-10'>
+            ⚙️
           </div>
         </button>
       </footer>

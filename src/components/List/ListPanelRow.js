@@ -5,7 +5,7 @@ const ListPanelRow = ({
 }) => (
   <li>
     <button 
-      className='group grid w-full px-2 py-[2px]'
+      className='group grid w-full px-2 py-[2px] select-none'
       onClick={() => onSelectList(list)}
     >
       {/* backplate */}
