@@ -88,6 +88,7 @@ const App = () => {
     handleToggleListEditorPanel();
     if (!selectedList.date_updated) {
       setSelectedTask(null);
+      setIsListPanelOpen(false);
     }
   }
   // delete selected list and its tasks with prompt, assign list before is as selected list

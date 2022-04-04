@@ -53,10 +53,10 @@ const TaskEditorPanel = ({
         </p>  */}
 
         {/* task editor panel close button */}
-        <header className='sticky top-0 grid grid-cols-[auto,1fr] items-center pt-[10px] pb-3 px-2 bg-inherit sm:grid-cols-1 sm:justify-items-end sm:pb-0 md:px-3'>
+        <header className='sticky top-0 grid grid-cols-[auto,1fr] items-center pt-[10px] pb-3 px-2 bg-inherit sm:grid-cols-1 sm:justify-items-end sm:pb-0 sm:px-3'>
           <button 
             type='button'
-            className='grid place-items-center rounded mr-2 w-9 h-9 text-2xl leading-none hover:bg-slate-500/10 active:bg-slate-500/20 md:mr-0 md:w-8 md:h-8 md:text-lg'
+            className='grid place-items-center rounded mr-2 w-9 h-9 text-2xl leading-none hover:bg-slate-500/10 active:bg-slate-500/20 sm:mr-0 sm:w-8 sm:h-8 sm:text-lg'
             onClick={onClosePanel}
           >
             <span className='sm:hidden'>⬅️</span>
