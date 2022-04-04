@@ -20,7 +20,7 @@ const ListPanel = ({
 
     {/* panel container */}
     <div className={
-      'fixed inset-0 right-auto z-30 grid grid-rows-[1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[1fr,auto] bp520:w-72 md:relative md:translate-x-0 md:transition-none  ' +
+      'fixed inset-0 right-auto z-30 grid grid-rows-[1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[1fr,auto] bp520:w-72 md:relative md:z-auto md:translate-x-0 md:transition-none  ' +
       (isOpen ? 'md:translate-x-0' : '-translate-x-full')
     }>
       {/* list rows */}
@@ -39,7 +39,7 @@ const ListPanel = ({
 
       {/* <header className='-order-1 sticky top-0 border-b-2 py-3 px-5 '></header> */}
 
-      <footer className='fixed inset-0 top-auto grid grid-cols-[1fr,auto] border-t-2 py-[2px] bg-inherit bp520:sticky'>
+      <footer className='fixed inset-0 top-auto grid grid-cols-[1fr,auto] border-t-2 p-[2px] bg-inherit bp520:sticky'>
         {/* add new list button */}
         <button 
           type='button'
