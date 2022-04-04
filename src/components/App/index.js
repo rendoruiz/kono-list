@@ -48,7 +48,7 @@ const App = () => {
   const handleSelectList = (list) => {
     setSelectedList(list);
     setSelectedTask(null);
-    handleToggleListPanel();
+    setIsListPanelOpen(false);
   }
   // create id, create list template, assign as selected list, close list editor panel
   const handleCreateList = () => {
