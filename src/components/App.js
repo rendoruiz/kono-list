@@ -78,6 +78,11 @@ const App = () => {
   // update selected list with given name and icon, update selected list, close list editor panel
   // close task editor if list is newly created
   const handleUpdateList = ({ name, icon }) => {
+    if (selectedList && (selectedList.locked || selectedList.id < 5)) {
+      alert('Cannot update locked list.');
+      setIsListEditorPanelOpen(false);
+      return;
+    }
     dispatchListItems({
       type: 'LIST_UPDATE',
       payload: {
@@ -95,6 +100,10 @@ const App = () => {
   }
   // delete selected list and its tasks with prompt, assign list before is as selected list
   const handleDeleteList = (event) => {
+    if (selectedList && (selectedList.locked || selectedList.id < 5)) {
+      alert('Cannot delete locked list.');
+      return;
+    }
     if (window.confirm(`Are you sure you want to delete this list: "${selectedList.name}"?`)) {
       dispatchListItems({
         type: 'LIST_DELETE',

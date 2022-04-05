@@ -50,8 +50,12 @@ const TaskPanel = ({
       <button 
         type='button'
         title='Click to rename'
-        className='justify-self-start grid grid-cols-[auto,1fr] items-center rounded leading-none hover:bg-black/10 active:bg-black/20'
-        onClick={onToggleListEditorPanel}
+        className={
+          'justify-self-start grid grid-cols-[auto,1fr] items-center rounded leading-none hover:bg-black/10 active:bg-black/20 ' +
+          (selectedList.locked ? 'pointer-events-none' : '')
+        }
+        onClick={!selectedList.locked ? onToggleListEditorPanel : null}
+        disabled={selectedList.locked}
       >
         {/* list icon */}
         <div className='grid place-items-center w-10 h-10'>
@@ -67,27 +71,29 @@ const TaskPanel = ({
       </button>
       
       {/* list actions */}
-      <div className='grid grid-flow-col gap-2'>
-        {/* edit list */}
-        <button
-          type='button'
-          title='Edit list'
-          className='grid place-items-center rounded w-10 h-10 leading-none hover:bg-white/30 active:bg-white/50 md:w-8 md:h-8 md:bg-white/80 md:text-black/80 md:hover:bg-white/90 md:active:bg-white'
-          onClick={onToggleListEditorPanel}
-        >
-          <PencilIcon className='w-8 h-8 stroke-current md:w-6 md:h-6' />
-        </button>
+      {!selectedList.locked && (
+        <div className='grid grid-flow-col gap-2'>
+          {/* edit list */}
+          <button
+            type='button'
+            title='Edit list'
+            className='grid place-items-center rounded w-10 h-10 leading-none hover:bg-white/30 active:bg-white/50 md:w-8 md:h-8 md:bg-white/80 md:text-black/80 md:hover:bg-white/90 md:active:bg-white'
+            onClick={onToggleListEditorPanel}
+          >
+            <PencilIcon className='w-8 h-8 stroke-current md:w-6 md:h-6' />
+          </button>
 
-        {/* delete list */}
-        <button
-          type='button'
-          title='Delete list'
-          className='grid place-items-center rounded w-10 h-10 leading-none hover:bg-white/30 active:bg-white/50 md:w-8 md:h-8 md:bg-white/80 md:text-black/80 md:hover:bg-white/90 md:active:bg-white'
-          onClick={onDeleteList}
-        >
-          <TrashIcon className='w-8 h-8 stroke-current md:w-6 md:h-6' />
-        </button>
-      </div>
+          {/* delete list */}
+          <button
+            type='button'
+            title='Delete list'
+            className='grid place-items-center rounded w-10 h-10 leading-none hover:bg-white/30 active:bg-white/50 md:w-8 md:h-8 md:bg-white/80 md:text-black/80 md:hover:bg-white/90 md:active:bg-white'
+            onClick={onDeleteList}
+          >
+            <TrashIcon className='w-8 h-8 stroke-current md:w-6 md:h-6' />
+          </button>
+        </div>
+      )}
     </header>
   </div>
 );
