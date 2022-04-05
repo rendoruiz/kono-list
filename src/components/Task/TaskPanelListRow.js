@@ -1,3 +1,4 @@
+import NoteIcon from "../Icons/NoteIcon";
 import TaskCompleteToggleButton from "./TaskCompleteToggleButton";
 
 const TaskPanelListRow = ({ 
@@ -33,10 +34,10 @@ const TaskPanelListRow = ({
 
       {/* note presence indicator */}
       {task.note && task.note.length > 0 && (
-        <p className='mt-[2px] text-xs'>
-          <span>📝</span>
-          <span className="ml-[2px] text-black/60">Note</span>
-        </p>
+        <div className='flex items-center mt-[2px] text-xs text-black/60 leading-none'>
+          <NoteIcon className='mr-[2px] w-4 h-4 stroke-current' />
+          <span>Note</span>
+        </div>
       )}
     </button>
   </li>
