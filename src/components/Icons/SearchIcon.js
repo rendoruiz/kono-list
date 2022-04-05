@@ -1,9 +1,8 @@
 // https://tablericons.com/
-const SearchIcon = () => (
+const SearchIcon = ({ className }) => (
   <svg
-    className=""
+    className={className ?? 'stroke-current'}
     fill="none"
-    stroke="#000"
     strokeLinecap="round"
     strokeWidth="1.5"
     viewBox="0 0 24 24"
