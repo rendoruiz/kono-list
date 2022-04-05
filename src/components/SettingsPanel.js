@@ -48,10 +48,10 @@ const SettingsPanel = ({
           <button
             type='button'
             title='Close settings'
-            className='grid place-items-center rounded -mt-1 -mr-1 w-12 h-12 text-2xl hover:bg-black/10 active:bg-black/20 bp520:w-8 bp520:h-8 bp520:text-lg'
+            className='grid place-items-center rounded -mt-2 -mr-2 w-12 h-12 text-2xl hover:bg-black/10 active:bg-black/20 bp520:w-8 bp520:h-8 bp520:text-lg'
             onClick={onTogglePanel}
           >
-            <CrossIcon className='w-6 h-6 stroke-current' />
+            <CrossIcon className='w-8 h-8 stroke-current bp520:w-6 bp520:h-6' />
           </button>
         </header>
 
