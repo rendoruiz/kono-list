@@ -18,14 +18,14 @@ const initialListItems = [
   {
     ...listTemplate,
     id: 1,
-    name: "Untitled 1",
+    name: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat voluptatum ipsum sapiente labore, quasi eum itaque tempora ex nesciunt corporis.",
     icon: "⭐",
     date_updated: Date.now(),
   },
   {
     ...listTemplate,
     id: 2,
-    name: "Untitled 2",
+    name: "UOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH",
     icon: "⭐",
     date_updated: Date.now(),
   },
