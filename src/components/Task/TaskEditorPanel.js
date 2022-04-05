@@ -92,7 +92,7 @@ const TaskEditorPanel = ({
                 name='name'
                 onBlur={handleSubmit}
                 className={
-                  'pr-3 bg-transparent font-medium text-lg leading-snug resize-none outline-none appearance-none ' +
+                  'pt-2 pr-3 bg-transparent font-medium text-lg leading-snug resize-none outline-none appearance-none md:pt-[2px] ' +
                   (task?.is_complete ? 'line-through focus:no-underline' : '')
                 }
                 value={title}

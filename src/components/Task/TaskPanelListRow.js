@@ -8,7 +8,7 @@ const TaskPanelListRow = ({
   onToggleTaskCompleteState 
 }) => (
   <li className={
-    'grid grid-cols-[auto,1fr] rounded-md min-h-[64px] bg-white text-black/90 cursor-pointer hover:bg-white/90 bp520:min-h-[50px] ' + 
+    'grid grid-cols-[auto,1fr] rounded-md w-full min-h-[64px] bg-white text-black/90 cursor-pointer hover:bg-white/90 bp520:min-h-[50px] ' + 
     (task.id !== selectedTask?.id ? 'md:bg-white/80' : '')
   }>
     {/* debug */}
@@ -24,7 +24,7 @@ const TaskPanelListRow = ({
     <button
       type='button'
       title='Open task'
-      className='grid content-center py-1 pr-2 text-left bp520:text-sm '
+      className='grid content-center py-1 pr-2 text-left  bp520:text-sm '
       onClick={() => onSelectTask(task)}
     >
       {/* title */}

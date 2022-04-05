@@ -1,4 +1,7 @@
 import * as React from 'react';
+import CircleCheckIcon from '../Icons/CircleCheckIcon';
+import PlusIcon from '../Icons/PlusIcon';
+import SendIcon from '../Icons/SendIcon';
 
 const TaskCreatorPanel = ({ 
   selectedList, 
@@ -10,9 +13,9 @@ const TaskCreatorPanel = ({
   const handleReset = () => setInput("");
 
   return (
-    <footer className='fixed bottom-0 w-full bg-blue-200/90 md:sticky md:pt-[6px] md:pb-10'>
+    <footer className='fixed bottom-0 w-full leading-none md:sticky md:pt-[6px] md:pb-10 md:text-sm'>
       <form 
-        className='relative overflow-hidden bg-blue-200'
+        className='relative overflow-hidden'
         onSubmit={onCreateTask}
         onReset={handleReset}
       >
@@ -21,38 +24,41 @@ const TaskCreatorPanel = ({
           name='title'
           type='text' 
           minLength={1}
+          required
           placeholder='Add a task'
           autoComplete='off'
           title={`Add a task on "${selectedList?.name}"`}
-          className='peer relative px-[50px] py-4 w-full bg-white text-sm leading-none appearance-none outline-none placeholder:text-black/90 md:px-11 md:rounded-md md:bg-white/50 md:hover:bg-white/80 md:active:bg-white md:focus:bg-white'
+          className='peer relative px-16 py-5 w-full bg-white text-black/90 appearance-none outline-none placeholder:text-black/90 md:px-12 md:py-[15px] md:rounded-md md:bg-white/80 md:hover:bg-white/90 md:active:bg-white md:focus:bg-white'
           value={input}
           onChange={handleInputChange}
         />
 
-        {/* task - decorative is_complete default state */}
-        <div className={
-          'absolute inset-y-0 left-4 right-auto hidden items-center pointer-events-none peer-focus:grid md:left-4 ' + 
-          (input.length > 0 ? '!grid' : '')
-        }>
-          <div className='w-[18px] h-[18px] border-2 border-slate-700 rounded-full' />
-        </div>
+        {/* default/unfocused icon */}
+        <PlusIcon className='absolute inset-y-0 left-6 my-auto w-6 h-6 stroke-black/60 peer-valid:hidden peer-focus:hidden md:left-3' />
+
+        {/* focused icon */}
+        <CircleCheckIcon
+          className='absolute inset-y-0 left-5 grid items-center my-auto w-8 h-8 pointer-events-none peer-placeholder-shown:hidden peer-focus:grid bp520:w-6 bp520:h-6 md:left-3'
+          circleClassName='stroke-[1.5] stroke-black/60 bp520:stroke-2'
+          checkClassName='hidden'
+        />
 
         {/* submit task */}
         <button
           type='submit'
           title={input.trim().length > 0 ? 'Add new task' : 'Invalid input'}
           className={
-            'absolute inset-0 left-auto hidden px-4 cursor-pointer peer-focus:block md:px-2 ' + 
-            (input.trim().length > 0 ? '!block' : '!cursor-not-allowed')
+            'absolute inset-y-0 left-auto right-3 hidden px-2 cursor-pointer peer-focus:block md:right-0 md:px-2 ' + 
+            (input.trim().length > 0 ? '!block' : '!cursor-not-allowed opacity-25')
           }
           disabled={input.trim().length < 1}
         >
-          <span className={
-            'text-xl leading-none ' + 
-            (input.trim().length > 0 ? 'opacity-90' : 'opacity-30')
-          }>
-            ⬆️
-          </span> 
+          <SendIcon 
+            className='w-8 h-8 bp520:w-7 bp520:h-7' 
+            arrowClassName='stroke-white'
+            bgClassName='fill-blue-500'
+            rectClassName='stroke-blue-500'
+          />
         </button>
       </form>
     </footer>
