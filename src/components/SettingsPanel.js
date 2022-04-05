@@ -63,7 +63,7 @@ const SettingsPanel = ({
                 About
               </h2>
               <p>
-                This is a simple list web app that allows you to create as many lists and tasks as you like. With your data staying on your device's browser, protected.
+                Konolist is a simple list web app that allows you to create as many lists and tasks as you need. Your data is kept solely on your device's browser, protected.
               </p>
             </div>
 
@@ -98,8 +98,12 @@ const SettingsPanel = ({
 
           <section>
             <h2 className='mb-1 font-bold text-2xl tracking-tight'>Reset Cache</h2>
-            <p>This will delete all your lists and tasks and reset the app back to its defaults.</p>
-            <p>The page will be reload once the operation is finished.</p>
+            <p>
+              Pressing the button below will perform an operation that will delete all your lists and tasks and reset the app back to its defaults.
+            </p>
+            <p>
+              Once finished, the page will reload automatically.
+            </p>
             <button 
               type='button'
               title='Reset cache'
