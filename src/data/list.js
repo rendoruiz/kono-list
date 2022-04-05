@@ -5,6 +5,7 @@ const listTemplate = {
   date_created: Date.now(),
   date_updated: null,
   is_completed_hidden: false,
+  locked: false,
 }
 
 const initialListItems = [
@@ -14,6 +15,7 @@ const initialListItems = [
     name: "Tasks",
     icon: "⭐",
     date_updated: Date.now(),
+    locked: true,
   },
 ];
 

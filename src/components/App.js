@@ -3,17 +3,17 @@ import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 // components
-import ListPanel from '../List/ListPanel';
-import ListEditorPopup from '../List/ListEditorPopup';
-import TaskPanel from '../Task/TaskPanel';
-import TaskEditorPanel from '../Task/TaskEditorPanel';
+import ListPanel from './List/ListPanel';
+import ListEditorPopup from './List/ListEditorPopup';
+import TaskPanel from './Task/TaskPanel';
+import TaskEditorPanel from './Task/TaskEditorPanel';
 // hooks, reducers, data, utils
-import useLocalState from '../../hooks/useLocalState';
-import listReducer from '../../reducers/listReducer';
-import taskReducer from '../../reducers/taskReducer';
-import { listTemplate, initialListItems } from '../../data/list';
-import { initialTaskItems } from '../../data/task';
-import { decryptObject } from '../../utils/cryptoJs';
+import useLocalState from '../hooks/useLocalState';
+import listReducer from '../reducers/listReducer';
+import taskReducer from '../reducers/taskReducer';
+import { listTemplate, initialListItems } from '../data/list';
+import { initialTaskItems } from '../data/task';
+import { decryptObject } from '../utils/cryptoJs';
 
 const App = () => {
   // panel toggle states
@@ -78,6 +78,11 @@ const App = () => {
   // update selected list with given name and icon, update selected list, close list editor panel
   // close task editor if list is newly created
   const handleUpdateList = ({ name, icon }) => {
+    if (selectedList && (selectedList.locked || selectedList.id < 5)) {
+      alert('Cannot update locked list.');
+      setIsListEditorPanelOpen(false);
+      return;
+    }
     dispatchListItems({
       type: 'LIST_UPDATE',
       payload: {
@@ -95,6 +100,10 @@ const App = () => {
   }
   // delete selected list and its tasks with prompt, assign list before is as selected list
   const handleDeleteList = (event) => {
+    if (selectedList && (selectedList.locked || selectedList.id < 5)) {
+      alert('Cannot delete locked list.');
+      return;
+    }
     if (window.confirm(`Are you sure you want to delete this list: "${selectedList.name}"?`)) {
       dispatchListItems({
         type: 'LIST_DELETE',
@@ -196,7 +205,7 @@ const App = () => {
   }
 
   return (
-    <div className='grid md:grid-cols-[auto,1fr,auto] h-screen w-full max-w-full bg-slate-100 overflow-hidden'>
+    <div className='grid md:grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
       {/* list left panel */}
       <ListPanel
         isOpen={isListPanelOpen} 

@@ -1,4 +1,8 @@
+import preval from 'preval.macro'
+
 import ListPanelRow from "./ListPanelRow";
+import PlusIcon from "../Icons/PlusIcon";
+import SettingsIcon from "../Icons/SettingsIcon";
 
 const ListPanel = ({ 
   isOpen, 
@@ -12,20 +16,20 @@ const ListPanel = ({
     {/* mobile backdrop toggle */}
     <div 
       className={
-        'absolute inset-0 z-30 transition-opacity duration-300 bg-black/70 md:hidden ' +
+        'fixed inset-0 z-30 transition-opacity duration-300 bg-black/70 md:hidden ' +
         (isOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full')
       }
       onClick={onTogglePanel}
     />
 
-    {/* panel */}
+    {/* panel container */}
     <div className={
-      'absolute inset-0 right-auto z-30 grid grid-rows-[1fr,auto] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:w-72 md:relative md:translate-x-0 md:transition-none  ' +
+      'fixed inset-0 right-auto z-30 grid grid-rows-[auto,1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[auto,1fr,auto] bp520:w-72 md:relative md:z-auto md:translate-x-0 md:transition-none  ' +
       (isOpen ? 'md:translate-x-0' : '-translate-x-full')
     }>
-      <main className='overflow-y-auto'>
-        {/* list items */}
-        <ul className='grid py-1'>
+      {/* list rows */}
+      <main className='overflow-y-auto pt-3 py-1 bp520:pt-2'>
+        <ul className='grid content-start'>
           {listItems.map((list) => (
             <ListPanelRow
               key={list.id}
@@ -37,20 +41,38 @@ const ListPanel = ({
         </ul>
       </main>
 
-      {/* <header className='-order-1 sticky top-0 border-b-2 py-3 px-5 '></header> */}
+      <header className='-order-1 sticky top-0 grid border-b-2 pt-4 pb-3 px-3 leading-none md:py-3'>
+        <h1 className="font-bold text-3xl text-blue-600 tracking-tight scale-x-125 origin-left md:text-2xl">
+          KonoList
+        </h1>
+        <p className='font-mono text-xs tracking-wide'>
+          v{process.env.REACT_APP_MAJOR_VERSION}{preval`module.exports = new Date().getFullYear().toString().substr(2) + (new Date().getMonth().toString().length < 2 ? '0' + new Date().getMonth().toString() : new Date().getMonth().toString()) + '.' + (new Date().getHours() < 10 ? '0' : '') + new Date().getHours().toString() + (new Date().getMinutes() < 10 ? '0' : '') + new Date().getMinutes().toString() + (new Date().getSeconds() < 10 ? '0' : '') + new Date().getSeconds().toString()`}
+        </p>
+      </header>
 
-      <footer className='sticky bottom-0 border-t-2 py-[2px]'>
+      <footer className='fixed inset-0 top-auto grid grid-cols-[1fr,auto] border-t-2 p-[2px] bg-inherit text-black/70 bp520:sticky'>
         {/* add new list button */}
         <button 
-          title='New list: Add a list'
+          type='button'
+          title='New list: add a list'
           onClick={onCreateList}
-          className='group w-full px-1 py-[2px]'
+          className='group grid p-[2px] leading-none'
         >
-          <div className='flex items-center rounded w-full group-hover:bg-slate-500/10 group-active:bg-slate-500/30'>
-            <div className='flex-none grid place-items-center w-10 h-10'>
-              <span className='pb-[2px] font-mono text-2xl leading-none'>+</span>
+          <div className='grid grid-cols-[auto,1fr] items-center rounded w-full group-hover:bg-slate-500/10 group-active:bg-slate-500/30'>
+            <div className='grid place-items-center p-2 w-12 h-12 bp520:w-10 bp520:h-10'>
+              <PlusIcon className='w-7 h-7 stroke-current bp520:w-6 bp520:h-6' />
             </div>
-            <p className='flex-1 text-left'>New list</p>
+            <span className='text-left'>New list</span>
+          </div>
+        </button>
+
+        <button
+          type='button'
+          title='Open settings'
+          className='group grid p-[2px] leading-none'
+        >
+          <div className='grid place-items-center rounded w-12 h-12 group-hover:bg-slate-500/10 group-active:bg-slate-500/30 bp520:w-10 bp520:h-10'>
+            <SettingsIcon className='w-7 h-7 stroke-current bp520:w-6 bp520:h-6' />
           </div>
         </button>
       </footer>

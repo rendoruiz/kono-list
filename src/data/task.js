@@ -14,7 +14,6 @@ const initialTaskItems = [
     id: 0,
     list_id: 0,
     title: 'List Item 1',
-    note: 'List Item 1 note',
   },
   {
     ...taskTemplate,

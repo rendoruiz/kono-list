@@ -1,3 +1,5 @@
+import CircleCheckIcon from "../Icons/CircleCheckIcon";
+
 const TaskCompleteToggleButton = ({ 
   task, 
   onToggle,
@@ -7,22 +9,14 @@ const TaskCompleteToggleButton = ({
     type='button'
     title={'Toggle complete task - mark as ' + (task?.is_complete ? 'incomplete' : 'complete')}
     onClick={() => onToggle(task)}
-    className="group py-1 px-3"
+    className="group py-1 px-3 bp520:px-3"
     {...props}
   >
-    {/* border */}
-    <div className={
-      'group grid place-items-center border-2 rounded-full w-[18px] h-[18px] transition-colors ' +
-      (task?.is_complete ? 'border-blue-600' : 'border-slate-700')
-    }>
-      {/* complete mark */}
-      {!props.disabled && (
-        <div className={
-          'rounded-full w-1 h-1 transition-all group-hover:opacity-100 ' +
-          (task?.is_complete ? 'bg-blue-600/80 opacity-100 scale-[1.75] group-active:scale-110' : 'bg-slate-700/80 opacity-0 scale-150 group-active:scale-110')
-        } />
-      )}
-    </div>
+    <CircleCheckIcon 
+      className='w-8 h-8 bp520:w-6 bp520:h-6' 
+      circleClassName={'stroke-[1.5] bp520:stroke-2 ' + (task?.is_complete ? 'fill-blue-500 stroke-blue-500 group-active:stroke-black/60 group-active:fill-transparent' : 'stroke-black/60 group-active:fill-black/60')}
+      checkClassName={'stroke-2 ' + (task?.is_complete ? 'stroke-white group-hover:opacity-50 group-active:opacity-0' : 'stroke-black/60 opacity-0 group-hover:opacity-80 group-active:stroke-white group-active:opacity-100')}
+    />
   </button>
 );
  

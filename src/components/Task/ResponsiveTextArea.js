@@ -9,20 +9,23 @@ const ResponsiveTextArea = ({
   const ref = React.useRef(null);
 
   React.useEffect(() => {
-    ref.current.style.height = 'auto';
-    ref.current.style.height = ref.current.scrollHeight + 'px';
+    adjustHeight();
   }, [value]);
   
   const handleChange = (e) => {
     onChange(e.target.value);
-    ref.current.style.height = 'auto';
-    ref.current.style.height = ref.current.scrollHeight + 'px';
+    adjustHeight();
   }
   const handleEnterKeyPress = (e) => {
     if (e.which === 13) {
       e.preventDefault();
       onEnter();
     }
+  }
+
+  const adjustHeight = () => {
+    ref.current.style.height = 'auto';
+    ref.current.style.height = (ref.current.scrollHeight + 2) + 'px';
   }
 
   return (  
