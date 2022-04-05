@@ -27,7 +27,7 @@ const ListPanel = ({
       'fixed inset-0 right-auto z-30 grid grid-rows-[auto,1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[auto,1fr,auto] bp520:w-72 md:relative md:z-auto md:translate-x-0 md:transition-none  ' +
       (isOpen ? 'md:translate-x-0' : '-translate-x-full')
     }>
-      <header className='sticky top-0 grid border-b-2 pt-4 pb-3 px-3 leading-none md:py-3'>
+      <header className='sticky top-0 grid border-b-2 pt-4 pb-3 px-3 leading-none select-none pointer-events-none md:py-3'>
         <h1 className="font-bold text-3xl text-blue-600 tracking-tight md:text-2xl">
           KonoList
         </h1>
