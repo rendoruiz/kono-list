@@ -186,7 +186,7 @@ const App = () => {
       }
     });
   }
-  //
+  // update a task's title and note
   const handleUpdateTask = ({ title, note }) => {
     dispatchTaskItems({
       type: 'TASK_UPDATE',
@@ -197,13 +197,22 @@ const App = () => {
       },
     });
   }
-  //
+  // delete a task based on the selected task id
   const handleDeleteTask = (event) => {
     dispatchTaskItems({
       type: 'TASK_DELETE',
       payload: { id: selectedTask.id },
     });
     setSelectedTask(null);
+    event.preventDefault();
+  }
+
+  // clear localstorage + reroute to page origin
+  const handleResetCache = (event) => {
+    if (window.confirm('Are you sure you want to reset everything back to default?')) {
+      localStorage.clear();
+      window.location.assign(window.location.origin);
+    }
     event.preventDefault();
   }
 
@@ -232,6 +241,7 @@ const App = () => {
       <SettingsPanel
         isOpen={isSettingsPanelOpen}
         onTogglePanel={handleToggleSettingsPanel}
+        onResetCache={handleResetCache}
       />
 
       {/* task middle panel */}
