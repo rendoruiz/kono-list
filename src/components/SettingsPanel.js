@@ -29,7 +29,7 @@ const SettingsPanel = ({
       onClick={onTogglePanel}
     >
       <div 
-        className='grid content-start w-full max-w-lg text-black/90'
+        className='grid content-start w-full max-w-md text-black/90'
         onClick={(e) => e.stopPropagation()}
       >
         <header className='grid grid-cols-[1fr,auto] rounded-t p-4 bg-blue-600 text-white'>
@@ -55,20 +55,52 @@ const SettingsPanel = ({
           </button>
         </header>
 
-        <main className='grid gap-5 content-start divide-y-2 rounded-b divide-slate-200 px-4 pt-5 pb-6 bg-white'>
-          <section className=''>
-            <h2 className='font-bold text-2xl'>About</h2>
-            <p>This project is hosted on Netlify.</p>
+        <main className='grid gap-8 content-start rounded-b px-4 pt-5 pb-6 bg-white'>
+          <section className='grid content-start gap-4'>
+            <div className='grid justify-items-start gap-1'>
+              <h2 className='font-bold text-2xl tracking-tight'>
+                About
+              </h2>
+              <p>
+                This is a simple list web app that allows you to create as many lists and tasks as you like. With your data staying on your device's browser, protected.
+              </p>
+            </div>
+
+            <div className='grid justify-items-start gap-1'>
+              <h3 className='font-medium text-lg tracking-tight'>Netlify deployment status</h3>
+
+              <a 
+                href='https://list.kono.cx/'
+                title='Open site link'
+                className='block rounded scale-110 origin-left hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
+              >
+                <img 
+                  src='https://api.netlify.com/api/v1/badges/19cdecd2-08f5-4507-a6e1-126b61977fc2/deploy-status' 
+                />
+              </a>
+            </div>
+
+            <div className='grid justify-items-start gap-1'>
+              <h3 className='font-medium text-lg tracking-tight'>Give the project a star on GitHub</h3>
+              <a 
+                href='https://github.com/rendoruiz/konolist'
+                title='Open GitHub link'
+                target='_blank'
+                className='rounded px-4 py-2 bg-black text-white font-medium leading-none hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
+              >
+                Fork at GitHub
+              </a>
+            </div>
           </section>
 
-          <section className=' text-sm'>
-            <h2 className='mt-2 mb-1 font-bold text-2xl'>Reset Cache</h2>
-            <p className='tracking-wide'>This will delete all your lists and tasks and reset the app back to its defaults.</p>
-            <p className='tracking-wide'>The page will be reload once the operation is finished.</p>
+          <section>
+            <h2 className='mb-1 font-bold text-2xl tracking-tight'>Reset Cache</h2>
+            <p>This will delete all your lists and tasks and reset the app back to its defaults.</p>
+            <p>The page will be reload once the operation is finished.</p>
             <button 
               type='button'
               title='Reset cache'
-              className='rounded mt-3 px-4 py-2 bg-red-600 text-white font-medium leading-none'
+              className='rounded mt-4 px-4 py-2 bg-red-600 text-white font-medium leading-none hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
               onClick={onResetCache}
             >
               Reset Cache
