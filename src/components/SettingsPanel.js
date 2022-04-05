@@ -25,7 +25,7 @@ const SettingsPanel = ({
 }) => {
   return isOpen && (  
     <div 
-      className='fixed inset-0 z-50 grid place-items-center px-3 bg-black/60'
+      className='fixed inset-0 z-50 grid place-items-center overflow-y-auto px-3 py-5 bg-black/60'
       onClick={onTogglePanel}
     >
       <div 
@@ -76,7 +76,7 @@ const SettingsPanel = ({
               >
                 <img 
                   src='https://api.netlify.com/api/v1/badges/19cdecd2-08f5-4507-a6e1-126b61977fc2/deploy-status' 
-                  title='Netlify deployment status'
+                  alt='Netlify deployment status'
                 />
               </a>
             </div>
