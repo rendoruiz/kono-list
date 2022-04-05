@@ -14,7 +14,6 @@ import taskReducer from '../reducers/taskReducer';
 import { listTemplate, initialListItems } from '../data/list';
 import { initialTaskItems } from '../data/task';
 import { decryptObject } from '../utils/cryptoJs';
-import SettingsIcon from './Icons/SettingsIcon';
 import SettingsPanel from './SettingsPanel';
 
 const App = () => {
