@@ -4,7 +4,7 @@ import { decryptObject, encryptObject } from '../utils/cryptoJs';
 
 const useLocalState = (key, initialState) => {
   const [value, setValue] = React.useState(
-    decryptObject(localStorage.getItem(key)) || initialState
+    decryptObject(localStorage.getItem(key)) !== null ? decryptObject(localStorage.getItem(key)) : initialState
   );
 
   React.useEffect(() => {

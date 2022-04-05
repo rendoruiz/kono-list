@@ -17,7 +17,7 @@ import { decryptObject } from '../utils/cryptoJs';
 
 const App = () => {
   // panel toggle states
-  const [isListPanelOpen, setIsListPanelOpen] = useLocalState('ilpo', false);
+  const [isListPanelOpen, setIsListPanelOpen] = useLocalState('ilpo', true);
   const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
 
   // panel toggle handlers
@@ -44,6 +44,19 @@ const App = () => {
       localKey: 'ts',
     }
   );
+  
+  // list - effects
+  // makes sure the selected list & task object data is always up to date
+  React.useEffect(() => {
+    if (selectedList) {
+      setSelectedList(listItems.data.find((list) => list.id === selectedList.id));
+    }
+  }, [listItems.data, selectedList, setSelectedList]);
+  React.useEffect(() => {
+    if (selectedTask) {
+      setSelectedTask(taskItems.data.find((task) => task.id === selectedTask.id));
+    }
+  }, [taskItems.data, selectedTask, setSelectedTask]);
 
   // list - handlers
   // set selected list, reset selected task, close task editor panel
@@ -133,19 +146,6 @@ const App = () => {
       }
     });
   }
-
-  // list - effects
-  // makes sure the selected list & task object data is always up to date
-  React.useEffect(() => {
-    if (selectedList) {
-      setSelectedList(listItems.data.find((list) => list.id === selectedList.id));
-    }
-  }, [listItems.data, selectedList, setSelectedList]);
-  React.useEffect(() => {
-    if (selectedTask) {
-      setSelectedTask(taskItems.data.find((task) => task.id === selectedTask.id));
-    }
-  }, [taskItems.data, selectedTask, setSelectedTask]);
   
   // task - handlers
   // remove selected task & close task editor panel if the newly selected task is the same
