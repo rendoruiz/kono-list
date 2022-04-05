@@ -37,8 +37,8 @@ const TaskPanel = ({
       {/* mobile - list panel toggle */}
       <button
         type='button'
-        title={`Open lists pane`}
-        className='group grid p-[2px] leading-none md:hidden'
+        title='Open lists pane'
+        className='group p-[2px] leading-none md:hidden'
         onClick={onToggleListPanel}
       >
         <div className='grid place-items-center rounded w-12 h-12 text-2xl group-hover:bg-white/30 group-active:bg-white/50'>
@@ -72,7 +72,7 @@ const TaskPanel = ({
       
       {/* list actions */}
       {!selectedList.locked && (
-        <div className='grid grid-flow-col gap-2'>
+        <div className='grid grid-flow-col gap-2 pr-1 md:pr-0'>
           {/* edit list */}
           <button
             type='button'
