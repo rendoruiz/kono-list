@@ -14,16 +14,20 @@ import taskReducer from '../reducers/taskReducer';
 import { listTemplate, initialListItems } from '../data/list';
 import { initialTaskItems } from '../data/task';
 import { decryptObject } from '../utils/cryptoJs';
+import SettingsIcon from './Icons/SettingsIcon';
+import SettingsPanel from './SettingsPanel';
 
 const App = () => {
   // panel toggle states
   const [isListPanelOpen, setIsListPanelOpen] = useLocalState('ilpo', true);
   const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
+  const [isSettingsPanelOpen, setIsSettingsPanelOpen] = React.useState(false);
 
   // panel toggle handlers
   const handleToggleListPanel = () => setIsListPanelOpen(!isListPanelOpen);
   const handleToggleListEditorPanel = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
   const handleCloseTaskEditorPanel = () => setSelectedTask(null);
+  const handleToggleSettingsPanel = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
   
   // list & task states
   const [selectedList, setSelectedList] = useLocalState('sl', initialListItems[0]);
@@ -214,6 +218,7 @@ const App = () => {
         onTogglePanel={handleToggleListPanel} 
         onSelectList={handleSelectList}
         onCreateList={handleCreateList}
+        onToggleSettingsPanel={handleToggleSettingsPanel}
       />
 
       {/* list editor popup */}
@@ -222,6 +227,12 @@ const App = () => {
         list={selectedList}
         onUpdateList={handleUpdateList}
         onCancelEdit={handleListEditorCancelEdit}
+      />
+
+      {/* Settings panel */}
+      <SettingsPanel
+        isOpen={isSettingsPanelOpen}
+        onTogglePanel={handleToggleSettingsPanel}
       />
 
       {/* task middle panel */}

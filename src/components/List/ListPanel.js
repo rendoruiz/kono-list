@@ -1,5 +1,3 @@
-import preval from 'preval.macro'
-
 import ListPanelRow from "./ListPanelRow";
 import PlusIcon from "../Icons/PlusIcon";
 import SettingsIcon from "../Icons/SettingsIcon";
@@ -10,7 +8,8 @@ const ListPanel = ({
   selectedList, 
   onTogglePanel, 
   onSelectList, 
-  onCreateList 
+  onCreateList,
+  onToggleSettingsPanel
 }) => (
   <>
     {/* mobile backdrop toggle */}
@@ -31,9 +30,6 @@ const ListPanel = ({
         <h1 className="font-bold text-3xl text-blue-600 tracking-tight md:text-2xl">
           KonoList
         </h1>
-        <p className='font-mono text-xs tracking-wide'>
-          v{process.env.REACT_APP_MAJOR_VERSION}{preval`module.exports = new Date().getFullYear().toString().substr(2) + (new Date().getMonth().toString().length < 2 ? '0' + new Date().getMonth().toString() : new Date().getMonth().toString()) + '.' + (new Date().getHours() < 10 ? '0' : '') + new Date().getHours().toString() + (new Date().getMinutes() < 10 ? '0' : '') + new Date().getMinutes().toString() + (new Date().getSeconds() < 10 ? '0' : '') + new Date().getSeconds().toString()`}
-        </p>
       </header>
       
       {/* list rows */}
@@ -69,6 +65,7 @@ const ListPanel = ({
         <button
           type='button'
           title='Open settings'
+          onClick={onToggleSettingsPanel}
           className='group grid p-[2px] leading-none'
         >
           <div className='grid place-items-center rounded w-12 h-12 group-hover:bg-slate-500/10 group-active:bg-slate-500/30 bp520:w-10 bp520:h-10'>
