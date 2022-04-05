@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import TaskCompleteToggleButton from "./TaskCompleteToggleButton";
-import ResponsiveTextArea from '../ResponsiveTextArea';
+import ResponsiveTextArea from './ResponsiveTextArea';
 import ArrowLeftIcon from '../Icons/ArrowLeftIcon';
 import CrossIcon from '../Icons/CrossIcon';
 import TrashIcon from '../Icons/TrashIcon';

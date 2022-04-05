@@ -3,17 +3,17 @@ import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 // components
-import ListPanel from '../List/ListPanel';
-import ListEditorPopup from '../List/ListEditorPopup';
-import TaskPanel from '../Task/TaskPanel';
-import TaskEditorPanel from '../Task/TaskEditorPanel';
+import ListPanel from './List/ListPanel';
+import ListEditorPopup from './List/ListEditorPopup';
+import TaskPanel from './Task/TaskPanel';
+import TaskEditorPanel from './Task/TaskEditorPanel';
 // hooks, reducers, data, utils
-import useLocalState from '../../hooks/useLocalState';
-import listReducer from '../../reducers/listReducer';
-import taskReducer from '../../reducers/taskReducer';
-import { listTemplate, initialListItems } from '../../data/list';
-import { initialTaskItems } from '../../data/task';
-import { decryptObject } from '../../utils/cryptoJs';
+import useLocalState from '../hooks/useLocalState';
+import listReducer from '../reducers/listReducer';
+import taskReducer from '../reducers/taskReducer';
+import { listTemplate, initialListItems } from '../data/list';
+import { initialTaskItems } from '../data/task';
+import { decryptObject } from '../utils/cryptoJs';
 
 const App = () => {
   // panel toggle states
