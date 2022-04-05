@@ -44,7 +44,7 @@ const TaskPanelList = ({
           {/* is_complete task toggle */}
           <button 
             type='button'
-            className='flex items-center rounded my-2 px-2 py-1 bg-white/50 text-sm hover:bg-white/80'
+            className='flex items-center rounded my-2 px-2 py-1 bg-white/80 text-sm hover:bg-white/90 active:bg-white'
             onClick={onToggleListHideCompletedState}
           >
             {/* caret */}
