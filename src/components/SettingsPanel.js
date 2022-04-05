@@ -1,13 +1,14 @@
 import preval from 'preval.macro'
 import CrossIcon from './Icons/CrossIcon';
 
-const buildVersion = `v${process.env.REACT_APP_MAJOR_VERSION}.${preval`module.exports = 
+const buildVersion = `${process.env.REACT_APP_MAJOR_VERSION}.${preval`module.exports = 
   new Date().getFullYear().toString().substr(2) + 
   (new Date().getMonth() < 10 ? '0' : '') + new Date().getMonth().toString() + 
   (new Date().getDate() < 10 ? '0' : '') + new Date().getDate().toString() +
   '.' + 
   (new Date().getHours() < 10 ? '0' : '') + new Date().getHours().toString() + 
-  (new Date().getMinutes() < 10 ? '0' : '') + new Date().getMinutes().toString();`}
+  (new Date().getMinutes() < 10 ? '0' : '') + new Date().getMinutes().toString() +
+  (new Date().getSeconds() < 10 ? '0' : '') + new Date().getSeconds().toString();`}
 `;
 const buildTime = preval`module.exports = 
   new Date().getFullYear().toString() + 
@@ -38,7 +39,7 @@ const SettingsPanel = ({
               KonoList
             </h2>
             <p className='font-mono text-xs tracking-wide'>
-              {buildVersion}
+              Version: {buildVersion}
             </p>
             <p className='font-mono text-xs'>
               Built on: {buildTime}
