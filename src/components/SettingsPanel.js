@@ -76,6 +76,7 @@ const SettingsPanel = ({
               >
                 <img 
                   src='https://api.netlify.com/api/v1/badges/19cdecd2-08f5-4507-a6e1-126b61977fc2/deploy-status' 
+                  title='Netlify deployment status'
                 />
               </a>
             </div>
@@ -86,6 +87,7 @@ const SettingsPanel = ({
                 href='https://github.com/rendoruiz/konolist'
                 title='Open GitHub link'
                 target='_blank'
+                rel='noreferrer'
                 className='rounded px-4 py-2 bg-black text-white font-medium leading-none hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
               >
                 Fork at GitHub
