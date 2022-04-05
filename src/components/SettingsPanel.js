@@ -68,7 +68,9 @@ const SettingsPanel = ({
             </div>
 
             <div className='grid justify-items-start gap-1'>
-              <h3 className='font-medium text-lg tracking-tight'>Netlify deployment status</h3>
+              <h3 className='font-medium text-lg tracking-tight'>
+                Netlify deployment status
+              </h3>
 
               <a 
                 href='https://list.kono.cx/'
@@ -83,7 +85,9 @@ const SettingsPanel = ({
             </div>
 
             <div className='grid justify-items-start gap-1'>
-              <h3 className='font-medium text-lg tracking-tight'>Give the project a star on GitHub</h3>
+              <h3 className='font-medium text-lg tracking-tight'>
+                Give the project a star on GitHub
+              </h3>
               <a 
                 href='https://github.com/rendoruiz/konolist'
                 title='Open GitHub link'
@@ -97,7 +101,9 @@ const SettingsPanel = ({
           </section>
 
           <section>
-            <h2 className='mb-1 font-bold text-2xl tracking-tight'>Reset Cache</h2>
+            <h2 className='mb-1 font-bold text-2xl tracking-tight'>
+              Reset Cache
+            </h2>
             <p>
               Pressing the button below will perform an operation that will delete all your lists and tasks and reset the app back to its defaults.
             </p>
