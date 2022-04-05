@@ -17,7 +17,7 @@ import { decryptObject } from '../utils/cryptoJs';
 
 const App = () => {
   // panel toggle states
-  const [isListPanelOpen, setIsListPanelOpen] = React.useState(true);
+  const [isListPanelOpen, setIsListPanelOpen] = useLocalState('ilpo', true);
   const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
 
   // panel toggle handlers
