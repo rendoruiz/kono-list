@@ -1,4 +1,6 @@
 import ListPanelRow from "./ListPanelRow";
+import PlusIcon from "../Icons/PlusIcon";
+import SettingsIcon from "../Icons/SettingsIcon";
 
 const ListPanel = ({ 
   isOpen, 
@@ -39,7 +41,7 @@ const ListPanel = ({
 
       {/* <header className='-order-1 sticky top-0 border-b-2 py-3 px-5 '></header> */}
 
-      <footer className='fixed inset-0 top-auto grid grid-cols-[1fr,auto] border-t-2 p-[2px] bg-inherit bp520:sticky'>
+      <footer className='fixed inset-0 top-auto grid grid-cols-[1fr,auto] border-t-2 p-[2px] bg-inherit text-black/70 bp520:sticky'>
         {/* add new list button */}
         <button 
           type='button'
@@ -48,8 +50,8 @@ const ListPanel = ({
           className='group grid p-[2px] leading-none'
         >
           <div className='grid grid-cols-[auto,1fr] items-center rounded w-full group-hover:bg-slate-500/10 group-active:bg-slate-500/30'>
-            <div className='grid place-items-center w-12 h-12 font-mono text-2xl bp520:w-10 bp520:h-10'>
-              +
+            <div className='grid place-items-center p-2 w-12 h-12 bp520:w-10 bp520:h-10'>
+              <PlusIcon className='w-7 h-7 stroke-current bp520:w-6 bp520:h-6' />
             </div>
             <span className='text-left'>New list</span>
           </div>
@@ -60,8 +62,8 @@ const ListPanel = ({
           title='Open settings'
           className='group grid p-[2px] leading-none'
         >
-          <div className='grid place-items-center rounded w-12 h-12 text-2xl group-hover:bg-slate-500/10 group-active:bg-slate-500/30 bp520:w-10 bp520:h-10'>
-            ⚙️
+          <div className='grid place-items-center rounded w-12 h-12 group-hover:bg-slate-500/10 group-active:bg-slate-500/30 bp520:w-10 bp520:h-10'>
+            <SettingsIcon className='w-7 h-7 stroke-current bp520:w-6 bp520:h-6' />
           </div>
         </button>
       </footer>

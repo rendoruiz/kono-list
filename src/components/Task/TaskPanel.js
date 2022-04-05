@@ -1,6 +1,9 @@
 import { listTemplate } from "../../data/list";
 import TaskCreatorPanel from "./TaskCreatorPanel";
 import TaskPanelList from "./TaskPanelList";
+import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
+import PencilIcon from "../Icons/PencilIcon";
+import TrashIcon from "../Icons/TrashIcon";
 
 const TaskPanel = ({ 
   taskItems, 
@@ -38,14 +41,16 @@ const TaskPanel = ({
         className='group grid p-[2px] leading-none md:hidden'
         onClick={onToggleListPanel}
       >
-        <div className='grid place-items-center rounded w-12 h-12 text-2xl group-hover:bg-white/50 group-active:bg-white/70'>⬅️</div>
+        <div className='grid place-items-center rounded w-12 h-12 text-2xl group-hover:bg-white/30 group-active:bg-white/50'>
+          <ArrowLeftIcon className='w-8 h-8 stroke-current' />
+        </div>
       </button>
 
       {/* list icon and name + edit list */}
       <button 
         type='button'
         title='Click to rename'
-        className='justify-self-start grid grid-cols-[auto,1fr] items-center rounded leading-none hover:bg-white/50 active:bg-white/70'
+        className='justify-self-start grid grid-cols-[auto,1fr] items-center rounded leading-none hover:bg-black/10 active:bg-black/20'
         onClick={onToggleListEditorPanel}
       >
         {/* list icon */}
@@ -67,20 +72,20 @@ const TaskPanel = ({
         <button
           type='button'
           title='Edit list'
-          className='grid place-items-center rounded w-10 h-10 bg-white/80 leading-none hover:bg-white/90 active:bg-white md:w-8 md:h-8'
+          className='grid place-items-center rounded w-10 h-10 leading-none hover:bg-white/30 active:bg-white/50 md:w-8 md:h-8 md:bg-white/80 md:text-black/80 md:hover:bg-white/90 md:active:bg-white'
           onClick={onToggleListEditorPanel}
         >
-          <span>✏️</span>
+          <PencilIcon className='w-8 h-8 stroke-current md:w-6 md:h-6' />
         </button>
 
         {/* delete list */}
         <button
           type='button'
           title='Delete list'
-          className='grid place-items-center rounded w-10 h-10 bg-white/80 leading-none hover:bg-white/90 active:bg-white md:w-8 md:h-8'
+          className='grid place-items-center rounded w-10 h-10 leading-none hover:bg-white/30 active:bg-white/50 md:w-8 md:h-8 md:bg-white/80 md:text-black/80 md:hover:bg-white/90 md:active:bg-white'
           onClick={onDeleteList}
         >
-          <span>🗑️</span>
+          <TrashIcon className='w-8 h-8 stroke-current md:w-6 md:h-6' />
         </button>
       </div>
     </header>
