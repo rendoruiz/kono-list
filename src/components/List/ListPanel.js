@@ -27,7 +27,7 @@ const ListPanel = ({
     }>
       {/* list rows */}
       <main className='overflow-y-auto pt-3 py-1 bp520:pt-2'>
-        <ul className='grid'>
+        <ul className='grid content-start'>
           {listItems.map((list) => (
             <ListPanelRow
               key={list.id}

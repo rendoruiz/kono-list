@@ -27,7 +27,7 @@ const TaskPanelList = ({
       {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedList).replaceAll(',"', ', "')}</p> */}
 
       {/* tasks - incomplete */}
-      <ul className='grid gap-[3px]'>
+      <ul className='grid content-start gap-[3px]'>
         {incompleteTasks && incompleteTasks.map((task) => (
           <TaskPanelListRow
             key={task.id}
@@ -45,20 +45,18 @@ const TaskPanelList = ({
           {/* is_complete task toggle */}
           <button 
             type='button'
-            className='flex items-center rounded my-2 px-2 py-3 w-full leading-none hover:bg-black/10 sm:py-1 sm:w-auto sm:bg-white/80 sm:text-sm sm:text-black/90 sm:hover:bg-white/90 sm:active:bg-white'
+            className='flex items-center rounded my-2 px-2 py-3 w-full leading-none hover:bg-black/10 sm:justify-self-start sm:py-1 sm:w-auto sm:bg-white/80 sm:text-sm sm:text-black/90 sm:hover:bg-white/90 sm:active:bg-white'
             onClick={onToggleListHideCompletedState}
           >
             {/* caret */}
-            <span className={
-              'origin-center transition-transform ' + 
-              (!selectedList?.is_completed_hidden ? 'rotate-90' : '')}
-            >
-              <ChevronRightIcon className='w-5 h-5 stroke-[2.5] stroke-current bp520:stroke-[1.5]' />
-            </span>
+            <ChevronRightIcon className={
+              'w-5 h-5 stroke-[2.5] stroke-current transition-transform origin-center bp520:stroke-[1.5] ' +
+              (!selectedList?.is_completed_hidden ? 'rotate-90' : '')
+            } />
 
-            <p className='ml-1 mr-2'>
+            <span className='ml-1 mr-2'>
               Completed
-            </p>
+            </span>
             
             {/* completed task count */}
             <span className='pr-1 font-medium'>{completedTasks?.length}</span>
@@ -66,7 +64,7 @@ const TaskPanelList = ({
 
           {/* tasks - completed */}
           {!selectedList?.is_completed_hidden && (
-            <ul className='grid gap-[3px]'>
+            <ul className='grid content-start gap-[3px]'>
               {completedTasks && completedTasks.map((task) => (
                 <TaskPanelListRow
                   key={task.id}
