@@ -1,4 +1,5 @@
 import * as React from 'react';
+import ChevronRightIcon from '../Icons/ChevronRightIcon';
 
 import TaskPanelListRow from './TaskPanelListRow';
 
@@ -44,15 +45,15 @@ const TaskPanelList = ({
           {/* is_complete task toggle */}
           <button 
             type='button'
-            className='flex items-center rounded my-2 px-2 py-1 bg-white/80 text-sm hover:bg-white/90 active:bg-white'
+            className='flex items-center rounded my-2 px-2 py-3 w-full leading-none hover:bg-black/10 sm:py-1 sm:w-auto sm:bg-white/80 sm:text-sm sm:text-black/90 sm:hover:bg-white/90 sm:active:bg-white'
             onClick={onToggleListHideCompletedState}
           >
             {/* caret */}
             <span className={
-              'px-1 scale-y-125 origin-center ' + 
+              'origin-center transition-transform ' + 
               (!selectedList?.is_completed_hidden ? 'rotate-90' : '')}
             >
-              &gt;
+              <ChevronRightIcon className='w-5 h-5 stroke-[2.5] stroke-current bp520:stroke-[1.5]' />
             </span>
 
             <p className='ml-1 mr-2'>
@@ -60,7 +61,7 @@ const TaskPanelList = ({
             </p>
             
             {/* completed task count */}
-            <span>{completedTasks?.length}</span>
+            <span className='pr-1 font-medium'>{completedTasks?.length}</span>
           </button>
 
           {/* tasks - completed */}
