@@ -5,6 +5,7 @@ import ResponsiveTextArea from './ResponsiveTextArea';
 import ArrowLeftIcon from '../Icons/ArrowLeftIcon';
 import CrossIcon from '../Icons/CrossIcon';
 import TrashIcon from '../Icons/TrashIcon';
+import { formatDate } from '../../utils/dateFns';
 
 const TaskEditorPanel = ({ 
   task, 
@@ -16,6 +17,7 @@ const TaskEditorPanel = ({
 }) => {
   const [title, setTitle] = React.useState("");
   const [note, setNote] = React.useState("");
+  const [dateTime, setDateTime] = React.useState(null);
 
   const handleSubmit = (e) => {
     onUpdateTask({
@@ -28,7 +30,8 @@ const TaskEditorPanel = ({
   React.useEffect(() => {
     if (task) {
       setTitle(task.title ?? "");
-      setNote(task.note ?? "")
+      setNote(task.note ?? "");
+      setDateTime(task.is_complete ? formatDate(task.date_updated) : formatDate(task.date_created));
     }
   }, [task]);
 
@@ -45,7 +48,7 @@ const TaskEditorPanel = ({
 
       {/* bp520 - floats, lg - inline */}
       <div className={
-        'fixed inset-0 left-auto z-30 grid grid-rows-[auto,1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[auto,1fr,auto] bp520:max-w-[340px] lg:relative lg:z-auto lg:translate-x-0 lg:transition-none ' +
+        'fixed inset-0 left-auto z-30 grid grid-rows-[auto,1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[auto,1fr,auto] bp520:w-[320px] lg:relative lg:z-auto lg:translate-x-0 lg:transition-none ' +
         (task ? 'lg:translate-x-0' : 'translate-x-full lg:hidden')
       }>
         {/* debug */}
@@ -119,8 +122,8 @@ const TaskEditorPanel = ({
 
         {/* date created/completed, delete */}
         <footer className='fixed inset-0 top-auto grid grid-cols-[1fr,auto] items-center gap-1 border-t-2 p-[2px] bg-inherit bp520:sticky'>
-          <div className='grid justify-self-start px-3 text-sm text-black/70 leading-none bp520:justify-self-center'>
-            {task?.is_complete ? `Completed ${task?.date_updated}` : `Created ${task?.date_created}`}
+          <div className='grid px-3 text-sm text-black/70 leading-none bp520:text-center'>
+            {(task?.is_complete ? `Completed ` : `Created `) + dateTime}
           </div>
 
           <button
