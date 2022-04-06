@@ -14,16 +14,19 @@ import taskReducer from '../reducers/taskReducer';
 import { listTemplate, initialListItems } from '../data/list';
 import { initialTaskItems } from '../data/task';
 import { decryptObject } from '../utils/cryptoJs';
+import SettingsPanel from './SettingsPanel';
 
 const App = () => {
   // panel toggle states
-  const [isListPanelOpen, setIsListPanelOpen] = React.useState(true);
+  const [isListPanelOpen, setIsListPanelOpen] = useLocalState('ilpo', true);
   const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
+  const [isSettingsPanelOpen, setIsSettingsPanelOpen] = React.useState(false);
 
   // panel toggle handlers
   const handleToggleListPanel = () => setIsListPanelOpen(!isListPanelOpen);
   const handleToggleListEditorPanel = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
   const handleCloseTaskEditorPanel = () => setSelectedTask(null);
+  const handleToggleSettingsPanel = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
   
   // list & task states
   const [selectedList, setSelectedList] = useLocalState('sl', initialListItems[0]);
@@ -44,6 +47,19 @@ const App = () => {
       localKey: 'ts',
     }
   );
+  
+  // list - effects
+  // makes sure the selected list & task object data is always up to date
+  React.useEffect(() => {
+    if (selectedList) {
+      setSelectedList(listItems.data.find((list) => list.id === selectedList.id));
+    }
+  }, [listItems.data, selectedList, setSelectedList]);
+  React.useEffect(() => {
+    if (selectedTask) {
+      setSelectedTask(taskItems.data.find((task) => task.id === selectedTask.id));
+    }
+  }, [taskItems.data, selectedTask, setSelectedTask]);
 
   // list - handlers
   // set selected list, reset selected task, close task editor panel
@@ -133,19 +149,6 @@ const App = () => {
       }
     });
   }
-
-  // list - effects
-  // makes sure the selected list & task object data is always up to date
-  React.useEffect(() => {
-    if (selectedList) {
-      setSelectedList(listItems.data.find((list) => list.id === selectedList.id));
-    }
-  }, [listItems.data, selectedList, setSelectedList]);
-  React.useEffect(() => {
-    if (selectedTask) {
-      setSelectedTask(taskItems.data.find((task) => task.id === selectedTask.id));
-    }
-  }, [taskItems.data, selectedTask, setSelectedTask]);
   
   // task - handlers
   // remove selected task & close task editor panel if the newly selected task is the same
@@ -183,7 +186,7 @@ const App = () => {
       }
     });
   }
-  //
+  // update a task's title and note
   const handleUpdateTask = ({ title, note }) => {
     dispatchTaskItems({
       type: 'TASK_UPDATE',
@@ -194,13 +197,22 @@ const App = () => {
       },
     });
   }
-  //
+  // delete a task based on the selected task id
   const handleDeleteTask = (event) => {
     dispatchTaskItems({
       type: 'TASK_DELETE',
       payload: { id: selectedTask.id },
     });
     setSelectedTask(null);
+    event.preventDefault();
+  }
+
+  // clear localstorage + reroute to page origin
+  const handleResetCache = (event) => {
+    if (window.confirm('Are you sure you want to reset everything back to default?')) {
+      localStorage.clear();
+      window.location.assign(window.location.origin);
+    }
     event.preventDefault();
   }
 
@@ -214,6 +226,7 @@ const App = () => {
         onTogglePanel={handleToggleListPanel} 
         onSelectList={handleSelectList}
         onCreateList={handleCreateList}
+        onToggleSettingsPanel={handleToggleSettingsPanel}
       />
 
       {/* list editor popup */}
@@ -222,6 +235,13 @@ const App = () => {
         list={selectedList}
         onUpdateList={handleUpdateList}
         onCancelEdit={handleListEditorCancelEdit}
+      />
+
+      {/* Settings panel */}
+      <SettingsPanel
+        isOpen={isSettingsPanelOpen}
+        onTogglePanel={handleToggleSettingsPanel}
+        onResetCache={handleResetCache}
       />
 
       {/* task middle panel */}

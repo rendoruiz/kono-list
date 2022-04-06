@@ -1,5 +1,3 @@
-import preval from 'preval.macro'
-
 import ListPanelRow from "./ListPanelRow";
 import PlusIcon from "../Icons/PlusIcon";
 import SettingsIcon from "../Icons/SettingsIcon";
@@ -10,7 +8,8 @@ const ListPanel = ({
   selectedList, 
   onTogglePanel, 
   onSelectList, 
-  onCreateList 
+  onCreateList,
+  onToggleSettingsPanel
 }) => (
   <>
     {/* mobile backdrop toggle */}
@@ -27,6 +26,12 @@ const ListPanel = ({
       'fixed inset-0 right-auto z-30 grid grid-rows-[auto,1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[auto,1fr,auto] bp520:w-72 md:relative md:z-auto md:translate-x-0 md:transition-none  ' +
       (isOpen ? 'md:translate-x-0' : '-translate-x-full')
     }>
+      <header className='sticky top-0 grid border-b-2 pt-4 pb-3 px-3 leading-none select-none pointer-events-none md:py-3'>
+        <h1 className="font-bold text-3xl text-blue-600 tracking-tight md:text-2xl">
+          KonoList
+        </h1>
+      </header>
+      
       {/* list rows */}
       <main className='overflow-y-auto pt-3 py-1 bp520:pt-2'>
         <ul className='grid content-start'>
@@ -40,15 +45,6 @@ const ListPanel = ({
           ))}
         </ul>
       </main>
-
-      <header className='-order-1 sticky top-0 grid border-b-2 pt-4 pb-3 px-3 leading-none md:py-3'>
-        <h1 className="font-bold text-3xl text-blue-600 tracking-tight scale-x-125 origin-left md:text-2xl">
-          KonoList
-        </h1>
-        <p className='font-mono text-xs tracking-wide'>
-          v{process.env.REACT_APP_MAJOR_VERSION}{preval`module.exports = new Date().getFullYear().toString().substr(2) + (new Date().getMonth().toString().length < 2 ? '0' + new Date().getMonth().toString() : new Date().getMonth().toString()) + '.' + (new Date().getHours() < 10 ? '0' : '') + new Date().getHours().toString() + (new Date().getMinutes() < 10 ? '0' : '') + new Date().getMinutes().toString() + (new Date().getSeconds() < 10 ? '0' : '') + new Date().getSeconds().toString()`}
-        </p>
-      </header>
 
       <footer className='fixed inset-0 top-auto grid grid-cols-[1fr,auto] border-t-2 p-[2px] bg-inherit text-black/70 bp520:sticky'>
         {/* add new list button */}
@@ -69,6 +65,7 @@ const ListPanel = ({
         <button
           type='button'
           title='Open settings'
+          onClick={onToggleSettingsPanel}
           className='group grid p-[2px] leading-none'
         >
           <div className='grid place-items-center rounded w-12 h-12 group-hover:bg-slate-500/10 group-active:bg-slate-500/30 bp520:w-10 bp520:h-10'>

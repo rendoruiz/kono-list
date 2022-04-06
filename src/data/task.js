@@ -14,6 +14,7 @@ const initialTaskItems = [
     id: 0,
     list_id: 0,
     title: 'List Item 1',
+    date_created: 1644078770000,
   },
   {
     ...taskTemplate,
@@ -30,6 +31,7 @@ const initialTaskItems = [
     list_id: 0,
     title: 'List Item 3',
     note: 'List Item 3 note',
+    date_created: 1612542770000,
   },
 ];
 

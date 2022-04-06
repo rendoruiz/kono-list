@@ -5,3 +5,7 @@
 html, body {
   @apply overflow-hidden
 }
+
+button {
+  @apply cursor-default md:cursor-pointer
+}

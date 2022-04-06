@@ -49,7 +49,7 @@ const ListEditorPopup = ({
       onClick={() => handleSubmit()}
     >
       <form 
-        className=' rounded px-4 py-3 bg-white'
+        className='rounded px-4 py-3 bg-white'
         onClick={(e) => e.stopPropagation()}
         onSubmit={handleSubmit}
         onReset={handleReset}
