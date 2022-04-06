@@ -21,7 +21,9 @@ const buildTime = preval`module.exports =
 
 const SettingsPanel = ({ 
   isOpen, 
+  isInstallable,
   onTogglePanel,
+  onInstallApp,
   onResetCache
 }) => {
   return isOpen && (  
@@ -75,7 +77,7 @@ const SettingsPanel = ({
               <a 
                 href='https://list.kono.cx/'
                 title='Open site link'
-                className='block rounded scale-110 origin-left hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
+                className='block rounded scale-110 origin-left hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
               >
                 <img 
                   src='https://api.netlify.com/api/v1/badges/19cdecd2-08f5-4507-a6e1-126b61977fc2/deploy-status' 
@@ -93,7 +95,7 @@ const SettingsPanel = ({
                 title='Open GitHub link'
                 target='_blank'
                 rel='noreferrer'
-                className='rounded px-5 py-2 bg-black text-white font-medium leading-none hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
+                className='rounded px-5 py-2 bg-black text-white font-medium leading-none hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
               >
                 Star on GitHub
               </a>
@@ -105,19 +107,21 @@ const SettingsPanel = ({
               Install as an app
             </h2>
             <p>
-              Most chromium-based browsers like Google Chrome or Microsoft Edge allow you to install compatible sites as an app or pin a website on your mobile home screen for easier access.
+              Most chromium-based browsers like Google Chrome or Microsoft Edge allow you to install compatible sites as an app or add a website on your mobile home screen for easier access.
             </p>
             <p className='mt-1'>
-              When installed, Konolist can be used even without an internet connection.
+              When installed, Konolist can be used even with no internet connection.
             </p>
-            <button 
-              type='button'
-              title='Reset cache'
-              className='rounded mt-4 px-5 py-2 bg-gradient-to-br from-blue-700 to-blue-500  text-white font-medium leading-none hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
-              onClick={onResetCache}
-            >
-              Install App
-            </button>
+            {isInstallable && (
+              <button 
+                type='button'
+                title='Install app'
+                className='rounded mt-4 px-5 py-2 bg-gradient-to-br from-blue-700 to-blue-500  text-white font-medium leading-none hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
+                onClick={onInstallApp}
+              >
+                Install App
+              </button>
+            )}
           </section>
 
           <section>
@@ -132,8 +136,8 @@ const SettingsPanel = ({
             </p>
             <button 
               type='button'
-              title='Reset cache'
-              className='rounded mt-4 px-5 py-2 bg-red-600 text-white font-medium leading-none hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
+              title='Reset app'
+              className='rounded mt-4 px-5 py-2 bg-red-600 text-white font-medium leading-none hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
               onClick={onResetCache}
             >
               Reset App
