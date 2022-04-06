@@ -114,18 +114,18 @@ const SettingsPanel = ({
             <p className='mt-1'>
               When installed, Konolist can be used even with no internet connection.
             </p>
-            {isInstalled ? (
-              isInstallable && (
-                <button 
-                  type='button'
-                  title='Install app'
-                  className='rounded mt-4 px-5 py-2 bg-gradient-to-br from-blue-700 to-blue-500 text-white font-medium leading-none hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
-                  onClick={onInstallApp}
-                >
-                  Install App
-                </button>
-              )
-            ) : (
+            {isInstallable && (
+              <button 
+                type='button'
+                title='Install app'
+                className='rounded mt-4 px-5 py-2 bg-gradient-to-br from-blue-700 to-blue-500 text-white font-medium leading-none hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
+                onClick={onInstallApp}
+              >
+                Install App
+              </button>
+            )}
+
+            {isInstalled && (
               <p className='mt-1 bg-gradient-to-br from-blue-700 to-blue-500 bg-clip-text font-bold text-transparent'>
                 App is already installed.
               </p>
