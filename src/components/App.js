@@ -31,6 +31,7 @@ const App = () => {
 
   // pwa install button state
   const [isInstallable, setIsInstallable] = React.useState(false);
+  const [isInstalled, setIsInstalled] = React.useState(false);
 
   // list & task reducers
   const [listItems, dispatchListItems] = React.useReducer(
@@ -75,6 +76,7 @@ const App = () => {
     window.addEventListener('appinstalled', () => {
       // Log install to analytics
       console.log('INSTALL: Success');
+      setIsInstalled(true);
     });
   }, []);
 
@@ -280,6 +282,7 @@ const App = () => {
       <SettingsPanel
         isOpen={isSettingsPanelOpen}
         isInstallable={isInstallable}
+        isInstalled={isInstalled}
         onTogglePanel={handleToggleSettingsPanel}
         onInstallApp={handleInstallApp}
         onResetCache={handleResetCache}

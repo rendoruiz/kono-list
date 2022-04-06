@@ -22,6 +22,7 @@ const buildTime = preval`module.exports =
 const SettingsPanel = ({ 
   isOpen, 
   isInstallable,
+  isInstalled,
   onTogglePanel,
   onInstallApp,
   onResetCache
@@ -106,21 +107,28 @@ const SettingsPanel = ({
             <h2 className='mb-1 font-bold text-2xl tracking-tight'>
               Install as an app
             </h2>
+            
             <p>
               Most chromium-based browsers like Google Chrome or Microsoft Edge allow you to install compatible sites as an app or add a website on your mobile home screen for easier access.
             </p>
             <p className='mt-1'>
               When installed, Konolist can be used even with no internet connection.
             </p>
-            {isInstallable && (
-              <button 
-                type='button'
-                title='Install app'
-                className='rounded mt-4 px-5 py-2 bg-gradient-to-br from-blue-700 to-blue-500  text-white font-medium leading-none hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
-                onClick={onInstallApp}
-              >
-                Install App
-              </button>
+            {isInstalled ? (
+              isInstallable && (
+                <button 
+                  type='button'
+                  title='Install app'
+                  className='rounded mt-4 px-5 py-2 bg-gradient-to-br from-blue-700 to-blue-500 text-white font-medium leading-none hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
+                  onClick={onInstallApp}
+                >
+                  Install App
+                </button>
+              )
+            ) : (
+              <p className='mt-1 bg-gradient-to-br from-blue-700 to-blue-500 bg-clip-text font-bold text-transparent'>
+                App is already installed.
+              </p>
             )}
           </section>
 
