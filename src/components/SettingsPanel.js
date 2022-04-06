@@ -33,9 +33,9 @@ const SettingsPanel = ({
         className='grid content-start w-full max-w-md text-black/90'
         onClick={(e) => e.stopPropagation()}
       >
-        <header className='grid grid-cols-[1fr,auto] rounded-t p-4 bg-blue-600 text-white'>
+        <header className='grid grid-cols-[1fr,auto] rounded-t p-4 bg-gradient-to-br from-blue-700 to-blue-500 text-white'>
           <div>
-            <h2 className="mb-1 font-bold text-3xl tracking-tight md:text-3xl">
+            <h2 className="mb-1 font-extrabold text-3xl uppercase">
               KonoList
             </h2>
             <p className='font-mono text-xs tracking-wide'>
