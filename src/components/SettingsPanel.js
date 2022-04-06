@@ -30,7 +30,7 @@ const SettingsPanel = ({
       onClick={onTogglePanel}
     >
       <div 
-        className='grid content-start w-full max-w-md text-black/90'
+        className='grid content-start w-full max-w-lg text-black/90'
         onClick={(e) => e.stopPropagation()}
       >
         <header className='grid grid-cols-[1fr,auto] rounded-t p-4 bg-gradient-to-br from-blue-700 to-blue-500 text-white'>
@@ -56,8 +56,8 @@ const SettingsPanel = ({
           </button>
         </header>
 
-        <main className='grid gap-8 content-start rounded-b px-4 pt-5 pb-6 bg-white'>
-          <section className='grid content-start gap-4'>
+        <main className='grid gap-10 content-start rounded-b px-4 pt-5 pb-8 bg-white'>
+          <section className='grid content-start gap-5'>
             <div className='grid justify-items-start gap-1'>
               <h2 className='font-bold text-2xl tracking-tight'>
                 About
@@ -86,37 +86,57 @@ const SettingsPanel = ({
 
             <div className='grid justify-items-start gap-1'>
               <h3 className='font-medium text-lg tracking-tight'>
-                Give the project a star on GitHub
+                Project public repository
               </h3>
               <a 
                 href='https://github.com/rendoruiz/konolist'
                 title='Open GitHub link'
                 target='_blank'
                 rel='noreferrer'
-                className='rounded px-4 py-2 bg-black text-white font-medium leading-none hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
+                className='rounded px-5 py-2 bg-black text-white font-medium leading-none hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
               >
-                Fork at GitHub
+                Star on GitHub
               </a>
             </div>
           </section>
 
           <section>
             <h2 className='mb-1 font-bold text-2xl tracking-tight'>
-              Reset Cache
+              Install as an app
+            </h2>
+            <p>
+              Most chromium-based browsers like Google Chrome or Microsoft Edge allow you to install compatible sites as an app or pin a website on your mobile home screen for easier access.
+            </p>
+            <p className='mt-1'>
+              When installed, Konolist can be used even without an internet connection.
+            </p>
+            <button 
+              type='button'
+              title='Reset cache'
+              className='rounded mt-4 px-5 py-2 bg-gradient-to-br from-blue-700 to-blue-500  text-white font-medium leading-none hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
+              onClick={onResetCache}
+            >
+              Install App
+            </button>
+          </section>
+
+          <section>
+            <h2 className='mb-1 font-bold text-2xl tracking-tight'>
+              Reset app
             </h2>
             <p>
               Pressing the button below will perform an operation that will delete all your lists and tasks and reset the app back to its defaults.
             </p>
-            <p>
+            <p className='mt-1'>
               Once finished, the page will reload automatically.
             </p>
             <button 
               type='button'
               title='Reset cache'
-              className='rounded mt-4 px-4 py-2 bg-red-600 text-white font-medium leading-none hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
+              className='rounded mt-4 px-5 py-2 bg-red-600 text-white font-medium leading-none hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
               onClick={onResetCache}
             >
-              Reset Cache
+              Reset App
             </button>
           </section>
         </main>
