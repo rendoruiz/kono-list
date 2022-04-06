@@ -22,7 +22,6 @@ const buildTime = preval`module.exports =
 const SettingsPanel = ({ 
   isOpen, 
   isInstallable,
-  isInstalled,
   onTogglePanel,
   onInstallApp,
   onResetCache
@@ -123,12 +122,6 @@ const SettingsPanel = ({
               >
                 Install App
               </button>
-            )}
-
-            {isInstalled && (
-              <p className='mt-1 bg-gradient-to-br from-blue-700 to-blue-500 bg-clip-text font-bold text-transparent'>
-                App is already installed.
-              </p>
             )}
           </section>
 
