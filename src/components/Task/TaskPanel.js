@@ -58,9 +58,13 @@ const TaskPanel = ({
         disabled={selectedList.locked}
       >
         {/* list icon */}
-        <div className='grid place-items-center w-10 h-10'>
+        <div className={
+          'grid place-items-center h-10 ' +
+          (selectedList.icon === "" ? 'pl-1 w-0' : 'w-10')
+        }>
+        { console.log(`"${selectedList.icon.length}"`)}
           <div className='font-mono font-bold text-2xl'>
-            {selectedList?.icon ?? listTemplate.icon}
+            {selectedList?.icon}
           </div>
         </div>
         

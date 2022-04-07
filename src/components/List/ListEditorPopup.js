@@ -19,17 +19,14 @@ const ListEditorPopup = ({
   React.useEffect(() => {
     if (isOpen && list) {
       setName(list.name ?? "");
-      if (list.date_updated) {
-        setIcon(list.icon ?? "");
-      }
+      setIcon(list.icon ?? "");
     }
   }, [isOpen, list]);
 
   const handleNameChange = (e) => setName(e.target.value);
   const handleIconChange = (e) => {
     const firstCharacter = splitter.splitGraphemes(e.target.value).shift();
-    console.log(firstCharacter)
-    setIcon(firstCharacter);
+    setIcon(firstCharacter ?? "");
   }
   const handleClick = (e) => e.target.select();
 
@@ -72,7 +69,7 @@ const ListEditorPopup = ({
             type='text' 
             placeholder={listTemplate.icon}
             autoComplete='off'
-            className='flex-none border-b-2 border-b-blue-600 rounded-b-sm w-8 h-10 text-lg text-center leading-none appearance-none outline-none placeholder:opacity-40 active:select-all'
+            className='flex-none border-b-2 border-b-blue-600 rounded-b-sm w-8 h-10 text-lg text-center leading-none appearance-none outline-none placeholder:opacity-30 active:select-all'
             value={icon}
             onChange={handleIconChange}
             onClick={handleClick}

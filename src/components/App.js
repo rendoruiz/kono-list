@@ -127,7 +127,7 @@ const App = () => {
       payload: {
         ...selectedList,
         name: name.trim().length > 0 ? name.trim() : listTemplate.name,
-        icon: !selectedList.date_updated && !icon ? listTemplate.icon : icon,
+        icon: icon,
       },
     });
     updateSelectedList();
