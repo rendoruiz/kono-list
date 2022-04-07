@@ -4,7 +4,7 @@ import Graphemer from 'graphemer';
 
 import { listTemplate } from '../../data/list';
 
-const splitter = new Graphemer;
+const splitter = new Graphemer();
 
 const ListEditorPopup = ({ 
   isOpen, 

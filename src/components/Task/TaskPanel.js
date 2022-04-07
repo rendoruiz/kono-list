@@ -62,7 +62,6 @@ const TaskPanel = ({
           'grid place-items-center h-10 ' +
           (selectedList.icon === "" ? 'pl-1 w-0' : 'w-10')
         }>
-        { console.log(`"${selectedList.icon.length}"`)}
           <div className='font-mono font-bold text-2xl'>
             {selectedList?.icon}
           </div>
