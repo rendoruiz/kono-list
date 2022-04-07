@@ -1,6 +1,10 @@
 import * as React from 'react';
 
+import Graphemer from 'graphemer';
+
 import { listTemplate } from '../../data/list';
+
+const splitter = new Graphemer;
 
 const ListEditorPopup = ({ 
   isOpen, 
@@ -22,7 +26,11 @@ const ListEditorPopup = ({
   }, [isOpen, list]);
 
   const handleNameChange = (e) => setName(e.target.value);
-  const handleBadgeChange = (e) => setIcon(e.target.value);
+  const handleIconChange = (e) => {
+    const firstCharacter = splitter.splitGraphemes(e.target.value).shift();
+    console.log(firstCharacter)
+    setIcon(firstCharacter);
+  }
   const handleClick = (e) => e.target.select();
 
   const handleSubmit = (event) => {
@@ -62,12 +70,11 @@ const ListEditorPopup = ({
           <input 
             name='icon'
             type='text' 
-            maxLength={1}
             placeholder={listTemplate.icon}
             autoComplete='off'
-            className='flex-none border-b-2 border-b-blue-600 rounded-b-sm w-8 h-8 text-lg text-center leading-none appearance-none outline-none placeholder:opacity-40 active:select-all'
+            className='flex-none border-b-2 border-b-blue-600 rounded-b-sm w-8 h-10 text-lg text-center leading-none appearance-none outline-none placeholder:opacity-40 active:select-all'
             value={icon}
-            onChange={handleBadgeChange}
+            onChange={handleIconChange}
             onClick={handleClick}
           />
           <input 
