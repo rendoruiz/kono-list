@@ -69,7 +69,7 @@ const TaskPanel = ({
         </div>
         
         {/* list name */}
-        <h2 className='pl-1 pr-2 font-medium text-2xl text-left truncate'>
+        <h2 className='pl-1 pr-2 font-medium text-xl text-left truncate bp360:text-2xl'>
           {selectedList?.name ?? listTemplate.name}
         </h2>
       </button>
