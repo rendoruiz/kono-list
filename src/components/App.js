@@ -62,19 +62,12 @@ const App = () => {
   }, [taskItems.data, selectedTask, setSelectedTask]);
 
   // pwa install button effect
+  // prevent install prompt from appearing and capture its event for later use
   React.useEffect(() => {
     window.addEventListener('beforeinstallprompt', (e) => {
-      // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
-      // Stash the event so it can be triggered later.
       deferredPrompt = e;
-      // Update UI notify the user they can install the PWA
       setIsInstallable(true);
-    });
-
-    window.addEventListener('appinstalled', () => {
-      // Log install to analytics
-      console.log('INSTALL: Success');
     });
   }, []);
 
@@ -85,19 +78,10 @@ const App = () => {
   const handleToggleSettingsPanel = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
 
   // pwa install button handler
+  // toggle isinstallable flag and show the captured prompt from useeffect
   const handleInstallApp = () => {
-    // Hide the app provided install promotion
     setIsInstallable(false);
-    // Show the install prompt
     deferredPrompt.prompt();
-    // Wait for the user to respond to the prompt
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      } else {
-        console.log('User dismissed the install prompt');
-      }
-    });
   }
 
   // list - handlers
