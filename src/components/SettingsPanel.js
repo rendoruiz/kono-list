@@ -21,7 +21,9 @@ const buildTime = preval`module.exports =
 
 const SettingsPanel = ({ 
   isOpen, 
+  isInstallable,
   onTogglePanel,
+  onInstallApp,
   onResetCache
 }) => {
   return isOpen && (  
@@ -30,12 +32,12 @@ const SettingsPanel = ({
       onClick={onTogglePanel}
     >
       <div 
-        className='grid content-start w-full max-w-md text-black/90'
+        className='grid content-start w-full max-w-lg text-black/90'
         onClick={(e) => e.stopPropagation()}
       >
-        <header className='grid grid-cols-[1fr,auto] rounded-t p-4 bg-blue-600 text-white'>
+        <header className='grid grid-cols-[1fr,auto] rounded-t p-4 bg-gradient-to-br from-blue-700 to-blue-500 text-white'>
           <div>
-            <h2 className="mb-1 font-bold text-3xl tracking-tight md:text-3xl">
+            <h2 className="mb-1 font-extrabold text-3xl uppercase">
               KonoList
             </h2>
             <p className='font-mono text-xs tracking-wide'>
@@ -56,8 +58,8 @@ const SettingsPanel = ({
           </button>
         </header>
 
-        <main className='grid gap-8 content-start rounded-b px-4 pt-5 pb-6 bg-white'>
-          <section className='grid content-start gap-4'>
+        <main className='grid gap-10 content-start rounded-b px-4 pt-5 pb-8 bg-white'>
+          <section className='grid content-start gap-5'>
             <div className='grid justify-items-start gap-1'>
               <h2 className='font-bold text-2xl tracking-tight'>
                 About
@@ -75,7 +77,7 @@ const SettingsPanel = ({
               <a 
                 href='https://list.kono.cx/'
                 title='Open site link'
-                className='block rounded scale-110 origin-left hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
+                className='block rounded scale-110 origin-left hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
               >
                 <img 
                   src='https://api.netlify.com/api/v1/badges/19cdecd2-08f5-4507-a6e1-126b61977fc2/deploy-status' 
@@ -86,37 +88,60 @@ const SettingsPanel = ({
 
             <div className='grid justify-items-start gap-1'>
               <h3 className='font-medium text-lg tracking-tight'>
-                Give the project a star on GitHub
+                Project public repository
               </h3>
               <a 
                 href='https://github.com/rendoruiz/konolist'
                 title='Open GitHub link'
                 target='_blank'
                 rel='noreferrer'
-                className='rounded px-4 py-2 bg-black text-white font-medium leading-none hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
+                className='rounded px-5 py-2 bg-black text-white font-medium leading-none hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
               >
-                Fork at GitHub
+                Star on GitHub
               </a>
             </div>
           </section>
 
           <section>
             <h2 className='mb-1 font-bold text-2xl tracking-tight'>
-              Reset Cache
+              Install as an app
+            </h2>
+            
+            <p>
+              Most chromium-based browsers like Google Chrome or Microsoft Edge allow you to install compatible sites as an app or add a website on your mobile home screen for easier access.
+            </p>
+            <p className='mt-1'>
+              When installed, Konolist can be used even with no internet connection.
+            </p>
+            {isInstallable && (
+              <button 
+                type='button'
+                title='Install app'
+                className='rounded mt-4 px-5 py-2 bg-gradient-to-br from-blue-700 to-blue-500 text-white font-medium leading-none hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
+                onClick={onInstallApp}
+              >
+                Install App
+              </button>
+            )}
+          </section>
+
+          <section>
+            <h2 className='mb-1 font-bold text-2xl tracking-tight'>
+              Reset app
             </h2>
             <p>
               Pressing the button below will perform an operation that will delete all your lists and tasks and reset the app back to its defaults.
             </p>
-            <p>
+            <p className='mt-1'>
               Once finished, the page will reload automatically.
             </p>
             <button 
               type='button'
-              title='Reset cache'
-              className='rounded mt-4 px-4 py-2 bg-red-600 text-white font-medium leading-none hover:opacity-80 active:opacity-100 active:outline active:outline-blue-600 active:outline-offset-2'
+              title='Reset app'
+              className='rounded mt-4 px-5 py-2 bg-red-600 text-white font-medium leading-none hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
               onClick={onResetCache}
             >
-              Reset Cache
+              Reset App
             </button>
           </section>
         </main>

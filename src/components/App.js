@@ -16,21 +16,21 @@ import { initialTaskItems } from '../data/task';
 import { decryptObject } from '../utils/cryptoJs';
 import SettingsPanel from './SettingsPanel';
 
+// for pwa install button
+let deferredPrompt; 
+
 const App = () => {
   // panel toggle states
   const [isListPanelOpen, setIsListPanelOpen] = useLocalState('ilpo', true);
   const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = React.useState(false);
 
-  // panel toggle handlers
-  const handleToggleListPanel = () => setIsListPanelOpen(!isListPanelOpen);
-  const handleToggleListEditorPanel = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
-  const handleCloseTaskEditorPanel = () => setSelectedTask(null);
-  const handleToggleSettingsPanel = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
-  
   // list & task states
   const [selectedList, setSelectedList] = useLocalState('sl', initialListItems[0]);
   const [selectedTask, setSelectedTask] = useLocalState('st', null);
+
+  // pwa install button state
+  const [isInstallable, setIsInstallable] = React.useState(false);
 
   // list & task reducers
   const [listItems, dispatchListItems] = React.useReducer(
@@ -48,7 +48,7 @@ const App = () => {
     }
   );
   
-  // list - effects
+  // list & task - effects
   // makes sure the selected list & task object data is always up to date
   React.useEffect(() => {
     if (selectedList) {
@@ -60,6 +60,29 @@ const App = () => {
       setSelectedTask(taskItems.data.find((task) => task.id === selectedTask.id));
     }
   }, [taskItems.data, selectedTask, setSelectedTask]);
+
+  // pwa install button effect
+  // prevent install prompt from appearing and capture its event for later use
+  React.useEffect(() => {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      setIsInstallable(true);
+    });
+  }, []);
+
+  // panel toggle handlers
+  const handleToggleListPanel = () => setIsListPanelOpen(!isListPanelOpen);
+  const handleToggleListEditorPanel = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
+  const handleCloseTaskEditorPanel = () => setSelectedTask(null);
+  const handleToggleSettingsPanel = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
+
+  // pwa install button handler
+  // toggle isinstallable flag and show the captured prompt from useeffect
+  const handleInstallApp = () => {
+    setIsInstallable(false);
+    deferredPrompt.prompt();
+  }
 
   // list - handlers
   // set selected list, reset selected task, close task editor panel
@@ -240,7 +263,9 @@ const App = () => {
       {/* Settings panel */}
       <SettingsPanel
         isOpen={isSettingsPanelOpen}
+        isInstallable={isInstallable}
         onTogglePanel={handleToggleSettingsPanel}
+        onInstallApp={handleInstallApp}
         onResetCache={handleResetCache}
       />
 
