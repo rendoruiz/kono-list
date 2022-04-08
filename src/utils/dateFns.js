@@ -1,3 +1,9 @@
+/**
+ * Copyright 2022 Rendo Ruiz. All rights reserved.
+ * Use of this source code is governed by a license that
+ * can be found in the LICENSE file.
+ */
+
 import { differenceInWeeks, format, formatDistanceToNow, getYear, isSameYear } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 

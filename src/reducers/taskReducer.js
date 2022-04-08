@@ -1,3 +1,9 @@
+/**
+ * Copyright 2022 Rendo Ruiz. All rights reserved.
+ * Use of this source code is governed by a license that
+ * can be found in the LICENSE file.
+ */
+
 import { taskTemplate } from "../data/task";
 import { encryptObject } from "../utils/cryptoJs";
 
