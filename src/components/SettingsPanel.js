@@ -91,7 +91,7 @@ const SettingsPanel = ({
                 Project public repository
               </h3>
               <a 
-                href='https://github.com/rendoruiz/konolist'
+                href='https://github.com/rendoruiz/kono-list'
                 title='Open GitHub link'
                 target='_blank'
                 rel='noreferrer'
