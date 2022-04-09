@@ -13,6 +13,8 @@ import ListPanel from './List/ListPanel';
 import ListEditorPopup from './List/ListEditorPopup';
 import TaskPanel from './Task/TaskPanel';
 import TaskEditorPanel from './Task/TaskEditorPanel';
+import SettingsPanel from './SettingsPanel';
+import DisclaimerPopup from './DisclaimerPopup';
 // hooks, reducers, data, utils
 import useLocalState from '../hooks/useLocalState';
 import listReducer from '../reducers/listReducer';
@@ -20,7 +22,6 @@ import taskReducer from '../reducers/taskReducer';
 import { listTemplate, initialListItems } from '../data/list';
 import { initialTaskItems } from '../data/task';
 import { decryptObject } from '../utils/cryptoJs';
-import SettingsPanel from './SettingsPanel';
 
 // for pwa install button
 let deferredPrompt; 
@@ -30,6 +31,7 @@ const App = () => {
   const [isListPanelOpen, setIsListPanelOpen] = useLocalState('ilpo', true);
   const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = React.useState(false);
+  const [isAppDisclaimerAgreed, setIsAppDisclaimerAgreed] = useLocalState('dis', false);
 
   // list & task states
   const [selectedList, setSelectedList] = useLocalState('sl', initialListItems[0]);
@@ -82,6 +84,7 @@ const App = () => {
   const handleToggleListEditorPanel = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
   const handleCloseTaskEditorPanel = () => setSelectedTask(null);
   const handleToggleSettingsPanel = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
+  const handleAppDisclaimerAgreed = () => setIsAppDisclaimerAgreed(true);
 
   // pwa install button handler
   // toggle isinstallable flag and show the captured prompt from useeffect
@@ -297,6 +300,12 @@ const App = () => {
         onUpdateTask={handleUpdateTask}
         onDeleteTask={handleDeleteTask}
         onToggleTaskCompleteState={handleToggleTaskCompleteState}
+      />
+
+      {/* app disclaimer */}
+      <DisclaimerPopup
+        isAgreed={isAppDisclaimerAgreed}
+        setDisclaimerAgreed={handleAppDisclaimerAgreed}
       />
     </div>
   );
