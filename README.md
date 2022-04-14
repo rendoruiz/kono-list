@@ -3,11 +3,11 @@
 ### Netlify deployment status
 [![Netlify Status](https://api.netlify.com/api/v1/badges/19cdecd2-08f5-4507-a6e1-126b61977fc2/deploy-status)](https://list.kono.cx/)
 
-### Project live link
-[list.kono.cx](https://list.kono.cx/)
-
 ### Project home page
 [kono.cx](https://www.kono.cx/)
+
+### Project live link
+[list.kono.cx](https://list.kono.cx/)
 
 ## About
 Konolist is a web app that lets you create lists and tasks within those lists.
