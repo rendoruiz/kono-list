@@ -4,12 +4,13 @@
  * can be found in the LICENSE file.
  */
 
-import { listTemplate } from "../../data/list";
-import TaskCreatorPanel from "./TaskCreatorPanel";
+import TaskPanelCreator from "./TaskPanelCreator";
 import TaskPanelList from "./TaskPanelList";
-import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
-import PencilIcon from "../Icons/PencilIcon";
-import TrashIcon from "../Icons/TrashIcon";
+import ArrowLeftIcon from "../../Icons/ArrowLeftIcon";
+import PencilIcon from "../../Icons/PencilIcon";
+import TrashIcon from "../../Icons/TrashIcon";
+
+import { listTemplate } from "../../../data/list";
 
 const TaskPanel = ({ 
   taskItems, 
@@ -33,7 +34,7 @@ const TaskPanel = ({
       onToggleListHideCompletedState={onToggleListHideCompletedState}
     />
     
-    <TaskCreatorPanel
+    <TaskPanelCreator
       selectedList={selectedList}
       onCreateTask={onCreateTask}
     />

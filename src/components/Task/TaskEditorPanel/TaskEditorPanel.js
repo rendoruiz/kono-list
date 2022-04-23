@@ -6,12 +6,12 @@
 
 import * as React from 'react';
 
-import TaskCompleteToggleButton from "./TaskCompleteToggleButton";
-import ResponsiveTextArea from './ResponsiveTextArea';
-import ArrowLeftIcon from '../Icons/ArrowLeftIcon';
-import CrossIcon from '../Icons/CrossIcon';
-import TrashIcon from '../Icons/TrashIcon';
-import { formatDate } from '../../utils/dateFns';
+import TaskCompletedToggle from "../TaskCompletedToggle";
+import TaskNoteInput from './TaskNoteInput';
+import ArrowLeftIcon from '../../Icons/ArrowLeftIcon';
+import CrossIcon from '../../Icons/CrossIcon';
+import TrashIcon from '../../Icons/TrashIcon';
+import { formatDate } from '../../../utils/dateFns';
 
 const TaskEditorPanel = ({ 
   task, 
@@ -91,13 +91,13 @@ const TaskEditorPanel = ({
           >
             {/* task toggle & name */}
             <div className='grid grid-cols-[auto,1fr] items-start border-[1.5px] border-slate-200 rounded py-4 bg-white/50 bp520:py-3'>
-              <TaskCompleteToggleButton
+              <TaskCompletedToggle
                 task={task}
                 disabled={!task}
                 onToggle={() => onToggleTaskCompleteState(task)}
               />
 
-              <ResponsiveTextArea
+              <TaskNoteInput
                 name='name'
                 onBlur={handleSubmit}
                 className={
@@ -113,7 +113,7 @@ const TaskEditorPanel = ({
 
             {/* notes */}
             <div className='grid border-[1.5px] border-slate-200 rounded bg-white/50'>
-              <ResponsiveTextArea
+              <TaskNoteInput
                 name='note'
                 placeholder='Add note'
                 onBlur={handleSubmit}

@@ -5,19 +5,19 @@
  */
 
 import * as React from 'react';
-
 import Graphemer from 'graphemer';
 
-import { listTemplate } from '../../data/list';
+import { listTemplate } from '../../../data/list';
 
 const splitter = new Graphemer();
 
-const ListEditorPopup = ({ 
+const ListEditorPanel = ({ 
   isOpen, 
   list, 
   onUpdateList, 
   onCancelEdit
 }) => {
+  // input states
   const [name, setName] = React.useState("");
   const [icon, setIcon] = React.useState("");
 
@@ -29,13 +29,15 @@ const ListEditorPopup = ({
     }
   }, [isOpen, list]);
 
+  // input handlers
   const handleNameChange = (e) => setName(e.target.value);
   const handleIconChange = (e) => {
     const firstCharacter = splitter.splitGraphemes(e.target.value).shift();
     setIcon(firstCharacter ?? "");
   }
-  const handleClick = (e) => e.target.select();
+  const handleInputClick = (e) => e.target.select();
 
+  // form handlers
   const handleSubmit = (event) => {
     onUpdateList({
       name: name.trim(),
@@ -48,7 +50,6 @@ const ListEditorPopup = ({
       handleReset();
     }
   }
-
   const handleReset = () => {
     setName("");
     setIcon("");
@@ -78,7 +79,7 @@ const ListEditorPopup = ({
             className='flex-none border-b-2 border-b-blue-600 rounded-b-sm w-8 h-10 text-lg text-center leading-none appearance-none outline-none placeholder:opacity-30 active:select-all'
             value={icon}
             onChange={handleIconChange}
-            onClick={handleClick}
+            onClick={handleInputClick}
           />
           <input 
             name='name'
@@ -88,7 +89,7 @@ const ListEditorPopup = ({
             className='flex-1 border-b-2 border-b-blue-600 rounded-b-sm ml-2 px-1 w-full appearance-none outline-none placeholder:opacity-40'
             value={name}
             onChange={handleNameChange}
-            onClick={handleClick}
+            onClick={handleInputClick}
           />
         </div>
 
@@ -113,4 +114,4 @@ const ListEditorPopup = ({
   )
 }
  
-export default ListEditorPopup;
+export default ListEditorPanel;

@@ -5,8 +5,8 @@
  */
 
 import ListPanelRow from "./ListPanelRow";
-import PlusIcon from "../Icons/PlusIcon";
-import SettingsIcon from "../Icons/SettingsIcon";
+import PlusIcon from "../../Icons/PlusIcon";
+import SettingsIcon from "../../Icons/SettingsIcon";
 
 const ListPanel = ({ 
   isOpen, 

@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 
-const ResponsiveTextArea = ({ 
+const TaskNoteInput = ({ 
   value,
   onChange,
   onEnter,
@@ -47,4 +47,4 @@ const ResponsiveTextArea = ({
   );
 }
  
-export default ResponsiveTextArea;
+export default TaskNoteInput;

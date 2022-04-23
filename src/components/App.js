@@ -5,16 +5,15 @@
  */
 
 import * as React from 'react';
-
 import { v4 as uuidv4 } from 'uuid';
 
 // components
-import ListPanel from './List/ListPanel';
-import ListEditorPopup from './List/ListEditorPopup';
-import TaskPanel from './Task/TaskPanel';
-import TaskEditorPanel from './Task/TaskEditorPanel';
+import ListPanel from './List/ListPanel/ListPanel';
+import ListEditorPanel from './List/ListEditorPanel/ListEditorPanel';
+import TaskPanel from './Task/TaskPanel/TaskPanel';
+import TaskEditorPanel from './Task/TaskEditorPanel/TaskEditorPanel';
 import SettingsPanel from './SettingsPanel';
-import DisclaimerPopup from './DisclaimerPopup';
+import DisclaimerPanel from './DisclaimerPanel';
 // hooks, reducers, data, utils
 import useLocalState from '../hooks/useLocalState';
 import listReducer from '../reducers/listReducer';
@@ -23,22 +22,16 @@ import { listTemplate, initialListItems } from '../data/list';
 import { initialTaskItems } from '../data/task';
 import { decryptObject } from '../utils/cryptoJs';
 
-// for pwa install button
-let deferredPrompt; 
-
 const App = () => {
   // panel toggle states
   const [isListPanelOpen, setIsListPanelOpen] = useLocalState('ilpo', true);
   const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = React.useState(false);
-  const [isAppDisclaimerAgreed, setIsAppDisclaimerAgreed] = useLocalState('dis', false);
 
   // list & task states
   const [selectedList, setSelectedList] = useLocalState('sl', initialListItems[0]);
   const [selectedTask, setSelectedTask] = useLocalState('st', null);
 
-  // pwa install button state
-  const [isInstallable, setIsInstallable] = React.useState(false);
 
   // list & task reducers
   const [listItems, dispatchListItems] = React.useReducer(
@@ -69,29 +62,13 @@ const App = () => {
     }
   }, [taskItems.data, selectedTask, setSelectedTask]);
 
-  // pwa install button effect
-  // prevent install prompt from appearing and capture its event for later use
-  React.useEffect(() => {
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      setIsInstallable(true);
-    });
-  }, []);
-
+  
   // panel toggle handlers
   const handleToggleListPanel = () => setIsListPanelOpen(!isListPanelOpen);
   const handleToggleListEditorPanel = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
   const handleCloseTaskEditorPanel = () => setSelectedTask(null);
   const handleToggleSettingsPanel = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
-  const handleAppDisclaimerAgreed = () => setIsAppDisclaimerAgreed(true);
 
-  // pwa install button handler
-  // toggle isinstallable flag and show the captured prompt from useeffect
-  const handleInstallApp = () => {
-    setIsInstallable(false);
-    deferredPrompt.prompt();
-  }
 
   // list - handlers
   // set selected list, reset selected task, close task editor panel
@@ -239,14 +216,6 @@ const App = () => {
     event.preventDefault();
   }
 
-  // clear localstorage + reroute to page origin
-  const handleResetCache = (event) => {
-    if (window.confirm('Are you sure you want to reset everything back to default?')) {
-      localStorage.clear();
-      window.location.assign(window.location.origin);
-    }
-    event.preventDefault();
-  }
 
   return (
     <div className='grid md:grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
@@ -262,7 +231,7 @@ const App = () => {
       />
 
       {/* list editor popup */}
-      <ListEditorPopup
+      <ListEditorPanel
         isOpen={isListEditorPanelOpen}
         list={selectedList}
         onUpdateList={handleUpdateList}
@@ -272,10 +241,7 @@ const App = () => {
       {/* Settings panel */}
       <SettingsPanel
         isOpen={isSettingsPanelOpen}
-        isInstallable={isInstallable}
         onTogglePanel={handleToggleSettingsPanel}
-        onInstallApp={handleInstallApp}
-        onResetCache={handleResetCache}
       />
 
       {/* task middle panel */}
@@ -303,10 +269,7 @@ const App = () => {
       />
 
       {/* app disclaimer */}
-      <DisclaimerPopup
-        isAgreed={isAppDisclaimerAgreed}
-        setDisclaimerAgreed={handleAppDisclaimerAgreed}
-      />
+      <DisclaimerPanel />
     </div>
   );
 }

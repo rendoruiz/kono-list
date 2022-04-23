@@ -5,9 +5,9 @@
  */
 
 import * as React from 'react';
-import ChevronRightIcon from '../Icons/ChevronRightIcon';
 
 import TaskPanelListRow from './TaskPanelListRow';
+import ChevronRightIcon from '../../Icons/ChevronRightIcon';
 
 const TaskPanelList = ({ 
   taskItems, 
