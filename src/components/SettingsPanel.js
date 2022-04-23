@@ -4,9 +4,12 @@
  * can be found in the LICENSE file.
  */
 
+import * as React from 'react';
 import preval from 'preval.macro'
+
 import CrossIcon from './Icons/CrossIcon';
 
+// for settings build stuff
 const buildVersion = `${process.env.REACT_APP_MAJOR_VERSION}.${preval`module.exports = 
   new Date().getFullYear().toString().substr(2) + 
   (new Date().getMonth() < 10 ? '0' : '') + new Date().getMonth().toString() + 
@@ -25,13 +28,41 @@ const buildTime = preval`module.exports =
   ':' + (new Date().getMinutes() < 10 ? '0' : '') + new Date().getMinutes().toString();
 `;
 
+// for pwa install button
+let deferredPrompt; 
+
 const SettingsPanel = ({ 
-  isOpen, 
-  isInstallable,
+  isOpen,
   onTogglePanel,
-  onInstallApp,
-  onResetCache
 }) => {
+  // pwa install button state
+  const [isPWAInstallable, setIsPWAInstallable] = React.useState(false);
+
+  // pwa install button effect
+  // prevent browser install prompt from appearing and capture its event for later use
+  React.useEffect(() => {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      setIsPWAInstallable(true);
+    });
+  }, []);
+
+  // toggle installable flag and show the captured prompt from useeffect
+  const handleInstallPWA = () => {
+    setIsPWAInstallable(false);
+    deferredPrompt.prompt();
+  }
+
+  // clear localstorage + reroute to page origin
+  const handleResetCache = (event) => {
+    if (window.confirm('Are you sure you want to reset everything back to default?')) {
+      localStorage.clear();
+      window.location.assign(window.location.origin);
+    }
+    event.preventDefault();
+  }
+
   return isOpen && (  
     <div 
       className='fixed inset-0 z-50 grid place-items-center overflow-y-auto px-3 py-5 bg-black/60'
@@ -119,12 +150,12 @@ const SettingsPanel = ({
             <p className='mt-1'>
               When installed, Konolist can be used even with no internet connection.
             </p>
-            {isInstallable && (
+            {isPWAInstallable && (
               <button 
                 type='button'
                 title='Install app'
                 className='rounded mt-4 px-5 py-2 bg-gradient-to-br from-blue-700 to-blue-500 text-white font-medium leading-none hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
-                onClick={onInstallApp}
+                onClick={handleInstallPWA}
               >
                 Install App
               </button>
@@ -145,7 +176,7 @@ const SettingsPanel = ({
               type='button'
               title='Reset app'
               className='rounded mt-4 px-5 py-2 bg-red-600 text-white font-medium leading-none hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
-              onClick={onResetCache}
+              onClick={handleResetCache}
             >
               Reset App
             </button>
