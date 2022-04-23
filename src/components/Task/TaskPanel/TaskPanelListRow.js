@@ -4,8 +4,8 @@
  * can be found in the LICENSE file.
  */
 
-import NoteIcon from "../../Icons/NoteIcon";
 import TaskCompletedToggle from "../TaskCompletedToggle";
+import NoteIcon from "../../Icons/NoteIcon";
 
 const TaskPanelListRow = ({ 
   task, 

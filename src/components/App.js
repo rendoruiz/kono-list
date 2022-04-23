@@ -63,7 +63,6 @@ const App = () => {
   }, [taskItems.data, selectedTask, setSelectedTask]);
 
   
-
   // panel toggle handlers
   const handleToggleListPanel = () => setIsListPanelOpen(!isListPanelOpen);
   const handleToggleListEditorPanel = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
