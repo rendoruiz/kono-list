@@ -8,7 +8,7 @@ import * as React from 'react';
 
 import Graphemer from 'graphemer';
 
-import { listTemplate } from '../../data/list';
+import { listTemplate } from '../../../data/list';
 
 const splitter = new Graphemer();
 

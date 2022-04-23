@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 // components
 import ListPanel from './List/ListPanel/ListPanel';
-import ListEditorPanel from './List/ListEditorPanel';
+import ListEditorPanel from './List/ListEditorPanel/ListEditorPanel';
 import TaskPanel from './Task/TaskPanel/TaskPanel';
 import TaskEditorPanel from './Task/TaskEditorPanel/TaskEditorPanel';
 import SettingsPanel from './SettingsPanel';
