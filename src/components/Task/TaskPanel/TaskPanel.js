@@ -5,7 +5,7 @@
  */
 
 import { listTemplate } from "../../../data/list";
-import TaskCreatorPanel from "./TaskPanelCreator";
+import TaskPanelCreator from "./TaskPanelCreator";
 import TaskPanelList from "./TaskPanelList";
 import ArrowLeftIcon from "../../Icons/ArrowLeftIcon";
 import PencilIcon from "../../Icons/PencilIcon";
@@ -33,7 +33,7 @@ const TaskPanel = ({
       onToggleListHideCompletedState={onToggleListHideCompletedState}
     />
     
-    <TaskCreatorPanel
+    <TaskPanelCreator
       selectedList={selectedList}
       onCreateTask={onCreateTask}
     />

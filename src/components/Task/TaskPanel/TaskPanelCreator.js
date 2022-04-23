@@ -9,7 +9,7 @@ import CircleCheckIcon from '../../Icons/CircleCheckIcon';
 import PlusIcon from '../../Icons/PlusIcon';
 import SendIcon from '../../Icons/SendIcon';
 
-const TaskCreatorPanel = ({ 
+const TaskPanelCreator = ({ 
   selectedList, 
   onCreateTask 
 }) => {
@@ -71,4 +71,4 @@ const TaskCreatorPanel = ({
   );
 }
  
-export default TaskCreatorPanel;
+export default TaskPanelCreator;
