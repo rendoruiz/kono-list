@@ -34,7 +34,7 @@ const ListEditorPanel = ({
     const firstCharacter = splitter.splitGraphemes(e.target.value).shift();
     setIcon(firstCharacter ?? "");
   }
-  const handleClick = (e) => e.target.select();
+  const handleInputClick = (e) => e.target.select();
 
   const handleSubmit = (event) => {
     onUpdateList({
@@ -78,7 +78,7 @@ const ListEditorPanel = ({
             className='flex-none border-b-2 border-b-blue-600 rounded-b-sm w-8 h-10 text-lg text-center leading-none appearance-none outline-none placeholder:opacity-30 active:select-all'
             value={icon}
             onChange={handleIconChange}
-            onClick={handleClick}
+            onClick={handleInputClick}
           />
           <input 
             name='name'
@@ -88,7 +88,7 @@ const ListEditorPanel = ({
             className='flex-1 border-b-2 border-b-blue-600 rounded-b-sm ml-2 px-1 w-full appearance-none outline-none placeholder:opacity-40'
             value={name}
             onChange={handleNameChange}
-            onClick={handleClick}
+            onClick={handleInputClick}
           />
         </div>
 
