@@ -9,7 +9,7 @@ import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 // components
-import ListPanel from './List/ListPanel';
+import ListPanel from './List/ListPanel/ListPanel';
 import ListEditorPopup from './List/ListEditorPopup';
 import TaskPanel from './Task/TaskPanel';
 import TaskEditorPanel from './Task/TaskEditorPanel';
