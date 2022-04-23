@@ -10,11 +10,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 // components
 import ListPanel from './List/ListPanel/ListPanel';
-import ListEditorPopup from './List/ListEditorPopup';
+import ListEditorPanel from './List/ListEditorPanel';
 import TaskPanel from './Task/TaskPanel/TaskPanel';
 import TaskEditorPanel from './Task/TaskEditorPanel';
 import SettingsPanel from './SettingsPanel';
-import DisclaimerPopup from './DisclaimerPopup';
+import DisclaimerPanel from './DisclaimerPanel';
 // hooks, reducers, data, utils
 import useLocalState from '../hooks/useLocalState';
 import listReducer from '../reducers/listReducer';
@@ -262,7 +262,7 @@ const App = () => {
       />
 
       {/* list editor popup */}
-      <ListEditorPopup
+      <ListEditorPanel
         isOpen={isListEditorPanelOpen}
         list={selectedList}
         onUpdateList={handleUpdateList}
@@ -303,7 +303,7 @@ const App = () => {
       />
 
       {/* app disclaimer */}
-      <DisclaimerPopup
+      <DisclaimerPanel
         isAgreed={isAppDisclaimerAgreed}
         setDisclaimerAgreed={handleAppDisclaimerAgreed}
       />

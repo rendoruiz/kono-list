@@ -12,7 +12,7 @@ import { listTemplate } from '../../data/list';
 
 const splitter = new Graphemer();
 
-const ListEditorPopup = ({ 
+const ListEditorPanel = ({ 
   isOpen, 
   list, 
   onUpdateList, 
@@ -113,4 +113,4 @@ const ListEditorPopup = ({
   )
 }
  
-export default ListEditorPopup;
+export default ListEditorPanel;

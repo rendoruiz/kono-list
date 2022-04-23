@@ -1,4 +1,4 @@
-const DisclaimerPopup = ({
+const DisclaimerPanel = ({
   isAgreed,
   setDisclaimerAgreed,
 }) => {
@@ -41,4 +41,4 @@ const DisclaimerPopup = ({
   );
 }
  
-export default DisclaimerPopup;
+export default DisclaimerPanel;
