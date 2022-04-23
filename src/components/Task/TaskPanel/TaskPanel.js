@@ -5,7 +5,7 @@
  */
 
 import { listTemplate } from "../../../data/list";
-import TaskCreatorPanel from "../TaskPanelCreator";
+import TaskCreatorPanel from "./TaskPanelCreator";
 import TaskPanelList from "./TaskPanelList";
 import ArrowLeftIcon from "../../Icons/ArrowLeftIcon";
 import PencilIcon from "../../Icons/PencilIcon";

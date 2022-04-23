@@ -5,9 +5,9 @@
  */
 
 import * as React from 'react';
-import CircleCheckIcon from '../Icons/CircleCheckIcon';
-import PlusIcon from '../Icons/PlusIcon';
-import SendIcon from '../Icons/SendIcon';
+import CircleCheckIcon from '../../Icons/CircleCheckIcon';
+import PlusIcon from '../../Icons/PlusIcon';
+import SendIcon from '../../Icons/SendIcon';
 
 const TaskCreatorPanel = ({ 
   selectedList, 
