@@ -27,7 +27,6 @@ const App = () => {
   const [isListPanelOpen, setIsListPanelOpen] = useLocalState('ilpo', true);
   const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = React.useState(false);
-  const [isAppDisclaimerAgreed, setIsAppDisclaimerAgreed] = useLocalState('dis', false);
 
   // list & task states
   const [selectedList, setSelectedList] = useLocalState('sl', initialListItems[0]);
@@ -70,9 +69,7 @@ const App = () => {
   const handleToggleListEditorPanel = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
   const handleCloseTaskEditorPanel = () => setSelectedTask(null);
   const handleToggleSettingsPanel = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
-  const handleAppDisclaimerAgreed = () => setIsAppDisclaimerAgreed(true);
 
-  
 
   // list - handlers
   // set selected list, reset selected task, close task editor panel
@@ -273,10 +270,7 @@ const App = () => {
       />
 
       {/* app disclaimer */}
-      <DisclaimerPanel
-        isAgreed={isAppDisclaimerAgreed}
-        setDisclaimerAgreed={handleAppDisclaimerAgreed}
-      />
+      <DisclaimerPanel />
     </div>
   );
 }

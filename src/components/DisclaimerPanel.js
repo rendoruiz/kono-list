@@ -1,8 +1,17 @@
-const DisclaimerPanel = ({
-  isAgreed,
-  setDisclaimerAgreed,
-}) => {
-  return !isAgreed && (  
+/**
+ * Copyright 2022 Rendo Ruiz. All rights reserved.
+ * Use of this source code is governed by a license that
+ * can be found in the LICENSE file.
+ */
+
+import useLocalState from "../hooks/useLocalState";
+
+const DisclaimerPanel = () => {
+  const [isAppDisclaimerAgreed, setIsAppDisclaimerAgreed] = useLocalState('dis', false);
+
+  const handleAppDisclaimerAgreed = () => setIsAppDisclaimerAgreed(true);
+
+  return !isAppDisclaimerAgreed && (  
     <div className='fixed inset-0 z-50 grid place-items-center overflow-y-auto px-3 py-5 bg-black/60'>
       <div className='grid content-start w-full max-w-lg text-black/90'>
         <header className='grid grid-cols-[1fr,auto] rounded-t p-5 bg-gradient-to-br from-blue-700 to-blue-500 text-white text-center'>
@@ -30,7 +39,7 @@ const DisclaimerPanel = ({
             <button 
               type='button'
               className='justify-self-center rounded px-8 py-2 bg-gradient-to-br from-blue-700 to-blue-500 text-white font-medium hover:opacity-80 active:outline active:outline-blue-600 active:outline-offset-2'
-              onClick={setDisclaimerAgreed}
+              onClick={handleAppDisclaimerAgreed}
             >
               I agree with all of these terms.
             </button>
