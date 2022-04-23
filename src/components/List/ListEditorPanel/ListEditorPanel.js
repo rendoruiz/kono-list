@@ -18,6 +18,7 @@ const ListEditorPanel = ({
   onUpdateList, 
   onCancelEdit
 }) => {
+  // input states
   const [name, setName] = React.useState("");
   const [icon, setIcon] = React.useState("");
 
@@ -29,6 +30,7 @@ const ListEditorPanel = ({
     }
   }, [isOpen, list]);
 
+  // input handlers
   const handleNameChange = (e) => setName(e.target.value);
   const handleIconChange = (e) => {
     const firstCharacter = splitter.splitGraphemes(e.target.value).shift();
@@ -36,6 +38,7 @@ const ListEditorPanel = ({
   }
   const handleInputClick = (e) => e.target.select();
 
+  // form handlers
   const handleSubmit = (event) => {
     onUpdateList({
       name: name.trim(),
@@ -48,7 +51,6 @@ const ListEditorPanel = ({
       handleReset();
     }
   }
-
   const handleReset = () => {
     setName("");
     setIcon("");
