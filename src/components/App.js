@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ListPanel from './List/ListPanel/ListPanel';
 import ListEditorPanel from './List/ListEditorPanel';
 import TaskPanel from './Task/TaskPanel/TaskPanel';
-import TaskEditorPanel from './Task/TaskEditorPanel';
+import TaskEditorPanel from './Task/TaskEditorPanel/TaskEditorPanel';
 import SettingsPanel from './SettingsPanel';
 import DisclaimerPanel from './DisclaimerPanel';
 // hooks, reducers, data, utils
