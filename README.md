@@ -16,7 +16,7 @@ I created this app after finishing a React.js book titled "Road to React (2021)"
 
 Konolist does not depend on any web service and can function offline when installed as an app. All user data on the app lives on the browser's local storage with encryption applied using CryptoJS, which means that the app data will also get deleted when the user clears their browser's cache.
 
-The app is currently feature-complete at this time of writing, and I have no definite plans for future development.
+The app is currently feature-complete at this time of writing.
 
 ## Features
 
