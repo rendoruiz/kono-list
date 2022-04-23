@@ -6,7 +6,7 @@
 
 import CircleCheckIcon from "../Icons/CircleCheckIcon";
 
-const TaskCompleteToggleButton = ({ 
+const TaskCompletedToggle = ({ 
   task, 
   onToggle,
   ...props
@@ -26,4 +26,4 @@ const TaskCompleteToggleButton = ({
   </button>
 );
  
-export default TaskCompleteToggleButton;
+export default TaskCompletedToggle;

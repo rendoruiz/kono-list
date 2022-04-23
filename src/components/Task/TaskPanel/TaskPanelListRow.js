@@ -5,7 +5,7 @@
  */
 
 import NoteIcon from "../../Icons/NoteIcon";
-import TaskCompleteToggleButton from "../TaskCompleteToggleButton";
+import TaskCompletedToggle from "../TaskCompletedToggle";
 
 const TaskPanelListRow = ({ 
   task, 
@@ -21,7 +21,7 @@ const TaskPanelListRow = ({
     {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(task).replaceAll(',"', ', "')}</p> */}
 
     {/* toggle task is_complete */}
-    <TaskCompleteToggleButton
+    <TaskCompletedToggle
       task={task}
       onToggle={onToggleTaskCompleteState}
     />
