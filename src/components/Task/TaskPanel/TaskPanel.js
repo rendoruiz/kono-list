@@ -4,12 +4,12 @@
  * can be found in the LICENSE file.
  */
 
-import { listTemplate } from "../../data/list";
-import TaskCreatorPanel from "./TaskCreatorPanel";
+import { listTemplate } from "../../../data/list";
+import TaskCreatorPanel from "../TaskCreatorPanel";
 import TaskPanelList from "./TaskPanelList";
-import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
-import PencilIcon from "../Icons/PencilIcon";
-import TrashIcon from "../Icons/TrashIcon";
+import ArrowLeftIcon from "../../Icons/ArrowLeftIcon";
+import PencilIcon from "../../Icons/PencilIcon";
+import TrashIcon from "../../Icons/TrashIcon";
 
 const TaskPanel = ({ 
   taskItems, 

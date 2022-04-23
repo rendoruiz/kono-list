@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import ChevronRightIcon from '../Icons/ChevronRightIcon';
+import ChevronRightIcon from '../../Icons/ChevronRightIcon';
 
 import TaskPanelListRow from './TaskPanelListRow';
 
