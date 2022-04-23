@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 
-const TaskEditorPanelNotes = ({ 
+const TaskNoteInput = ({ 
   value,
   onChange,
   onEnter,
@@ -47,4 +47,4 @@ const TaskEditorPanelNotes = ({
   );
 }
  
-export default TaskEditorPanelNotes;
+export default TaskNoteInput;

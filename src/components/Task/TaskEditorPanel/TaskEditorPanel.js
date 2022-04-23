@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import TaskCompleteToggleButton from "../TaskCompleteToggleButton";
-import ResponsiveTextArea from './ResponsiveTextArea';
+import TaskNoteInput from './TaskNoteInput';
 import ArrowLeftIcon from '../../Icons/ArrowLeftIcon';
 import CrossIcon from '../../Icons/CrossIcon';
 import TrashIcon from '../../Icons/TrashIcon';
@@ -97,7 +97,7 @@ const TaskEditorPanel = ({
                 onToggle={() => onToggleTaskCompleteState(task)}
               />
 
-              <ResponsiveTextArea
+              <TaskNoteInput
                 name='name'
                 onBlur={handleSubmit}
                 className={
@@ -113,7 +113,7 @@ const TaskEditorPanel = ({
 
             {/* notes */}
             <div className='grid border-[1.5px] border-slate-200 rounded bg-white/50'>
-              <ResponsiveTextArea
+              <TaskNoteInput
                 name='note'
                 placeholder='Add note'
                 onBlur={handleSubmit}
