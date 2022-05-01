@@ -18,7 +18,7 @@ const TASK_ACTION = {
 
 const taskReducer = (state, action) => {
   switch (action.type) {
-    case TASK_ACTION.CREATE_ITEM:
+    case TASK_ACTION.CREATE_ITEM: {
       const newItem = {
         ...taskTemplate,
         id: action.payload.taskId,
@@ -30,9 +30,9 @@ const taskReducer = (state, action) => {
         taskItems: [...state.taskItems, newItem],
         isEditorPanelOpen: false,
       }
+    }
 
-    
-    case TASK_ACTION.UPDATE_ITEM:    
+    case TASK_ACTION.UPDATE_ITEM: {
       const newTitle = action.payload.title.trim();
       return {
         ...state,
@@ -48,8 +48,9 @@ const taskReducer = (state, action) => {
           return item;
         }),
       }
+    }
 
-    case TASK_ACTION.DELETE_ITEM:
+    case TASK_ACTION.DELETE_ITEM: {
       return {
         ...state,
         taskItems: state.taskItems.filter(
@@ -58,8 +59,9 @@ const taskReducer = (state, action) => {
         selectedItem: null,
         isEditorPanelOpen: false,
       }
+    }
 
-    case TASK_ACTION.DELETE_LIST_TASKS:
+    case TASK_ACTION.DELETE_LIST_TASKS: {
       return {
         ...state,
         taskItems: state.taskItems.filter(
@@ -68,38 +70,44 @@ const taskReducer = (state, action) => {
         selectedItem: null,
         isEditorPanelOpen: false,
       }
+    }
 
-
-    case TASK_ACTION.TOGGLE_ITEM_COMPLETED:
+    case TASK_ACTION.TOGGLE_ITEM_COMPLETED: {
+      let newSelectedItem = null;
       return {
         ...state,
         taskItems: state.taskItems.map((item) => {
           if (item.id === action.payload.taskId) {
-            return {
+            newSelectedItem = {
               ...item,
               is_complete: !item.is_complete,
             }
+            return newSelectedItem;
           }
           return item;
         }),
+        selectedItem: newSelectedItem,
       }
+    }
 
-    case TASK_ACTION.SELECT_ITEM:
-      const newSelecteItem = action.payload.taskId === state.selectedItem?.id
+    case TASK_ACTION.SELECT_ITEM: {
+      const newSelectedItem = action.payload.taskId === state.selectedItem?.id
        ? null
        : state.taskItems.filter((item) => item.id === action.payload.taskId).pop() ?? null;
       return {
         ...state,
-        selectedItem: newSelecteItem,
-        isEditorPanelOpen: newSelecteItem ? true : false,
+        selectedItem: newSelectedItem,
+        isEditorPanelOpen: newSelectedItem ? true : false,
       }
+    }
 
-    case TASK_ACTION.CLOSE_EDITOR_PANEL:
+    case TASK_ACTION.CLOSE_EDITOR_PANEL: {
       return {
         ...state,
         selectedItem: null,
         isEditorPanelOpen: false,
       }
+    }
 
     default:
       throw new Error();
