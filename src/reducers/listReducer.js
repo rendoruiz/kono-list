@@ -12,6 +12,7 @@ const LIST_ACTION = {
   DELETE_ITEM: 'delete_item',
   SELECT_ITEM: 'select_item',
   TOGGLE_COMPLETED_ITEMS_VISIBILITY: 'toggle_completed_items_visibility',
+  TOGGLE_PANEL: 'toggle_panel',
   TOGGLE_EDITOR_PANEL: 'toggle_editor_panel',
 }
 
@@ -55,7 +56,7 @@ const listReducer = (state, action) => {
         listItems: state.listItems.filter(
           (item, index) => {
             if (item.id === action.payload.listId) {
-              itemIndex = (index - 1) > 0 ? (index - 1) : 0;
+              newSelectedItemIndex = (index - 1) > 0 ? (index - 1) : 0;
               return false;
             }
             return true;
@@ -68,10 +69,10 @@ const listReducer = (state, action) => {
     case LIST_ACTION.SELECT_ITEM:
       const newSelecteItem = state.listItems.filter(
         (item) => item.id === action.payload.listId
-      );
+      ).pop();
       return {
         ...state,
-        selectedItem: newSelecteItem,
+        selectedItem: newSelecteItem ?? null,
         isPanelOpen: false,
       }
 
@@ -87,6 +88,12 @@ const listReducer = (state, action) => {
           }
           return item;
         }),
+      }
+
+    case LIST_ACTION.TOGGLE_PANEL:
+      return {
+        ...state,
+        isPanelOpen: !state.isEditorPanelOpen,
       }
 
     case LIST_ACTION.TOGGLE_EDITOR_PANEL:

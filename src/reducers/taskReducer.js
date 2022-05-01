@@ -13,7 +13,7 @@ const TASK_ACTION = {
   SELECT_ITEM: 'select_item',
   DELETE_LIST_TASKS: 'delete_delete_tasks',
   TOGGLE_ITEM_COMPLETED: 'toggle_item_completed',
-  TOGGLE_EDITOR_PANEL: 'toggle_editor_panel',
+  CLOSE_EDITOR_PANEL: 'close_editor_panel',
 }
 
 const taskReducer = (state, action) => {
@@ -87,11 +87,17 @@ const taskReducer = (state, action) => {
     case TASK_ACTION.SELECT_ITEM:
       const newSelecteItem = action.payload.taskId === state.selectedItem.id
        ? null
-       : state.listItems.filter((item) => item.id === action.payload.taskId);
+       : state.listItems.filter((item) => item.id === action.payload.taskId).pop() ?? null;
       return {
         ...state,
         selectedItem: newSelecteItem,
         isEditorPanelOpen: newSelecteItem ? true : false,
+      }
+
+    case TASK_ACTION.CLOSE_EDITOR_PANEL:
+      return {
+        ...state,
+        isEditorPanelOpen: false,
       }
 
     default:
