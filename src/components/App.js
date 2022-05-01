@@ -15,38 +15,15 @@ import TaskEditorPanel from './Task/TaskEditorPanel/TaskEditorPanel';
 import SettingsPanel from './SettingsPanel';
 import DisclaimerPanel from './DisclaimerPanel';
 // hooks, reducers, data, utils
-import useLocalState from '../hooks/useLocalState';
 import { listReducer, LIST_ACTION } from '../reducers/listReducer';
-import taskReducer from '../reducers/taskReducer';
-import { listTemplate, initialListItems } from '../data/list';
-import { initialTaskItems } from '../data/task';
-import { decryptObject } from '../utils/cryptoJs';
-
-
-const storedList = JSON.parse(localStorage.getItem('list'));
-const storedTask = JSON.parse(localStorage.getItem('task'));
+import { taskReducer, TASK_ACTION } from '../reducers/taskReducer';
+import { defaultList } from '../data/list';
+import { defaultTask } from '../data/task';
 
 const App = () => {
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = React.useState(false);
-
-  const [list, dispatchList] = React.useReducer(
-    listReducer,
-    { 
-      listItems: storedList?.listItems ?? initialListItems, 
-      selectedItem: storedList?.selectedItem ?? initialListItems[0],
-      isPanelOpen: storedList?.isPanelOpen ?? true,
-      isEditorPanelOpen: false,
-    }
-  );
-  const [task, dispatchTask] = React.useReducer(
-    taskReducer,
-    {
-      taskItems: decryptObject(localStorage.getItem('ts')) ?? initialTaskItems,
-      selectedTask: storedTask?.selectedTask,
-      isEditorPanelOpen: false,
-    }
-  );
-  
+  const [list, dispatchList] = React.useReducer(listReducer, defaultList);
+  const [task, dispatchTask] = React.useReducer(taskReducer, defaultTask);
   
   React.useEffect(() => {
     // store data to localstorage
@@ -59,25 +36,13 @@ const App = () => {
   }, [task]);
 
 
-  // Set selected list
-  // Close list panel (mobile)
-  // Close task editor
-  const handleSelectList = (listId) => {
-    dispatchList({
-      type: LIST_ACTION.SELECT_ITEM,
-      payload: { listId: listId },
-    });
-    // close task editor
-  }
-
   // Create new list item
   // Use the new list item as selected list
   // Close list editor panel
   const handleCreateList = () => {
-    const newListId = uuidv4();
     dispatchList({
       type: LIST_ACTION.CREATE_ITEM,
-      payload: { listId: newListId },
+      payload: { listId: uuidv4() },
     });
   }
 
@@ -94,7 +59,7 @@ const App = () => {
     dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
   }
 
-  // Update list
+  // Update list item
   // Set new selected list
   // Close list editor panel
   // (if new list) Close task editor
@@ -133,8 +98,22 @@ const App = () => {
         type: LIST_ACTION.DELETE_ITEM,
         payload: { listId: list.selectedItem.id },
       });
-      // delete task items with list id
+      dispatchTask({
+        type: TASK_ACTION.DELETE_LIST_TASKS,
+        payload: { listId: list.selectedItem.list_id },
+      })
     }
+  }
+
+  // Set selected list
+  // Close list panel (mobile)
+  // Close task editor
+  const handleSetSelectedList = (listId) => {
+    dispatchList({
+      type: LIST_ACTION.SELECT_ITEM,
+      payload: { listId: listId },
+    });
+    // close task editor
   }
 
   // Toggle visibility of completed items within a list
@@ -145,61 +124,58 @@ const App = () => {
     });
   }
   
-  // task - handlers
-  // remove selected task & close task editor panel if the newly selected task is the same
-  // else, assign newly selected task as the selected task & close editor panel
-  const handleSelectTask = (task) => {
-    if (selectedTask && task.id === selectedTask.id) {
-      setSelectedTask(null);
-    } else {
-      setSelectedTask(task);
-    }
-  }
-  // create id, create new task with given data, reset form fields, close task editor, remove selected task
-  const handleCreateTask = (event) => {
-    const newListItemId = uuidv4();
-    dispatchTaskItems({
-      type: 'TASK_CREATE',
+
+  // Create new task
+  // Reset task creator form fields ============================= (TODO) =============================
+  // Close task editor
+  const handleCreateTask = (taskItem) => {
+    dispatchTask({
+      type: TASK_ACTION.CREATE_ITEM,
       payload: {
-        id: newListItemId,
-        list_id: selectedList.id,
-        title: event.target.title.value,
-      }
+        taskId: uuidv4(),
+        listId: list.selectedItem.id,
+        title: taskItem.title,
+      },
     });
-    setSelectedTask(null);
-    event.target.reset();
-    event.preventDefault();
+    // reset handler caller form fields
   }
-  // toggle is_complete boolean value of a task
-  const handleToggleTaskCompleteState = (task) => {
-    dispatchTaskItems({
-      type: 'TASK_UPDATE',
+
+  // Update task item
+  const handleUpdateTask = (taskItem) => {
+    dispatchTask({
+      type: TASK_ACTION.UPDATE_ITEM,
       payload: {
-        ...selectedTask,
-        id: task.id,
-        is_complete: !task.is_complete,
-      }
-    });
-  }
-  // update a task's title and note
-  const handleUpdateTask = ({ title, note }) => {
-    dispatchTaskItems({
-      type: 'TASK_UPDATE',
-      payload: {
-        ...selectedTask,
-        title: title?.trim().length > 0 ? title?.trim() : selectedTask.title,
-        note: note?.trim(),
+        taskId: task.selectedItem.id,
+        title: taskItem.title,
+        notes: taskItem.notes,
       },
     });
   }
-  // delete a task based on the selected task id
-  const handleDeleteTask = (event) => {
-    dispatchTaskItems({
-      type: 'TASK_DELETE',
-      payload: { id: selectedTask.id },
+
+  // Delete selected task
+  const handleDeleteTask = () => {
+    dispatchTask({
+      type: TASK_ACTION.DELETE_ITEM,
+      payload: { taskId: task.selectedItem.id },
     });
-    setSelectedTask(null);
-    event.preventDefault();
+  }
+
+  // Set selected task
+  // (if same as selected task) Close task editor panel
+  // (else) Open task editor panel
+  const handleSetSelectedTask = (taskId) => {
+    dispatchTask({
+      type: TASK_ACTION.SELECT_ITEM,
+      payload: { taskId: taskId },
+    });
+  }
+
+  // Toggle task item completed value
+  const handleToggleTaskCompleteState = (taskId) => {
+    dispatchTask({
+      type: TASK_ACTION.TOGGLE_ITEM_COMPLETED,
+      payload: { taskId: taskId }
+    });
   }
 
 
@@ -211,7 +187,7 @@ const App = () => {
         listItems={listItems.data}
         selectedList={selectedList}
         onTogglePanel={handleToggleListPanel} 
-        onSelectList={handleSelectList}
+        onSelectList={handleSetSelectedList}
         onCreateList={handleCreateList}
         onToggleSettingsPanel={handleToggleSettingsPanel}
       />
@@ -235,7 +211,7 @@ const App = () => {
         taskItems={taskItems.data}
         selectedTask={selectedTask}
         selectedList={selectedList}
-        onSelectTask={handleSelectTask}
+        onSelectTask={handleSetSelectedTask}
         onCreateTask={handleCreateTask}
         onToggleTaskCompleteState={handleToggleTaskCompleteState}
         onDeleteList={handleDeleteList}

@@ -3,7 +3,7 @@ const taskTemplate = {
   list_id: null,
   title: null,
   is_complete: false,
-  note: null,
+  notes: null,
   date_created: Date.now(),
   date_updated: null,
 }
@@ -22,7 +22,7 @@ const initialTaskItems = [
     list_id: 0,
     title: 'List Item 2',
     is_complete: true,
-    note: 'List Item 2 note',
+    notes: 'List Item 2 note',
     date_updated: Date.now(),
   },
   {
@@ -30,9 +30,16 @@ const initialTaskItems = [
     id: 2,
     list_id: 0,
     title: 'List Item 3',
-    note: 'List Item 3 note',
+    notes: 'List Item 3 note',
     date_created: 1612542770000,
   },
 ];
 
-export { taskTemplate, initialTaskItems }
+const storedTask = JSON.parse(localStorage.getItem('task'));
+const defaultTask = {
+  taskItems: storedTask?.taskItems ?? initialTaskItems,
+  selectedItem: storedTask?.selectedItem ?? null,
+  isEditorPanelOpen: false,
+}
+
+export { taskTemplate, initialTaskItems, defaultTask }
