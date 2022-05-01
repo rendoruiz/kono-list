@@ -97,6 +97,7 @@ const taskReducer = (state, action) => {
     case TASK_ACTION.CLOSE_EDITOR_PANEL:
       return {
         ...state,
+        selectedItem: null,
         isEditorPanelOpen: false,
       }
 

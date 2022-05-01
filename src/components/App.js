@@ -19,6 +19,7 @@ import { listReducer, LIST_ACTION } from '../reducers/listReducer';
 import { taskReducer, TASK_ACTION } from '../reducers/taskReducer';
 import { defaultList } from '../data/list';
 import { defaultTask } from '../data/task';
+import TaskPanelList from './Task/TaskPanel/TaskPanelList';
 
 const App = () => {
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = React.useState(false);
@@ -52,7 +53,7 @@ const App = () => {
   // (if new list) Assign the previous list as the selected list
   // Close list editor panel 
   const handleCloseListEditor = () => {
-    if (list.selectedItem.date_updated) {
+    if (!list.selectedItem.date_updated) {
       dispatchList({
         type: LIST_ACTION.DELETE_ITEM,
         payload: { listId: list.selectedItem },
@@ -130,6 +131,10 @@ const App = () => {
   const handleToggleListPanel = () => {
     dispatchList({ type: LIST_ACTION.TOGGLE_PANEL });
   }
+
+  const handleToggleListEditorPanel = () => {
+    dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
+  }
   
 
   // Create new task
@@ -185,6 +190,10 @@ const App = () => {
     });
   }
 
+  const handleCloseTaskEditorPanel = () => {
+    dispatchTask({ type: TASK_ACTION.CLOSE_EDITOR_PANEL });
+  }
+
 
   // Toggle settings panel visibility
   const handleToggleSettingsPanel = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
@@ -218,10 +227,10 @@ const App = () => {
       />
 
       {/* task middle panel */}
-      {/* <TaskPanel
-        taskItems={taskItems.data}
-        selectedTask={selectedTask}
-        selectedList={selectedList}
+      <TaskPanel
+        taskItems={task.taskItems}
+        selectedTask={task.selectedItem}
+        selectedList={list.selectedItem}
         onSelectTask={handleSetSelectedTask}
         onCreateTask={handleCreateTask}
         onToggleTaskCompleteState={handleToggleTaskCompleteState}
@@ -229,17 +238,18 @@ const App = () => {
         onToggleListPanel={handleToggleListPanel}
         onToggleListEditorPanel={handleToggleListEditorPanel}
         onToggleListHideCompletedState={handleToggleCompletedItemsVisibility}
-      /> */}
+      />
 
       {/* task editor right panel */}
-      {/* <TaskEditorPanel
-        task={selectedTask}
-        selectedList={selectedList}
-        onClosePanel={handleCloseTaskEditorPanel}
+      <TaskEditorPanel
+        isOpen={task.isEditorPanelOpen}
+        selectedTask={task.selectedItem}
+        selectedList={list.selectedItem}
+        onTogglePanel={handleCloseTaskEditorPanel}
         onUpdateTask={handleUpdateTask}
         onDeleteTask={handleDeleteTask}
         onToggleTaskCompleteState={handleToggleTaskCompleteState}
-      /> */}
+      />
 
       {/* app disclaimer */}
       <DisclaimerPanel />

@@ -14,32 +14,34 @@ import TrashIcon from '../../Icons/TrashIcon';
 import { formatDate } from '../../../utils/dateFns';
 
 const TaskEditorPanel = ({ 
-  task, 
+  isOpen,
+  selectedTask, 
   selectedList,
-  onClosePanel,
+  onTogglePanel,
   onUpdateTask,
   onDeleteTask,
   onToggleTaskCompleteState
 }) => {
   const [title, setTitle] = React.useState("");
-  const [note, setNote] = React.useState("");
+  const [notes, setNotes] = React.useState("");
   const [dateTime, setDateTime] = React.useState(null);
 
   const handleSubmit = (e) => {
     onUpdateTask({
+      id: selectedTask.id,
       title: title,
-      note: note,
+      notes: notes,
     });
-    e.preventDefault();
+    // e.preventDefault();
   }
 
   React.useEffect(() => {
-    if (task) {
-      setTitle(task.title ?? "");
-      setNote(task.note ?? "");
-      setDateTime(task.is_complete ? formatDate(task.date_updated) : formatDate(task.date_created));
+    if (selectedTask) {
+      setTitle(selectedTask.title ?? "");
+      setNotes(selectedTask.notes ?? "");
+      setDateTime(selectedTask.is_complete ? formatDate(selectedTask.date_updated) : formatDate(selectedTask.date_created));
     }
-  }, [task]);
+  }, [selectedTask]);
 
   return (
     <>
@@ -47,15 +49,15 @@ const TaskEditorPanel = ({
       <div 
         className={
           'fixed inset-0 z-30 transition-opacity duration-300 bg-black/70 bp520:block lg:hidden ' +
-          (task ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full')
+          (isOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full')
         }
-        onClick={onClosePanel}
+        onClick={onTogglePanel}
       />
 
       {/* bp520 - floats, lg - inline */}
       <div className={
         'fixed inset-0 left-auto z-30 grid grid-rows-[auto,1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[auto,1fr,auto] bp520:w-[320px] lg:relative lg:z-auto lg:translate-x-0 lg:transition-none ' +
-        (task ? 'lg:translate-x-0' : 'translate-x-full lg:hidden')
+        (isOpen ? 'lg:translate-x-0' : 'translate-x-full lg:hidden')
       }>
         {/* debug */}
         {/* <p className='font-mono font-medium text-xs uppercase break-word'>
@@ -71,7 +73,7 @@ const TaskEditorPanel = ({
             type='button'
             title={`Back to "${selectedList.name}" list`}
             className='group grid p-[2px] leading-none'
-            onClick={onClosePanel}
+            onClick={onTogglePanel}
           >
             <div className='grid place-items-center rounded w-12 h-12 text-2xl group-hover:bg-slate-500/10 group-active:bg-slate-500/30 bp520:w-8 bp520:h-8 bp520:text-lg'>
               <ArrowLeftIcon className='w-8 h-8 stroke-current sm:hidden' />
@@ -92,9 +94,9 @@ const TaskEditorPanel = ({
             {/* task toggle & name */}
             <div className='grid grid-cols-[auto,1fr] items-start border-[1.5px] border-slate-200 rounded py-4 bg-white/50 bp520:py-3'>
               <TaskCompletedToggle
-                task={task}
-                disabled={!task}
-                onToggle={() => onToggleTaskCompleteState(task)}
+                task={selectedTask}
+                disabled={!selectedTask}
+                onToggle={() => onToggleTaskCompleteState(selectedTask)}
               />
 
               <TaskNoteInput
@@ -102,10 +104,10 @@ const TaskEditorPanel = ({
                 onBlur={handleSubmit}
                 className={
                   'pt-2 pr-3 bg-transparent font-medium text-lg leading-snug resize-none outline-none appearance-none md:pt-[2px] ' +
-                  (task?.is_complete ? 'line-through focus:no-underline' : '')
+                  (selectedTask?.is_complete ? 'line-through focus:no-underline' : '')
                 }
                 value={title}
-                disabled={!task}
+                disabled={!selectedTask}
                 onChange={setTitle}
                 onEnter={handleSubmit}
               />
@@ -114,13 +116,13 @@ const TaskEditorPanel = ({
             {/* notes */}
             <div className='grid border-[1.5px] border-slate-200 rounded bg-white/50'>
               <TaskNoteInput
-                name='note'
-                placeholder='Add note'
+                name='notes'
+                placeholder='Add notes'
                 onBlur={handleSubmit}
                 className='px-3 pt-4 pb-8 bg-transparent resize-none outline-none appearance-none bp520:pt-3 bp520:text-sm'
-                value={note}
-                disabled={!task}
-                onChange={setNote}
+                value={notes}
+                disabled={!selectedTask}
+                onChange={setNotes}
               />
             </div>
           </form>
@@ -129,14 +131,14 @@ const TaskEditorPanel = ({
         {/* date created/completed, delete */}
         <footer className='fixed inset-0 top-auto grid grid-cols-[1fr,auto] items-center gap-1 border-t-2 p-[2px] bg-inherit bp520:sticky'>
           <div className='grid px-3 text-sm text-black/70 leading-none bp520:text-center'>
-            {(task?.is_complete ? `Completed ` : `Created `) + dateTime}
+            {(selectedTask?.is_complete ? `Completed ` : `Created `) + dateTime}
           </div>
 
           <button
             type='button'
             title='Delete task'
             className='group grid p-[2px] text-black/80'
-            disabled={!task}
+            disabled={!selectedTask}
             onClick={onDeleteTask}
           >
             <div className='grid place-items-center rounded w-12 h-12 text-2xl group-hover:bg-slate-500/10 group-active:bg-slate-500/30 bp520:w-10 bp520:h-10'>
