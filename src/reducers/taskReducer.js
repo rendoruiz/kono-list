@@ -85,7 +85,7 @@ const taskReducer = (state, action) => {
       }
 
     case TASK_ACTION.SELECT_ITEM:
-      const newSelecteItem = action.payload.taskId === state.selectedItem.id
+      const newSelecteItem = action.payload.taskId === state.selectedItem?.id
        ? null
        : state.taskItems.filter((item) => item.id === action.payload.taskId).pop() ?? null;
       return {
