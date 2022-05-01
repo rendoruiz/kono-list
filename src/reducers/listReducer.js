@@ -33,7 +33,7 @@ const listReducer = (state, action) => {
       const newName = action.payload.name.trim();
       return {
         ...state,
-        listItems: state.data.map((item) => {
+        listItems: state.listItems.map((item) => {
           if (item.id === action.payload.listId) {
             return {
               ...item,
@@ -78,7 +78,7 @@ const listReducer = (state, action) => {
     case LIST_ACTION.TOGGLE_COMPLETED_ITEMS_VISIBILITY:
       return {
         ...state,
-        listItems: state.data.map((item) => {
+        listItems: state.listItems.map((item) => {
           if (item.id === action.payload.listId) {
             return {
               ...item,
