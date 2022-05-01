@@ -35,11 +35,4 @@ const initialTaskItems = [
   },
 ];
 
-const storedTask = JSON.parse(localStorage.getItem('task'));
-const defaultTask = {
-  taskItems: storedTask?.taskItems ?? initialTaskItems,
-  selectedItem: storedTask?.selectedItem ?? null,
-  isEditorPanelOpen: false,
-}
-
-export { taskTemplate, initialTaskItems, defaultTask }
+export { taskTemplate, initialTaskItems }

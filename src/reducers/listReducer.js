@@ -4,7 +4,15 @@
  * can be found in the LICENSE file.
  */
 
-import { listTemplate } from "../data/list";
+import { listTemplate, initialListItems } from "../data/list";
+
+const storedList = JSON.parse(localStorage.getItem('list'));
+const defaultList = {
+  listItems: storedList?.listItems ?? initialListItems, 
+  selectedItem: storedList?.selectedItem ?? initialListItems[0],
+  isPanelOpen: storedList?.isPanelOpen ?? true,
+  isEditorPanelOpen: false,
+}
 
 const LIST_ACTION = {
   CREATE_ITEM: 'create_item',
@@ -118,4 +126,4 @@ const listReducer = (state, action) => {
   }
 }
  
-export { listReducer, LIST_ACTION };
+export { listReducer, LIST_ACTION, defaultList };

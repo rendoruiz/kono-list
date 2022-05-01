@@ -4,7 +4,14 @@
  * can be found in the LICENSE file.
  */
 
-import { taskTemplate } from "../data/task";
+import { taskTemplate, initialTaskItems } from "../data/task";
+
+const storedTask = JSON.parse(localStorage.getItem('task'));
+const defaultTask = {
+  taskItems: storedTask?.taskItems ?? initialTaskItems,
+  selectedItem: storedTask?.selectedItem ?? null,
+  isEditorPanelOpen: false,
+}
 
 const TASK_ACTION = {
   CREATE_ITEM: 'create_item',
@@ -114,4 +121,4 @@ const taskReducer = (state, action) => {
   }
 }
  
-export { taskReducer, TASK_ACTION };
+export { taskReducer, TASK_ACTION, defaultTask };

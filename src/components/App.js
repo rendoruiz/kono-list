@@ -15,11 +15,8 @@ import TaskEditorPanel from './Task/TaskEditorPanel/TaskEditorPanel';
 import SettingsPanel from './SettingsPanel';
 import DisclaimerPanel from './DisclaimerPanel';
 // hooks, reducers, data, utils
-import { listReducer, LIST_ACTION } from '../reducers/listReducer';
-import { taskReducer, TASK_ACTION } from '../reducers/taskReducer';
-import { defaultList } from '../data/list';
-import { defaultTask } from '../data/task';
-import TaskPanelList from './Task/TaskPanel/TaskPanelList';
+import { listReducer, LIST_ACTION, defaultList } from '../reducers/listReducer';
+import { taskReducer, TASK_ACTION, defaultTask } from '../reducers/taskReducer';
 
 const App = () => {
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = React.useState(false);

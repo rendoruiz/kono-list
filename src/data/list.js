@@ -19,12 +19,4 @@ const initialListItems = [
   },
 ];
 
-const storedList = JSON.parse(localStorage.getItem('list'));
-const defaultList = {
-  listItems: storedList?.listItems ?? initialListItems, 
-  selectedItem: storedList?.selectedItem ?? initialListItems[0],
-  isPanelOpen: storedList?.isPanelOpen ?? true,
-  isEditorPanelOpen: false,
-}
-
-export { listTemplate, initialListItems, defaultList }
+export { listTemplate, initialListItems }
