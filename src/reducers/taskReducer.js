@@ -89,6 +89,7 @@ const taskReducer = (state, action) => {
             newSelectedItem = {
               ...item,
               is_complete: !item.is_complete,
+              date_updated: Date.now(),
             }
             return newSelectedItem;
           }
