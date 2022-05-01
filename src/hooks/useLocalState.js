@@ -13,14 +13,13 @@ const isNullOrUndefined = (value) => {
 }
 
 const useLocalState = (key, initialState) => {
-  const storedObject = JSON.parse(localStorage.getItem(key));
+  const storedObject = decryptObject(localStorage.getItem(key));
   const [value, setValue] = React.useState(
-    // decryptObject(localStorage.getItem(key)) !== null ? decryptObject(localStorage.getItem(key)) : initialState
     !isNullOrUndefined(storedObject) ? storedObject : initialState
   );
 
   React.useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem(key, encryptObject(value));
   }, [key, value]);
 
   return [value, setValue];
