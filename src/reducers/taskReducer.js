@@ -40,7 +40,7 @@ const taskReducer = (state, action) => {
           if (item.id === action.payload.taskId) {
             return {
               ...item,
-              name: newTitle.length > 0 ? newTitle : item.name,
+              title: newTitle.length > 0 ? newTitle : item.title,
               notes: action.payload.notes.trim(),
               date_updated: Date.now(),
             }

@@ -42,7 +42,7 @@ const TaskPanelListRow = ({
       </p>
 
       {/* note presence indicator */}
-      {task.note && task.note.length > 0 && (
+      {task.notes && task.notes.length > 0 && (
         <div className='flex items-center mt-[2px] text-xs text-black/60 leading-none'>
           <NoteIcon className='mr-[2px] w-4 h-4 stroke-current' />
           <span>Note</span>

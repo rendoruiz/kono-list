@@ -31,9 +31,7 @@ const TaskEditorPanel = ({
       title: title,
       notes: notes,
     });
-
-    console.log({e});
-    // e.preventDefault();
+    e?.preventDefault();
   }
 
   React.useEffect(() => {
