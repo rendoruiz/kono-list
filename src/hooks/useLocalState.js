@@ -8,13 +8,19 @@ import * as React from 'react';
 
 import { decryptObject, encryptObject } from '../utils/cryptoJs';
 
+const isNullOrUndefined = (value) => {
+  return (value === null || value === undefined) ? true : false;
+}
+
 const useLocalState = (key, initialState) => {
+  const storedObject = JSON.parse(localStorage.getItem(key));
   const [value, setValue] = React.useState(
-    decryptObject(localStorage.getItem(key)) !== null ? decryptObject(localStorage.getItem(key)) : initialState
+    // decryptObject(localStorage.getItem(key)) !== null ? decryptObject(localStorage.getItem(key)) : initialState
+    isNullOrUndefined(storedObject) ? storedObject : initialState
   );
 
   React.useEffect(() => {
-    localStorage.setItem(key, encryptObject(value));
+    localStorage.setItem(key, JSON.stringify(value));
   }, [key, value]);
 
   return [value, setValue];

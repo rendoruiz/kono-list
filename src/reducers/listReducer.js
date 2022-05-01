@@ -7,54 +7,96 @@
 import { listTemplate } from "../data/list";
 import { encryptObject } from "../utils/cryptoJs";
 
+const LIST_ACTION = {
+  CREATE_ITEM: 'create_item',
+  UPDATE_ITEM: 'update_item',
+  DELETE_ITEM: 'delete_item',
+  SELECT_ITEM: 'select_item',
+  TOGGLE_COMPLETED_ITEMS_VISIBILITY: 'toggle_completed_items_visibility',
+  TOGGLE_EDITOR_PANEL: 'toggle_editor_panel',
+}
+
 const listReducer = (state, action) => {
-  let newState;
-
   switch (action.type) {
-    case 'LIST_CREATE':
-      const newList = {
+    case LIST_ACTION.CREATE_ITEM:
+      const newItem = {
         ...listTemplate,
-        id: action.payload.id,
-      };
-      newState = { 
+        id: action.payload.listId,
+      }
+      return {
         ...state,
-        data: [...state.data, newList],
-      };
-      break;
+        listItems: [...state.listItems, newItem],
+        selectedItem: newItem,
+        isEditorPanelOpen: true,
+      }
 
-    case 'LIST_UPDATE':
-      newState = {
+    case LIST_ACTION.UPDATE_ITEM:
+      return {
         ...state,
-        data: state.data.map((list) => {
-          if (list.id === action.payload.id) {
+        listItems: state.data.map((item) => {
+          if (item.id === action.payload.listId) {
             return {
-              ...list,
-              name: action.payload.name ?? list.name,
-              icon: action.payload.icon ?? list.icon,
-              is_completed_hidden: action.payload.is_completed_hidden ?? list.is_completed_hidden,
+              ...item,
+              name: action.payload.name ?? item.name,
+              icon: action.payload.icon ?? item.icon,
               date_updated: Date.now(),
             }
           }
-          return list;
+          return item;
+        }),
+        isEditorPanelOpen: false,
+      }
+
+    case LIST_ACTION.DELETE_ITEM: 
+      let newSelectedItemIndex = 0;
+      return {
+        ...state,
+        listItems: state.listItems.filter(
+          (item, index) => {
+            if (item.id === action.payload.listId) {
+              itemIndex = (index - 1) > 0 ? (index - 1) : 0;
+              return false;
+            }
+            return true;
+          }
+        ),
+        selectedItem: state.listItems[newSelectedItemIndex],
+        isEditorPanelOpen: false,
+      }
+
+    case LIST_ACTION.SELECT_ITEM:
+      const newSelecteItem = state.listItems.filter(
+        (item) => item.id === action.payload.listId
+      );
+      return {
+        ...state,
+        selectedItem: newSelecteItem,
+        isPanelOpen: false,
+      }
+
+    case LIST_ACTION.TOGGLE_COMPLETED_ITEMS_VISIBILITY:
+      return {
+        ...state,
+        listItems: state.data.map((item) => {
+          if (item.id === action.payload.listId) {
+            return {
+              ...item,
+              is_completed_hidden: !item.is_completed_hidden,
+            }
+          }
+          return item;
         }),
       }
-      break;
 
-    case 'LIST_DELETE':
-      newState = {
+    case LIST_ACTION.TOGGLE_EDITOR_PANEL:
+      return {
         ...state,
-        data: state.data.filter(
-          (list) => list.id !== action.payload.id
-        ),
-      };
-      break;
+        isEditorPanelOpen: !state.isEditorPanelOpen,
+      }
 
     default:
       throw new Error();
   }
-
-  localStorage.setItem(state.localKey, encryptObject(newState.data));
-  return newState;
 }
  
-export default listReducer;
+export { listReducer, LIST_ACTION };

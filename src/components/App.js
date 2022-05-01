@@ -16,90 +16,84 @@ import SettingsPanel from './SettingsPanel';
 import DisclaimerPanel from './DisclaimerPanel';
 // hooks, reducers, data, utils
 import useLocalState from '../hooks/useLocalState';
-import listReducer from '../reducers/listReducer';
+import { listReducer, LIST_ACTION } from '../reducers/listReducer';
 import taskReducer from '../reducers/taskReducer';
 import { listTemplate, initialListItems } from '../data/list';
 import { initialTaskItems } from '../data/task';
 import { decryptObject } from '../utils/cryptoJs';
 
+
+const storedList = JSON.parse(localStorage.getItem('list'));
+const storedTask = JSON.parse(localStorage.getItem('task'));
+
 const App = () => {
-  // panel toggle states
-  const [isListPanelOpen, setIsListPanelOpen] = useLocalState('ilpo', true);
-  const [isListEditorPanelOpen, setIsListEditorPanelOpen] = React.useState(false);
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = React.useState(false);
 
-  // list & task states
-  const [selectedList, setSelectedList] = useLocalState('sl', initialListItems[0]);
-  const [selectedTask, setSelectedTask] = useLocalState('st', null);
-
-
-  // list & task reducers
-  const [listItems, dispatchListItems] = React.useReducer(
+  const [list, dispatchList] = React.useReducer(
     listReducer,
     { 
-      data: decryptObject(localStorage.getItem('ls')) ?? initialListItems, 
-      localKey: 'ls',
+      listItems: storedList?.listItems ?? initialListItems, 
+      selectedItem: storedList?.selectedItem ?? initialListItems[0],
+      isPanelOpen: storedList?.isPanelOpen ?? true,
+      isEditorPanelOpen: false,
     }
   );
-  const [taskItems, dispatchTaskItems] = React.useReducer(
+  const [task, dispatchTask] = React.useReducer(
     taskReducer,
     {
-      data: decryptObject(localStorage.getItem('ts')) ?? initialTaskItems,
-      localKey: 'ts',
+      taskItems: decryptObject(localStorage.getItem('ts')) ?? initialTaskItems,
+      selectedTask: storedTask?.selectedTask,
+      isEditorPanelOpen: false,
     }
   );
   
-  // list & task - effects
-  // makes sure the selected list & task object data is always up to date
-  React.useEffect(() => {
-    if (selectedList) {
-      setSelectedList(listItems.data.find((list) => list.id === selectedList.id));
-    }
-  }, [listItems.data, selectedList, setSelectedList]);
-  React.useEffect(() => {
-    if (selectedTask) {
-      setSelectedTask(taskItems.data.find((task) => task.id === selectedTask.id));
-    }
-  }, [taskItems.data, selectedTask, setSelectedTask]);
-
   
-  // panel toggle handlers
-  const handleToggleListPanel = () => setIsListPanelOpen(!isListPanelOpen);
-  const handleToggleListEditorPanel = () => setIsListEditorPanelOpen(!isListEditorPanelOpen);
-  const handleCloseTaskEditorPanel = () => setSelectedTask(null);
-  const handleToggleSettingsPanel = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
+  React.useEffect(() => {
+    // store data to localstorage
+    console.log(list);
+  }, [list]);
+
+  React.useEffect(() => {
+    // store data to localstorage
+    console.log(task);
+  }, [task]);
 
 
-  // list - handlers
-  // set selected list, reset selected task, close task editor panel
-  const handleSelectList = (list) => {
-    setSelectedList(list);
-    setSelectedTask(null);
-    setIsListPanelOpen(false);
+  // Set selected list
+  // Close list panel (mobile)
+  // Close task editor
+  const handleSelectList = (listId) => {
+    dispatchList({
+      type: LIST_ACTION.SELECT_ITEM,
+      payload: { listId: listId },
+    });
+    // close task editor
   }
-  // create id, create list template, assign as selected list, close list editor panel
+
+  // Create new list item
+  // Use the new list item as selected list
+  // Close list editor panel
   const handleCreateList = () => {
     const newListId = uuidv4();
-    dispatchListItems({
-      type: 'LIST_CREATE',
-      payload: { id: newListId }
+    dispatchList({
+      type: LIST_ACTION.CREATE_ITEM,
+      payload: { listId: newListId },
     });
-    setSelectedList({ id: newListId });
-    handleToggleListEditorPanel();
   }
-  // delete list & assign list before it as selected list if its newly created
-  // close list editor panel afterwards
-  const handleListEditorCancelEdit = (event) => {
-    if (!selectedList.date_updated) {
-      dispatchListItems({
-        type: 'LIST_DELETE',
-        payload: { id: selectedList.id }
+
+  // (if new list) Delete recently created list item
+  // (if new list) Assign the previous list as the selected list
+  // Close list editor panel 
+  const handleListEditorCancelEdit = () => {
+    if (list.selectedItem.date_updated) {
+      dispatchList({
+        type: LIST_ACTION.DELETE_ITEM,
+        payload: { listId: list.selectedItem },
       });
-      updateSelectedList(true);
     }
-    handleToggleListEditorPanel();
-    event.preventDefault();
+    dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
   }
+
   // update selected list with given name and icon, update selected list, close list editor panel
   // close task editor if list is newly created
   const handleUpdateList = ({ name, icon }) => {
