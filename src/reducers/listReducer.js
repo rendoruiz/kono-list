@@ -5,8 +5,9 @@
  */
 
 import { listTemplate, initialListItems } from "../data/list";
+import { getDecryptedList } from "../utils/encryptedStorage";
 
-const storedList = JSON.parse(localStorage.getItem('list'));
+const storedList = getDecryptedList();
 const defaultList = {
   listItems: storedList?.listItems ?? initialListItems, 
   selectedItem: storedList?.selectedItem ?? initialListItems[0],

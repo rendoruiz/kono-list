@@ -17,20 +17,19 @@ import DisclaimerPanel from './DisclaimerPanel';
 // hooks, reducers, data, utils
 import { listReducer, LIST_ACTION, defaultList } from '../reducers/listReducer';
 import { taskReducer, TASK_ACTION, defaultTask } from '../reducers/taskReducer';
+import { setEncryptedList, setEncryptedTask } from '../utils/encryptedStorage';
 
 const App = () => {
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = React.useState(false);
   const [list, dispatchList] = React.useReducer(listReducer, defaultList);
   const [task, dispatchTask] = React.useReducer(taskReducer, defaultTask);
   
+  // Store data on localStorage, with encryption, every update
   React.useEffect(() => {
-    localStorage.setItem('list', JSON.stringify(list));
+    setEncryptedList(list);
   }, [list]);
-
   React.useEffect(() => {
-    // store data to localstorage
-    console.log(task);
-    localStorage.setItem('task', JSON.stringify(task));
+    setEncryptedTask(task);
   }, [task]);
 
 

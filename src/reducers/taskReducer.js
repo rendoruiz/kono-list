@@ -5,8 +5,9 @@
  */
 
 import { taskTemplate, initialTaskItems } from "../data/task";
+import { getDecryptedTask } from "../utils/encryptedStorage";
 
-const storedTask = JSON.parse(localStorage.getItem('task'));
+const storedTask = getDecryptedTask();
 const defaultTask = {
   taskItems: storedTask?.taskItems ?? initialTaskItems,
   selectedItem: storedTask?.selectedItem ?? null,
