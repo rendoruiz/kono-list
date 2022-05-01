@@ -114,7 +114,7 @@ const listReducer = (state, action) => {
     case LIST_ACTION.TOGGLE_PANEL: {
       return {
         ...state,
-        isPanelOpen: !state.isEditorPanelOpen,
+        isPanelOpen: !state.isPanelOpen,
       }
     }
 
