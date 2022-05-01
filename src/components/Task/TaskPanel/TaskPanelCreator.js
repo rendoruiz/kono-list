@@ -18,12 +18,17 @@ const TaskPanelCreator = ({
 
   const handleInputChange = (e) => setInput(e.target.value);
   const handleReset = () => setInput("");
+  const handleSubmit = (e) => {
+    onCreateTask({ title: input });
+    e.preventDefault();
+    e.target.reset();
+  }
 
   return (
     <footer className='fixed bottom-0 w-full leading-none md:sticky md:pt-[6px] md:pb-10 md:text-sm'>
       <form 
         className='relative overflow-hidden'
-        onSubmit={onCreateTask}
+        onSubmit={handleSubmit}
         onReset={handleReset}
       >
         {/* task title */}

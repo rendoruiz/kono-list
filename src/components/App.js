@@ -27,8 +27,6 @@ const App = () => {
   const [task, dispatchTask] = React.useReducer(taskReducer, defaultTask);
   
   React.useEffect(() => {
-    // store data to localstorage
-    console.log(list);
     localStorage.setItem('list', JSON.stringify(list));
   }, [list]);
 
@@ -128,13 +126,9 @@ const App = () => {
   }
 
   // Toggle list panel visibility
-  const handleToggleListPanel = () => {
-    dispatchList({ type: LIST_ACTION.TOGGLE_PANEL });
-  }
+  const handleToggleListPanel = () => dispatchList({ type: LIST_ACTION.TOGGLE_PANEL });
 
-  const handleToggleListEditorPanel = () => {
-    dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
-  }
+  const handleToggleListEditorPanel = () => dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
   
 
   // Create new task
@@ -190,9 +184,7 @@ const App = () => {
     });
   }
 
-  const handleCloseTaskEditorPanel = () => {
-    dispatchTask({ type: TASK_ACTION.CLOSE_EDITOR_PANEL });
-  }
+  const handleCloseTaskEditorPanel = () => dispatchTask({ type: TASK_ACTION.CLOSE_EDITOR_PANEL });
 
 
   // Toggle settings panel visibility

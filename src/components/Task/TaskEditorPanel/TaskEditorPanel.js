@@ -28,10 +28,11 @@ const TaskEditorPanel = ({
 
   const handleSubmit = (e) => {
     onUpdateTask({
-      id: selectedTask.id,
       title: title,
       notes: notes,
     });
+
+    console.log({e});
     // e.preventDefault();
   }
 
