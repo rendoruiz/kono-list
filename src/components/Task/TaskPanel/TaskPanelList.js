@@ -33,17 +33,19 @@ const TaskPanelList = ({
       {/* <p className='mt-2 mb-3 font-mono font-medium text-xs uppercase break-word'>{JSON.stringify(selectedList).replaceAll(',"', ', "')}</p> */}
 
       {/* tasks - incomplete */}
-      <ul className='grid content-start gap-[3px]'>
-        {incompleteTasks && incompleteTasks.map((task) => (
-          <TaskPanelListRow
-            key={task.id}
-            task={task}
-            selectedTask={selectedTask}
-            onSelectTask={onSelectTask}
-            onToggleTaskCompleteState={onToggleTaskCompleteState}
-          />
-        ))}
-      </ul>
+      {incompleteTasks && incompleteTasks.length > 0 && (
+        <ul className='grid content-start gap-[3px]'>
+          {incompleteTasks.map((task) => (
+            <TaskPanelListRow
+              key={task.id}
+              task={task}
+              selectedTask={selectedTask}
+              onSelectTask={onSelectTask}
+              onToggleTaskCompleteState={onToggleTaskCompleteState}
+            />
+          ))}
+        </ul>
+      )}
 
       {/* completed tasks section */}
       {completedTasks?.length !== 0 && (
@@ -51,7 +53,7 @@ const TaskPanelList = ({
           {/* is_complete task toggle */}
           <button 
             type='button'
-            className='flex items-center rounded my-2 px-2 py-3 w-full leading-none hover:bg-black/10 sm:justify-self-start sm:py-1 sm:w-auto sm:bg-white/80 sm:text-sm sm:text-black/90 sm:hover:bg-white/90 sm:active:bg-white'
+            className='flex items-center rounded my-2 px-2 py-3 w-full leading-none first:!mt-0 hover:bg-black/10 sm:justify-self-start sm:py-1 sm:w-auto sm:bg-white/80 sm:text-sm sm:text-black/90 sm:hover:bg-white/90 sm:active:bg-white'
             onClick={onToggleListHideCompletedState}
           >
             {/* caret */}
@@ -70,17 +72,19 @@ const TaskPanelList = ({
 
           {/* tasks - completed */}
           {!selectedList?.is_completed_hidden && (
-            <ul className='grid content-start gap-[3px]'>
-              {completedTasks && completedTasks.map((task) => (
-                <TaskPanelListRow
-                  key={task.id}
-                  task={task}
-                  selectedTask={selectedTask}
-                  onSelectTask={onSelectTask}
-                  onToggleTaskCompleteState={onToggleTaskCompleteState}
-                />
-              ))}
-            </ul>
+            completedTasks && completedTasks.length > 0 && (
+              <ul className='grid content-start gap-[3px]'>
+                {completedTasks.map((task) => (
+                  <TaskPanelListRow
+                    key={task.id}
+                    task={task}
+                    selectedTask={selectedTask}
+                    onSelectTask={onSelectTask}
+                    onToggleTaskCompleteState={onToggleTaskCompleteState}
+                  />
+                ))}
+              </ul>
+            )
           )}
         </>
       )}
