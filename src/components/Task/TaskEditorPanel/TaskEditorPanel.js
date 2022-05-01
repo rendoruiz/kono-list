@@ -93,9 +93,9 @@ const TaskEditorPanel = ({
             {/* task toggle & name */}
             <div className='grid grid-cols-[auto,1fr] items-start border-[1.5px] border-slate-200 rounded py-4 bg-white/50 bp520:py-3'>
               <TaskCompletedToggle
-                task={selectedTask}
                 disabled={!selectedTask}
-                onToggle={() => onToggleTaskCompleteState(selectedTask)}
+                task={selectedTask}
+                onToggle={onToggleTaskCompleteState}
               />
 
               <TaskNoteInput
