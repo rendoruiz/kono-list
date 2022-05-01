@@ -66,6 +66,7 @@ const listReducer = (state, action) => {
           }
         ),
         selectedItem: state.listItems[newSelectedItemIndex],
+        isPanelOpen: true,
         isEditorPanelOpen: false,
       }
 
