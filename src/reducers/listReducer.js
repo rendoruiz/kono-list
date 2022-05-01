@@ -5,7 +5,6 @@
  */
 
 import { listTemplate } from "../data/list";
-import { encryptObject } from "../utils/cryptoJs";
 
 const LIST_ACTION = {
   CREATE_ITEM: 'create_item',
@@ -31,19 +30,21 @@ const listReducer = (state, action) => {
       }
 
     case LIST_ACTION.UPDATE_ITEM:
+      const newName = action.payload.name.trim();
       return {
         ...state,
         listItems: state.data.map((item) => {
           if (item.id === action.payload.listId) {
             return {
               ...item,
-              name: action.payload.name ?? item.name,
+              name: newName.length > 0 ? newName : listTemplate.name,
               icon: action.payload.icon ?? item.icon,
               date_updated: Date.now(),
             }
           }
           return item;
         }),
+        isPanelOpen: false,
         isEditorPanelOpen: false,
       }
 
