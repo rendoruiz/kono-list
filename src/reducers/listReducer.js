@@ -18,7 +18,7 @@ const LIST_ACTION = {
 
 const listReducer = (state, action) => {
   switch (action.type) {
-    case LIST_ACTION.CREATE_ITEM:
+    case LIST_ACTION.CREATE_ITEM: {
       const newItem = {
         ...listTemplate,
         id: action.payload.listId,
@@ -29,8 +29,9 @@ const listReducer = (state, action) => {
         selectedItem: newItem,
         isEditorPanelOpen: true,
       }
+    }
 
-    case LIST_ACTION.UPDATE_ITEM:
+    case LIST_ACTION.UPDATE_ITEM: {
       let newSelectedItem = null;
       const newName = action.payload.name.trim();
       return {
@@ -51,8 +52,9 @@ const listReducer = (state, action) => {
         isPanelOpen: false,
         isEditorPanelOpen: false,
       }
+    }
 
-    case LIST_ACTION.DELETE_ITEM: 
+    case LIST_ACTION.DELETE_ITEM: {
       let newSelectedItemIndex = 0;
       return {
         ...state,
@@ -69,18 +71,20 @@ const listReducer = (state, action) => {
         isPanelOpen: true,
         isEditorPanelOpen: false,
       }
+    }
 
-    case LIST_ACTION.SELECT_ITEM:
-      const newSelecteItem = state.listItems.filter(
+    case LIST_ACTION.SELECT_ITEM: {
+      const newSelectedItem = state.listItems.filter(
         (item) => item.id === action.payload.listId
       ).pop();
       return {
         ...state,
-        selectedItem: newSelecteItem ?? null,
+        selectedItem: newSelectedItem ?? null,
         isPanelOpen: false,
       }
+    }
 
-    case LIST_ACTION.TOGGLE_COMPLETED_ITEMS_VISIBILITY:
+    case LIST_ACTION.TOGGLE_COMPLETED_ITEMS_VISIBILITY: {
       return {
         ...state,
         listItems: state.listItems.map((item) => {
@@ -93,18 +97,21 @@ const listReducer = (state, action) => {
           return item;
         }),
       }
+    }
 
-    case LIST_ACTION.TOGGLE_PANEL:
+    case LIST_ACTION.TOGGLE_PANEL: {
       return {
         ...state,
         isPanelOpen: !state.isEditorPanelOpen,
       }
+    }
 
-    case LIST_ACTION.TOGGLE_EDITOR_PANEL:
+    case LIST_ACTION.TOGGLE_EDITOR_PANEL: {
       return {
         ...state,
         isEditorPanelOpen: !state.isEditorPanelOpen,
       }
+    }
 
     default:
       throw new Error();
