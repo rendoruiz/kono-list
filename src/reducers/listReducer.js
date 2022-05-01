@@ -31,20 +31,23 @@ const listReducer = (state, action) => {
       }
 
     case LIST_ACTION.UPDATE_ITEM:
+      let newSelectedItem = null;
       const newName = action.payload.name.trim();
       return {
         ...state,
         listItems: state.listItems.map((item) => {
           if (item.id === action.payload.listId) {
-            return {
+            newSelectedItem = {
               ...item,
               name: newName.length > 0 ? newName : listTemplate.name,
               icon: action.payload.icon ?? item.icon,
               date_updated: Date.now(),
             }
+            return newSelectedItem
           }
           return item;
         }),
+        selectedItem: newSelectedItem,
         isPanelOpen: false,
         isEditorPanelOpen: false,
       }
