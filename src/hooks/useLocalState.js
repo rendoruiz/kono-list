@@ -16,7 +16,7 @@ const useLocalState = (key, initialState) => {
   const storedObject = JSON.parse(localStorage.getItem(key));
   const [value, setValue] = React.useState(
     // decryptObject(localStorage.getItem(key)) !== null ? decryptObject(localStorage.getItem(key)) : initialState
-    isNullOrUndefined(storedObject) ? storedObject : initialState
+    !isNullOrUndefined(storedObject) ? storedObject : initialState
   );
 
   React.useEffect(() => {
