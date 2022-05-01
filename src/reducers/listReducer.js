@@ -94,17 +94,20 @@ const listReducer = (state, action) => {
     }
 
     case LIST_ACTION.TOGGLE_COMPLETED_ITEMS_VISIBILITY: {
+      let newSelectedItem = null;
       return {
         ...state,
-        listItems: state.listItems.map((item) => {
+        listItems: state.listItems.map((item, index) => {
           if (item.id === action.payload.listId) {
-            return {
+            newSelectedItem = {
               ...item,
               is_completed_hidden: !item.is_completed_hidden,
             }
+            return newSelectedItem;
           }
           return item;
         }),
+        selectedItem: newSelectedItem,
       }
     }
 
