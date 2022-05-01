@@ -13,7 +13,7 @@ const splitter = new Graphemer();
 
 const ListEditorPanel = ({ 
   isOpen, 
-  list, 
+  selectedList, 
   onUpdateList, 
   onCancelEdit
 }) => {
@@ -23,11 +23,11 @@ const ListEditorPanel = ({
 
   // make sure the form fields are up to date whenever the editor is opened
   React.useEffect(() => {
-    if (isOpen && list) {
-      setName(list.name ?? "");
-      setIcon(list.icon ?? "");
+    if (isOpen && selectedList) {
+      setName(selectedList.name ?? "");
+      setIcon(selectedList.icon ?? "");
     }
-  }, [isOpen, list]);
+  }, [isOpen, selectedList]);
 
   // input handlers
   const handleNameChange = (e) => setName(e.target.value);
@@ -40,6 +40,7 @@ const ListEditorPanel = ({
   // form handlers
   const handleSubmit = (event) => {
     onUpdateList({
+      id: selectedList.id,
       name: name.trim(),
       icon: icon.trim(),
     });
@@ -67,7 +68,7 @@ const ListEditorPanel = ({
         onReset={handleReset}
       >
         <h2 className='font-medium text-lg'>
-          {!list.date_updated ? 'New' : 'Rename'} list
+          {!selectedList.date_updated ? 'New' : 'Rename'} list
         </h2>
         
         <div className='flex mt-3 w-full'>
@@ -99,7 +100,7 @@ const ListEditorPanel = ({
             className='rounded px-2 py-1 font-medium text-blue-600 uppercase cursor-pointer hover:bg-black/10'
             disabled={name?.trim().length < 1}
           >
-            {!list.date_updated ? 'Create List' : 'Save'} 
+            {!selectedList.date_updated ? 'Create List' : 'Save'} 
           </button>
           <button 
             type='button'

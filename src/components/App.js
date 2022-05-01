@@ -28,11 +28,13 @@ const App = () => {
   React.useEffect(() => {
     // store data to localstorage
     console.log(list);
+    localStorage.setItem('list', JSON.stringify(list));
   }, [list]);
 
   React.useEffect(() => {
     // store data to localstorage
     console.log(task);
+    localStorage.setItem('task', JSON.stringify(task));
   }, [task]);
 
 
@@ -80,7 +82,7 @@ const App = () => {
     });
 
     if (!list.selectedItem.date_updated) {
-      // close task editor
+      dispatchTask({ type: TASK_ACTION.CLOSE_EDITOR_PANEL });
     }
   }
 
@@ -122,6 +124,11 @@ const App = () => {
       type: LIST_ACTION.TOGGLE_COMPLETED_ITEMS_VISIBILITY,
       payload: { listId: list.selectedItem.id },
     });
+  }
+
+  // Toggle list panel visibility
+  const handleToggleListPanel = () => {
+    dispatchList({ type: LIST_ACTION.TOGGLE_PANEL });
   }
   
 
@@ -179,13 +186,17 @@ const App = () => {
   }
 
 
+  // Toggle settings panel visibility
+  const handleToggleSettingsPanel = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
+
+
   return (
     <div className='grid md:grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
       {/* list left panel */}
       <ListPanel
-        isOpen={isListPanelOpen} 
-        listItems={listItems.data}
-        selectedList={selectedList}
+        isOpen={list.isPanelOpen} 
+        listItems={list.listItems}
+        selectedList={list.selectedItem}
         onTogglePanel={handleToggleListPanel} 
         onSelectList={handleSetSelectedList}
         onCreateList={handleCreateList}
@@ -194,8 +205,8 @@ const App = () => {
 
       {/* list editor popup */}
       <ListEditorPanel
-        isOpen={isListEditorPanelOpen}
-        list={selectedList}
+        isOpen={list.isEditorPanelOpen}
+        selectedList={list.selectedItem}
         onUpdateList={handleUpdateList}
         onCancelEdit={handleCloseListEditor}
       />
@@ -207,7 +218,7 @@ const App = () => {
       />
 
       {/* task middle panel */}
-      <TaskPanel
+      {/* <TaskPanel
         taskItems={taskItems.data}
         selectedTask={selectedTask}
         selectedList={selectedList}
@@ -218,17 +229,17 @@ const App = () => {
         onToggleListPanel={handleToggleListPanel}
         onToggleListEditorPanel={handleToggleListEditorPanel}
         onToggleListHideCompletedState={handleToggleCompletedItemsVisibility}
-      />
+      /> */}
 
       {/* task editor right panel */}
-      <TaskEditorPanel
+      {/* <TaskEditorPanel
         task={selectedTask}
         selectedList={selectedList}
         onClosePanel={handleCloseTaskEditorPanel}
         onUpdateTask={handleUpdateTask}
         onDeleteTask={handleDeleteTask}
         onToggleTaskCompleteState={handleToggleTaskCompleteState}
-      />
+      /> */}
 
       {/* app disclaimer */}
       <DisclaimerPanel />
