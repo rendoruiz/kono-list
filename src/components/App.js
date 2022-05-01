@@ -132,7 +132,7 @@ const App = () => {
   
 
   // Create new task
-  // Reset task creator form fields ============================= (TODO) =============================
+  // Reset task creator form fields
   // Close task editor
   const handleCreateTask = (taskItem) => {
     dispatchTask({
@@ -143,7 +143,6 @@ const App = () => {
         title: taskItem.title,
       },
     });
-    // reset handler caller form fields
   }
 
   // Update task item
