@@ -114,5 +114,5 @@ const ListEditorPanel = ({
     </div>
   )
 }
- 
+
 export default ListEditorPanel;
