@@ -30,7 +30,7 @@ const TaskPanelListRow = ({
     <button
       type='button'
       title='Open task'
-      className='grid content-center py-1 pr-2 text-left bp520:text-sm '
+      className='grid content-center py-1 pr-2 text-left bp520:text-sm'
       onClick={() => onSelectTask(task.id)}
     >
       {/* title */}
