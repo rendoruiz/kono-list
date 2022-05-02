@@ -218,13 +218,13 @@ const App = () => {
         taskItems={task.taskItems}
         selectedTask={task.selectedItem}
         selectedList={list.selectedItem}
-        onSelectTask={handleSetSelectedTask}
-        onCreateTask={handleCreateTask}
-        onToggleTaskCompleteState={handleToggleTaskCompleteState}
         onDeleteList={handleDeleteList}
+        onCreateTask={handleCreateTask}
+        onSelectTask={handleSetSelectedTask}
+        onToggleTaskCompleteState={handleToggleTaskCompleteState}
+        onToggleCompletedItemsVisibility={handleToggleCompletedItemsVisibility}
         onToggleListPanel={handleToggleListPanel}
         onToggleListEditorPanel={handleToggleListEditorPanel}
-        onToggleListHideCompletedState={handleToggleCompletedItemsVisibility}
       />
 
       {/* task editor right panel */}

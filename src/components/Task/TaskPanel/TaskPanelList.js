@@ -15,7 +15,7 @@ const TaskPanelList = ({
   selectedList, 
   onSelectTask, 
   onToggleTaskCompleteState, 
-  onToggleListHideCompletedState 
+  onToggleCompletedItemsVisibility 
 }) => {
   const completedTasks = taskItems.filter((task) => task.is_complete && task.list_id === selectedList.id);
   const incompleteTasks = taskItems.filter((task) => !task.is_complete && task.list_id === selectedList.id);
@@ -48,7 +48,7 @@ const TaskPanelList = ({
           <button 
             type='button'
             className='flex items-center rounded my-2 px-2 py-3 w-full leading-none first:!mt-0 hover:bg-black/10 sm:justify-self-start sm:py-1 sm:w-auto sm:bg-white/80 sm:text-sm sm:text-black/90 sm:hover:bg-white/90 sm:active:bg-white'
-            onClick={onToggleListHideCompletedState}
+            onClick={onToggleCompletedItemsVisibility}
           >
             {/* caret */}
             <ChevronRightIcon className={

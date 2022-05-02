@@ -10,19 +10,17 @@ import ArrowLeftIcon from "../../Icons/ArrowLeftIcon";
 import PencilIcon from "../../Icons/PencilIcon";
 import TrashIcon from "../../Icons/TrashIcon";
 
-import { listTemplate } from "../../../data/list";
-
 const TaskPanel = ({ 
   taskItems, 
   selectedTask, 
   selectedList, 
-  onSelectTask, 
-  onCreateTask, 
-  onToggleTaskCompleteState, 
   onDeleteList, 
+  onCreateTask, 
+  onSelectTask, 
+  onToggleTaskCompleteState, 
+  onToggleCompletedItemsVisibility,
   onToggleListPanel,
   onToggleListEditorPanel, 
-  onToggleListHideCompletedState 
 }) => (
   <div className='relative grid grid-rows-[auto,1fr,auto] h-screen bg-gradient-to-br from-blue-700/80 to-blue-500/80 text-white md:rounded-tl-xl md:px-10'>
     <TaskPanelList
@@ -31,7 +29,7 @@ const TaskPanel = ({
       selectedList={selectedList}
       onSelectTask={onSelectTask}
       onToggleTaskCompleteState={onToggleTaskCompleteState}
-      onToggleListHideCompletedState={onToggleListHideCompletedState}
+      onToggleCompletedItemsVisibility={onToggleCompletedItemsVisibility}
     />
     
     <TaskPanelCreator
@@ -76,7 +74,7 @@ const TaskPanel = ({
         
         {/* list name */}
         <h2 className='pl-1 pr-2 font-medium text-xl text-left truncate bp360:text-2xl'>
-          {selectedList?.name ?? listTemplate.name}
+          {selectedList?.name}
         </h2>
       </button>
       
