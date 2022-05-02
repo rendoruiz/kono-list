@@ -16,7 +16,7 @@ const TaskNoteInput = ({
 
   React.useEffect(() => {
     adjustHeight();
-  }, [value]);
+  });
   
   const handleChange = (e) => {
     onChange(e.target.value);

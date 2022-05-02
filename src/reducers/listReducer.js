@@ -4,57 +4,130 @@
  * can be found in the LICENSE file.
  */
 
-import { listTemplate } from "../data/list";
-import { encryptObject } from "../utils/cryptoJs";
+import { listTemplate, initialListItems } from "../data/list";
+import { getDecryptedList } from "../utils/encryptedStorage";
+
+const storedList = getDecryptedList();
+const defaultList = {
+  listItems: storedList?.listItems ?? initialListItems, 
+  selectedItem: storedList?.selectedItem ?? initialListItems[0],
+  isPanelOpen: storedList?.isPanelOpen ?? true,
+  isEditorPanelOpen: false,
+}
+
+const LIST_ACTION = {
+  CREATE_ITEM: 'create_item',
+  UPDATE_ITEM: 'update_item',
+  DELETE_ITEM: 'delete_item',
+  SELECT_ITEM: 'select_item',
+  TOGGLE_COMPLETED_ITEMS_VISIBILITY: 'toggle_completed_items_visibility',
+  TOGGLE_PANEL: 'toggle_panel',
+  TOGGLE_EDITOR_PANEL: 'toggle_editor_panel',
+}
 
 const listReducer = (state, action) => {
-  let newState;
-
   switch (action.type) {
-    case 'LIST_CREATE':
-      const newList = {
+    case LIST_ACTION.CREATE_ITEM: {
+      const newItem = {
         ...listTemplate,
-        id: action.payload.id,
-      };
-      newState = { 
+        id: action.payload.listId,
+      }
+      return {
         ...state,
-        data: [...state.data, newList],
-      };
-      break;
+        listItems: [...state.listItems, newItem],
+        selectedItem: newItem,
+        isEditorPanelOpen: true,
+      }
+    }
 
-    case 'LIST_UPDATE':
-      newState = {
+    case LIST_ACTION.UPDATE_ITEM: {
+      let newSelectedItem = null;
+      const newName = action.payload.name.trim();
+      return {
         ...state,
-        data: state.data.map((list) => {
-          if (list.id === action.payload.id) {
-            return {
-              ...list,
-              name: action.payload.name ?? list.name,
-              icon: action.payload.icon ?? list.icon,
-              is_completed_hidden: action.payload.is_completed_hidden ?? list.is_completed_hidden,
+        listItems: state.listItems.map((item) => {
+          if (item.id === action.payload.listId) {
+            newSelectedItem = {
+              ...item,
+              name: newName.length > 0 ? newName : listTemplate.name,
+              icon: action.payload.icon ?? item.icon,
               date_updated: Date.now(),
             }
+            return newSelectedItem
           }
-          return list;
+          return item;
         }),
+        selectedItem: newSelectedItem,
+        isPanelOpen: false,
+        isEditorPanelOpen: false,
       }
-      break;
+    }
 
-    case 'LIST_DELETE':
-      newState = {
+    case LIST_ACTION.DELETE_ITEM: {
+      let newSelectedItemIndex = 0;
+      return {
         ...state,
-        data: state.data.filter(
-          (list) => list.id !== action.payload.id
+        listItems: state.listItems.filter(
+          (item, index) => {
+            if (item.id === action.payload.listId) {
+              newSelectedItemIndex = (index - 1) > 0 ? (index - 1) : 0;
+              return false;
+            }
+            return true;
+          }
         ),
-      };
-      break;
+        selectedItem: state.listItems[newSelectedItemIndex],
+        isPanelOpen: true,
+        isEditorPanelOpen: false,
+      }
+    }
+
+    case LIST_ACTION.SELECT_ITEM: {
+      const newSelectedItem = state.listItems.filter(
+        (item) => item.id === action.payload.listId
+      ).pop();
+      return {
+        ...state,
+        selectedItem: newSelectedItem ?? null,
+        isPanelOpen: false,
+      }
+    }
+
+    case LIST_ACTION.TOGGLE_COMPLETED_ITEMS_VISIBILITY: {
+      let newSelectedItem = null;
+      return {
+        ...state,
+        listItems: state.listItems.map((item, index) => {
+          if (item.id === action.payload.listId) {
+            newSelectedItem = {
+              ...item,
+              is_completed_hidden: !item.is_completed_hidden,
+            }
+            return newSelectedItem;
+          }
+          return item;
+        }),
+        selectedItem: newSelectedItem,
+      }
+    }
+
+    case LIST_ACTION.TOGGLE_PANEL: {
+      return {
+        ...state,
+        isPanelOpen: !state.isPanelOpen,
+      }
+    }
+
+    case LIST_ACTION.TOGGLE_EDITOR_PANEL: {
+      return {
+        ...state,
+        isEditorPanelOpen: !state.isEditorPanelOpen,
+      }
+    }
 
     default:
       throw new Error();
   }
-
-  localStorage.setItem(state.localKey, encryptObject(newState.data));
-  return newState;
 }
  
-export default listReducer;
+export { listReducer, LIST_ACTION, defaultList };

@@ -26,10 +26,10 @@ const DisclaimerPanel = () => {
           <section className='grid content-start gap-8'>
             <ol className="grid gap-3 list-decimal pl-5">
               <li>
-                Konolist does not store any user data on any remote servers and is solely dependent on the user's browser cache or local storage.
+                Konolist does not store any user data on any remote servers and is solely dependent on the user's browser cache or local storage. Any stored data can get deleted anytime the user clears their browser's cache or temporary files. The option to manually delete the user's data also exists in the app's settings. 
               </li>
               <li>
-                Konolist's stored data will get deleted anytime the user clears their browser's cache. The option to delete the user's data also exists in the app's settings.
+                Konolist is an ongoing web app project, and an app update may delete any stored data in the app.
               </li>
               <li className='font-bold text-red-500'>
                 The creator of this project will not be held liable for any data loss on this app.
