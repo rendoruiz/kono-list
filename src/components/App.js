@@ -121,9 +121,10 @@ const App = () => {
     });
   }
 
-  // Toggle list panel visibility
+  // Toggle list panel (sidebar) visibility
   const handleToggleListPanel = () => dispatchList({ type: LIST_ACTION.TOGGLE_PANEL });
 
+  // Toggle list editor panel (popup) visbility
   const handleToggleListEditorPanel = () => dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
   
 
@@ -179,12 +180,11 @@ const App = () => {
     });
   }
 
+  // Close task editor panel
   const handleCloseTaskEditorPanel = () => dispatchTask({ type: TASK_ACTION.CLOSE_EDITOR_PANEL });
-
 
   // Toggle settings panel visibility
   const handleToggleSettingsPanel = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
-
 
   return (
     <div className='grid md:grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
