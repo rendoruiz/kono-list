@@ -7,7 +7,7 @@
 const ListPanelRow = ({ 
   list, 
   selectedList, 
-  onSelectList 
+  onSelectList,
 }) => (
   <li>
     <button 

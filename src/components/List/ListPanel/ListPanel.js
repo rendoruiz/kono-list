@@ -15,7 +15,7 @@ const ListPanel = ({
   onCreateList,
   onSelectList, 
   onTogglePanel, 
-  onToggleSettingsPanel
+  onToggleSettingsPanel,
 }) => (
   <>
     {/* mobile backdrop toggle */}
