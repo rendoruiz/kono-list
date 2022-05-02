@@ -193,9 +193,9 @@ const App = () => {
         isOpen={list.isPanelOpen} 
         listItems={list.listItems}
         selectedList={list.selectedItem}
-        onTogglePanel={handleToggleListPanel} 
-        onSelectList={handleSetSelectedList}
         onCreateList={handleCreateList}
+        onSelectList={handleSetSelectedList}
+        onTogglePanel={handleToggleListPanel} 
         onToggleSettingsPanel={handleToggleSettingsPanel}
       />
 

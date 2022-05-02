@@ -12,9 +12,9 @@ const ListPanel = ({
   isOpen, 
   listItems, 
   selectedList, 
-  onTogglePanel, 
-  onSelectList, 
   onCreateList,
+  onSelectList, 
+  onTogglePanel, 
   onToggleSettingsPanel
 }) => (
   <>
