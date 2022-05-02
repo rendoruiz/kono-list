@@ -42,7 +42,7 @@ const TaskPanelList = ({
       )}
 
       {/* completed tasks section */}
-      {completedTaskCount > 0 && (
+      {completedTasks && completedTaskCount > 0 && (
         <>
           {/* is_complete task toggle */}
           <button 
@@ -68,19 +68,17 @@ const TaskPanelList = ({
 
           {/* tasks - completed */}
           {!selectedList?.is_completed_hidden && (
-            completedTasks && completedTaskCount > 0 && (
-              <ul className='grid content-start gap-[3px]'>
-                {completedTasks.map((task) => (
-                  <TaskPanelListRow
-                    key={task.id}
-                    task={task}
-                    selectedTask={selectedTask}
-                    onSelectTask={onSelectTask}
-                    onToggleTaskCompleteState={onToggleTaskCompleteState}
-                  />
-                ))}
-              </ul>
-            )
+            <ul className='grid content-start gap-[3px]'>
+              {completedTasks.map((task) => (
+                <TaskPanelListRow
+                  key={task.id}
+                  task={task}
+                  selectedTask={selectedTask}
+                  onSelectTask={onSelectTask}
+                  onToggleTaskCompleteState={onToggleTaskCompleteState}
+                />
+              ))}
+            </ul>
           )}
         </>
       )}
