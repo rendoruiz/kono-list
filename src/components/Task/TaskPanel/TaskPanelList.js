@@ -11,11 +11,11 @@ import ChevronRightIcon from '../../Icons/ChevronRightIcon';
 
 const TaskPanelList = ({ 
   taskItems, 
-  selectedTask, 
   selectedList, 
+  selectedTask, 
   onSelectTask, 
   onToggleTaskCompleteState, 
-  onToggleCompletedItemsVisibility 
+  onToggleCompletedItemsVisibility,
 }) => {
   const completedTasks = taskItems.filter((task) => task.is_complete && task.list_id === selectedList.id);
   const incompleteTasks = taskItems.filter((task) => !task.is_complete && task.list_id === selectedList.id);

@@ -216,8 +216,8 @@ const App = () => {
       {/* task middle panel */}
       <TaskPanel
         taskItems={task.taskItems}
-        selectedTask={task.selectedItem}
         selectedList={list.selectedItem}
+        selectedTask={task.selectedItem}
         onDeleteList={handleDeleteList}
         onCreateTask={handleCreateTask}
         onSelectTask={handleSetSelectedTask}

@@ -12,8 +12,8 @@ import TrashIcon from "../../Icons/TrashIcon";
 
 const TaskPanel = ({ 
   taskItems, 
-  selectedTask, 
   selectedList, 
+  selectedTask, 
   onDeleteList, 
   onCreateTask, 
   onSelectTask, 
@@ -25,8 +25,8 @@ const TaskPanel = ({
   <div className='relative grid grid-rows-[auto,1fr,auto] h-screen bg-gradient-to-br from-blue-700/80 to-blue-500/80 text-white md:rounded-tl-xl md:px-10'>
     <TaskPanelList
       taskItems={taskItems}
-      selectedTask={selectedTask}
       selectedList={selectedList}
+      selectedTask={selectedTask}
       onSelectTask={onSelectTask}
       onToggleTaskCompleteState={onToggleTaskCompleteState}
       onToggleCompletedItemsVisibility={onToggleCompletedItemsVisibility}
