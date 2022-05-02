@@ -36,7 +36,7 @@ const TaskPanelListRow = ({
       {/* title */}
       <p className={
         'overflow-hidden text-ellipsis ' + 
-        (task.is_complete ? 'block opacity-60 line-through ' : '')
+        (task.is_complete ? 'block opacity-60 line-through' : '')
       }>
         {task?.title}
       </p>
