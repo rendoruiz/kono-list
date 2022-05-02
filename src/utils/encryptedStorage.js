@@ -11,13 +11,9 @@ const encryptor = (key, object) => {
 }
 
 const decryptor = (key) => {
-  try {
-    return decryptObject(
-      localStorage.getItem(key)
-    );
-  } catch (_) {
-    localStorage.clear();
-  }
+  return decryptObject(
+    localStorage.getItem(key)
+  );
 }
 
 const setEncryptedList = (object) => encryptor(listKey, object);
