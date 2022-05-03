@@ -7,7 +7,7 @@
 import * as React from 'react';
 import { closestCenter, DndContext, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { restrictToVerticalAxis, restrictToWindowEdges } from "@dnd-kit/modifiers";
+import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifiers";
 
 import ListPanelRow from "./ListPanelRow";
 import PlusIcon from "../../Icons/PlusIcon";
@@ -128,13 +128,13 @@ const SortableList = ({
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
       onDragStart={handleDragStart}
-      modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
+      modifiers={[restrictToVerticalAxis, restrictToParentElement]}
     >
       <SortableContext
         items={listItems}
         strategy={verticalListSortingStrategy}
       >
-        <ul className='relative grid content-start'>
+        <ul className='relative grid content-start h-full'>
           {listItems.map((list) => (
             <ListPanelRow
               key={list.id}
