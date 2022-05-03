@@ -54,5 +54,5 @@ const ListPanelRow = ({
     </li>
   );
 }
- 
+
 export default ListPanelRow;

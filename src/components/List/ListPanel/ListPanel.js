@@ -10,7 +10,7 @@ import PlusIcon from "../../Icons/PlusIcon";
 import SettingsIcon from "../../Icons/SettingsIcon";
 import { closestCenter, DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifiers";
 
 const ListPanel = ({ 
   isOpen, 
@@ -120,7 +120,7 @@ const SortableList = ({
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
       onDragStart={handleDragStart}
-      modifiers={[restrictToVerticalAxis]}
+      modifiers={[restrictToVerticalAxis, restrictToParentElement]}
     >
       <SortableContext
         items={listItems}
