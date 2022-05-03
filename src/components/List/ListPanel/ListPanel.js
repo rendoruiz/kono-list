@@ -4,13 +4,14 @@
  * can be found in the LICENSE file.
  */
 
- import * as React from 'react';
+import * as React from 'react';
+import { closestCenter, DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { restrictToVerticalAxis, restrictToWindowEdges } from "@dnd-kit/modifiers";
+
 import ListPanelRow from "./ListPanelRow";
 import PlusIcon from "../../Icons/PlusIcon";
 import SettingsIcon from "../../Icons/SettingsIcon";
-import { closestCenter, DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { restrictToParentElement, restrictToVerticalAxis, restrictToWindowEdges } from "@dnd-kit/modifiers";
 
 const ListPanel = ({ 
   isOpen, 
@@ -100,7 +101,9 @@ const SortableList = ({
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8,
+        delay: 500,
+        tolerance: 5,
+        // distance: 8, 
       },
     }),
   )
