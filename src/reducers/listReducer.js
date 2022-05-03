@@ -86,7 +86,7 @@ const listReducer = (state, action) => {
         ...state,
         listItems: [...state.appListItems, ...newUserListItems],
         userListItems: newUserListItems,
-        selectedItem: state.listItems[newSelectedItemIndex],
+        selectedItem: state.userListItems[newSelectedItemIndex],
         isPanelOpen: true,
         isEditorPanelOpen: false,
       }

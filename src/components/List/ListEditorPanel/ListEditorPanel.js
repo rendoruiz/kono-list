@@ -15,7 +15,7 @@ const ListEditorPanel = ({
   isOpen, 
   selectedList, 
   onUpdateList, 
-  onCancelEdit
+  onCancelEdit,
 }) => {
   // input states
   const [name, setName] = React.useState("");

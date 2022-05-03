@@ -50,10 +50,11 @@ const App = () => {
     if (!list.selectedItem.date_updated) {
       dispatchList({
         type: LIST_ACTION.DELETE_ITEM,
-        payload: { listId: list.selectedItem },
+        payload: { listId: list.selectedItem.id },
       });
+    } else {
+      dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
     }
-    dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
   }
 
   // Update list item
