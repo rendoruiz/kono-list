@@ -15,7 +15,7 @@ const TaskPanelListRow = ({
 }) => (
   <li className={
     'grid grid-cols-[auto,1fr] rounded-md min-h-[64px] bg-white text-black/90 cursor-pointer hover:bg-white/90 bp520:min-h-[50px] ' + 
-    (task.id !== selectedTask.id ? 'md:bg-white/80' : '')
+    (task.id !== selectedTask?.id ? 'md:bg-white/80' : '')
   }>
     <TaskCompletedToggle
       task={task}
