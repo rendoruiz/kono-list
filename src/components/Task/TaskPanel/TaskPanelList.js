@@ -17,7 +17,8 @@ const TaskPanelList = ({
   onToggleTaskCompleteState, 
   onToggleCompletedItemsVisibility,
 }) => {
-  const completedTasks = taskItems.filter((task) => task.is_complete && task.list_id === selectedList.id);
+  const completedTasks = taskItems.filter((task) => task.is_complete && task.list_id === selectedList.id)
+    .sort((a, b) => b.date_updated - a.date_updated);
   const incompleteTasks = taskItems.filter((task) => !task.is_complete && task.list_id === selectedList.id);
   const completedTaskCount = completedTasks.length ?? 0;
 
