@@ -4,9 +4,13 @@
  * can be found in the LICENSE file.
  */
 
+ import * as React from 'react';
 import ListPanelRow from "./ListPanelRow";
 import PlusIcon from "../../Icons/PlusIcon";
 import SettingsIcon from "../../Icons/SettingsIcon";
+import { closestCenter, DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 
 const ListPanel = ({ 
   isOpen, 
@@ -41,16 +45,11 @@ const ListPanel = ({
       {/* list rows */}
       <main className='overflow-y-auto pt-3 py-1 bp520:pt-2'>
         {listItems && (
-          <ul className='grid content-start'>
-            {listItems.map((list) => (
-              <ListPanelRow
-                key={list.id}
-                list={list}
-                selectedList={selectedList}
-                onSelectList={onSelectList}
-              />
-            ))}
-          </ul>
+          <SortableList
+            listItems={listItems}
+            selectedList={selectedList}
+            onSelectList={onSelectList}
+          />
         )}
       </main>
 
@@ -86,5 +85,62 @@ const ListPanel = ({
     </div>
   </>
 );
+
+const SortableList = ({
+  listItems,
+  selectedList,
+  onSelectList,
+}) => {
+  const [dragItemId, setDragItemId] = React.useState(null);
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 0,
+        tolerance: 0,
+      }
+    }),
+  );
+
+  const handleDragStart = (event) => {
+    console.log('drag start');
+    console.log({event});
+    const activeListItemId = event.active.id;
+    setDragItemId(activeListItemId);
+  }
+
+  const handleDragEnd = (event) => {
+    console.log('drag end');
+    console.log({event});
+    const { active, over } = event;
+    setDragItemId(null);
+  }
+  
+  return (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+      onDragStart={handleDragStart}
+      modifiers={[restrictToVerticalAxis]}
+    >
+      <SortableContext
+        items={listItems}
+        strategy={verticalListSortingStrategy}
+      >
+        <ul className='grid content-start'>
+          {listItems.map((list) => (
+            <ListPanelRow
+              key={list.id}
+              list={list}
+              selectedList={selectedList}
+              dragItemId={dragItemId}
+              onSelectList={onSelectList}
+            />
+          ))}
+        </ul>
+      </SortableContext>
+    </DndContext>
+  )
+}
  
 export default ListPanel;
