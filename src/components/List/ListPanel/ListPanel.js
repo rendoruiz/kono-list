@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import { closestCenter, DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { closestCenter, DndContext, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis, restrictToWindowEdges } from "@dnd-kit/modifiers";
 
@@ -99,11 +99,15 @@ const SortableList = ({
 }) => {
   const [dragItemId, setDragItemId] = React.useState(null);
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    useSensor(TouchSensor, {
       activationConstraint: {
         delay: 500,
         tolerance: 5,
-        // distance: 8, 
+      },
+    }),
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8, 
       },
     }),
   )
@@ -130,7 +134,7 @@ const SortableList = ({
         items={listItems}
         strategy={verticalListSortingStrategy}
       >
-        <ul className='grid content-start'>
+        <ul className='relative grid content-start h-full'>
           {listItems.map((list) => (
             <ListPanelRow
               key={list.id}
