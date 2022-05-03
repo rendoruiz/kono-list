@@ -10,26 +10,34 @@ import {CSS} from '@dnd-kit/utilities';
 const ListPanelRow = ({ 
   list, 
   selectedList, 
+  isSortable,
   dragItemId,
   onSelectList,
 }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({id: list.id});
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable(
+    {id: isSortable && list.id}
+  );
+  const sortableItemAttributes = !isSortable ? null : {
+    ref: setNodeRef,
+    style: {
+      transform: CSS.Transform.toString(transform),
+      transition,
+    },
+    ...attributes,
+    ...listeners,
+  }
+  const sortableButtonStyle = !isSortable ? '' : (
+    'transition origin-center ease-in-out delay-100 duration-300 ' +
+    ((dragItemId && (dragItemId !== list.id)) ? 'scale-x-[0.925] scale-y-90 opacity-60' : '')
+  );
   
+
   return (
-    <li
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-    >
+    <li {...sortableItemAttributes}>
       <button 
         className={
-          'group grid w-full px-2 py-[2px] select-none transition origin-center ease-in-out delay-100 duration-300 ' +
-          ((dragItemId && (dragItemId !== list.id)) ? 'scale-x-[0.925] scale-y-90 opacity-60' : '')
+          'group grid w-full px-2 py-[2px] select-none ' +
+          sortableButtonStyle
         }
         onClick={() => onSelectList(list.id)}
       >

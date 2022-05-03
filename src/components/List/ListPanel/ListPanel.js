@@ -132,6 +132,7 @@ const SortableList = ({
               key={list.id}
               list={list}
               selectedList={selectedList}
+              isSortable
               dragItemId={dragItemId}
               onSelectList={onSelectList}
             />
