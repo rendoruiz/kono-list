@@ -12,7 +12,7 @@ import { APP_LIST_ID } from "../../../data/list";
 const ListPanelRow = ({ 
   list, 
   selectedList, 
-  dragItemId,
+  activeDragItemId,
   onSelectList,
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
@@ -30,11 +30,11 @@ const ListPanelRow = ({
   }
   const sortableButtonClass = list.locked ? '' : (
     'ease-in-out duration-300 bp520:transition bp520:origin-center bp520:delay-100 ' +
-    ((dragItemId && (dragItemId !== list.id)) ? 'bp520:scale-x-95 bp520:scale-y-90 bp520:opacity-60' : '')
+    ((activeDragItemId && (activeDragItemId !== list.id)) ? 'bp520:scale-x-95 bp520:scale-y-90 bp520:opacity-60' : '')
   );
   const sortableButtonBackplateClass = list.locked ? '' : (
     ' transition ' +
-    ((dragItemId === list.id) ? 'bg-white shadow-md shadow-black/25 bp520:shadow-none' : '')
+    ((activeDragItemId === list.id) ? 'bg-white shadow-md shadow-black/25 bp520:shadow-none' : '')
   );
 
   return (
@@ -42,7 +42,7 @@ const ListPanelRow = ({
       {...sortableItemAttributes}
       className={
         list.id === APP_LIST_ID.TASKS ? 'pb-[2px] mb-[2px] border-b-[2px]' : '' +
-        ((dragItemId === list.id) ? ' relative z-[1]' : '')
+        ((activeDragItemId === list.id) ? ' relative z-[1]' : '')
       }
     >
       <button 
