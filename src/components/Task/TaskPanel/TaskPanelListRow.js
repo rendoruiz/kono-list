@@ -51,7 +51,7 @@ const TaskContent = ({
 
 const TaskTitle = ({
   title,
-  isComplete
+  isComplete,
 }) => (
   <p className={
     'overflow-hidden text-ellipsis ' + 
