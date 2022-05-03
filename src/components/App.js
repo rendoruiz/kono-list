@@ -98,7 +98,7 @@ const App = () => {
       dispatchTask({
         type: TASK_ACTION.DELETE_LIST_TASKS,
         payload: { listId: list.selectedItem.list_id },
-      })
+      });
     }
   }
 
@@ -110,7 +110,7 @@ const App = () => {
       type: LIST_ACTION.SELECT_ITEM,
       payload: { listId: listId },
     });
-    // close task editor
+    dispatchTask({ type: TASK_ACTION.CLOSE_EDITOR_PANEL });
   }
 
   // Toggle visibility of completed items within a list
