@@ -129,12 +129,12 @@ const App = () => {
   const handleToggleListEditorPanel = () => dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
   
   // Update list item indices (sorting)
-  const handleUpdateListOrder = (activeListId, overListId) => {
+  const handleUpdateListOrder = (currentListId, targetListId) => {
     dispatchList({
       type: LIST_ACTION.UPDATE_INDICES,
       payload: {
-        activeListId: activeListId,
-        overListId: overListId,
+        currentListId: currentListId,
+        targetListId: targetListId,
       },
     })
   }

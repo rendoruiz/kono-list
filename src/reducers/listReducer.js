@@ -151,22 +151,21 @@ const listReducer = (state, action) => {
     // If item being dragged is an app default list, do nothing.
     // If item is dragged to an app default list, place on top of user list.
     case LIST_ACTION.UPDATE_INDICES: {
-      const activeListId = action.payload.activeListId;
-      const isActiveListDefaultAppList = state.appListItems.filter((item) => item.id === activeListId).pop();
-      if (isActiveListDefaultAppList) {
+      const { currentListId, targetListId } = action.payload;
+      const isCurrentListOnDefaultAppList = state.appListItems.filter((item) => item.id === currentListId).pop();
+      if (isCurrentListOnDefaultAppList) {
         return { ...state }
       }
       
-      const overListId = action.payload.overListId;
-      const isOverListDefaultAppList = state.appListItems.filter((item) => item.id === overListId).pop();
-      const newIndex = isOverListDefaultAppList 
+      const isTargetListOnDefaultAppList = state.appListItems.filter((item) => item.id === targetListId).pop();
+      const newIndex = isTargetListOnDefaultAppList 
         ? state.userListItems.slice(0, 1) 
         : state.userListItems
           .map((item) => item.id)
-          .indexOf(overListId);
+          .indexOf(targetListId);
       const currentIndex = state.userListItems
         .map((item) => item.id)
-        .indexOf(activeListId);
+        .indexOf(currentListId);
       const newUserListItems = arrayMove(state.userListItems, currentIndex, newIndex);
 
       return {
