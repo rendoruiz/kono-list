@@ -81,11 +81,12 @@ const taskReducer = (state, action) => {
     }
 
     case TASK_ACTION.TOGGLE_ITEM_COMPLETED: {
+      const taskId = action.payload.taskId;
       let newSelectedItem = null;
       return {
         ...state,
         taskItems: state.taskItems.map((item) => {
-          if (item.id === action.payload.taskId) {
+          if (item.id === taskId) {
             newSelectedItem = {
               ...item,
               is_complete: !item.is_complete,
@@ -95,7 +96,7 @@ const taskReducer = (state, action) => {
           }
           return item;
         }),
-        selectedItem: newSelectedItem,
+        selectedItem: taskId === state.selectedItem.id ? newSelectedItem : state.selectedItem,
       }
     }
 
