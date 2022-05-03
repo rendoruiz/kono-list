@@ -28,7 +28,8 @@ const ListPanelRow = ({
     ...attributes,
     ...listeners,
     className: 'touch-none ' + (
-      list.id === APP_LIST_ID.TASKS ? 'pb-[2px] mb-[2px] border-b-[2px]' : ''
+      list.id === APP_LIST_ID.TASKS ? 'pb-[2px] mb-[2px] border-b-[2px]' : '' +
+      ((dragItemId === list.id) ? ' relative z-10' : '')
     )
   }
   const sortableButtonClass = (
@@ -37,7 +38,7 @@ const ListPanelRow = ({
   );
   const sortableButtonBackplateClass = (
     ' transition ' +
-    ((dragItemId === list.id) ? 'shadow-md shadow-black/25 bp520:shadow-none' : '')
+    ((dragItemId === list.id) ? 'bg-white shadow-md shadow-black/25 bp520:shadow-none' : '')
   );
 
   return (
@@ -51,8 +52,8 @@ const ListPanelRow = ({
       >
         {/* backplate */}
         <div className={
-          'relative grid grid-cols-[auto,1fr] items-center rounded-sm py-1 group-hover:bg-slate-500/10 bp520:rounded bp520:py-0 bp520:group-active:bg-slate-500/20 ' + 
-          (selectedList?.id === list.id ? 'bg-slate-500/10 before:absolute before:inset-y-3 before:left-0 before:rounded-full before:w-1 before:bg-blue-600' : '') +
+          'relative grid grid-cols-[auto,1fr] items-center rounded-sm py-1 bp520:rounded bp520:py-0 bp520:group-hover:bg-slate-500/10 bp520:group-active:bg-slate-500/20 ' + 
+          (selectedList?.id === list.id ? 'bp520:bg-slate-500/10 bp520:before:absolute bp520:before:inset-y-3 bp520:before:left-0 bp520:before:rounded-full bp520:before:w-1 bp520:before:bg-blue-600' : '') +
           sortableButtonBackplateClass
         }>
           {/* list icon */}

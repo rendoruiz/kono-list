@@ -130,7 +130,7 @@ const SortableList = ({
         items={listItems}
         strategy={verticalListSortingStrategy}
       >
-        <ul className='grid content-start'>
+        <ul className='relative grid content-start'>
           {listItems.map((list) => (
             <ListPanelRow
               key={list.id}
