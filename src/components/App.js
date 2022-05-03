@@ -61,7 +61,7 @@ const App = () => {
   // Close list editor panel
   // (if new list) Close task editor
   const handleUpdateList = (listItem) => {
-    if (list.selectedItem.locked || list.selectedItem.id < 5) {
+    if (list.selectedItem.locked) {
       alert('Cannot update locked list.');
       dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
       return;
@@ -85,7 +85,7 @@ const App = () => {
   // Delete all tasks associated with selected list
   // Assign the previous list as the selected list
   const handleDeleteList = () => {
-    if (list.selectedItem.locked || list.selectedItem.id < 5) {
+    if (list.selectedItem.locked) {
       alert('Cannot delete locked list.');
       return;
     }

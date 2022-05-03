@@ -97,12 +97,12 @@ const SortableList = ({
   const [dragItemId, setDragItemId] = React.useState(null);
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: {
-        delay: 200,
-        tolerance: 5,
-      }
+      // activationConstraint: {
+      //   delay: 200,
+      //   tolerance: 5,
+      // }
     }),
-  );
+  )
 
   const handleDragStart = (event) => {
     const activeListItemId = event.active.id;
