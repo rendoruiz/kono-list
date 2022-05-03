@@ -28,7 +28,7 @@ const ListPanelRow = ({
     >
       <button 
         className={
-          'group grid w-full px-2 py-[2px] select-none transition origin-center ease-in-out ' +
+          'group grid w-full px-2 py-[2px] select-none transition origin-center ease-in-out delay-100 duration-300 ' +
           ((dragItemId && (dragItemId !== list.id)) ? 'scale-x-[0.925] scale-y-90 opacity-60' : '')
         }
         onClick={() => onSelectList(list.id)}
