@@ -1,3 +1,7 @@
+const APP_LIST_ID = {
+  TASKS: 'konolist-tasks',
+}
+
 const listTemplate = {
   id: null,
   name: 'Untitled list',
@@ -11,7 +15,7 @@ const listTemplate = {
 const initialListItems = [
   {
     ...listTemplate,
-    id: 0,
+    id: APP_LIST_ID.TASKS,
     name: "Tasks",
     icon: "⭐",
     date_updated: Date.now(),
@@ -19,4 +23,4 @@ const initialListItems = [
   },
 ];
 
-export { listTemplate, initialListItems }
+export { listTemplate, initialListItems, APP_LIST_ID }

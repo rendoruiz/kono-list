@@ -4,6 +4,7 @@
  * can be found in the LICENSE file.
  */
 
+import { arrayMove } from "@dnd-kit/sortable";
 import { listTemplate, initialListItems } from "../data/list";
 import { getDecryptedList } from "../utils/encryptedStorage";
 
@@ -23,6 +24,7 @@ const LIST_ACTION = {
   TOGGLE_COMPLETED_ITEMS_VISIBILITY: 'toggle_completed_items_visibility',
   TOGGLE_PANEL: 'toggle_panel',
   TOGGLE_EDITOR_PANEL: 'toggle_editor_panel',
+  UPDATE_INDICES: '',
 }
 
 const listReducer = (state, action) => {
@@ -97,7 +99,7 @@ const listReducer = (state, action) => {
       let newSelectedItem = null;
       return {
         ...state,
-        listItems: state.listItems.map((item, index) => {
+        listItems: state.listItems.map((item) => {
           if (item.id === action.payload.listId) {
             newSelectedItem = {
               ...item,
@@ -122,6 +124,31 @@ const listReducer = (state, action) => {
       return {
         ...state,
         isEditorPanelOpen: !state.isEditorPanelOpen,
+      }
+    }
+
+    case LIST_ACTION.UPDATE_INDICES: {
+      const { activeListId, overListId } = action.payload;
+      const isActiveListLocked = state.listItems.filter((item) => item.id === activeListId).pop().locked;
+      const isOverListLocked = state.listItems.filter((item) => item.id === overListId).pop().locked;
+      if (isActiveListLocked || isOverListLocked) {
+        return { ...state }
+      }
+      const currentIndex = state.listItems
+        .map((item) => item.id)
+        .indexOf(activeListId);
+      const newIndex = state.listItems
+        .map((item) => item.id)
+        .indexOf(overListId);
+      
+      const newListItems = arrayMove(
+        state.listItems,
+        currentIndex,
+        newIndex,
+      );
+      return {
+        ...state,
+        listItems: newListItems,
       }
     }
 

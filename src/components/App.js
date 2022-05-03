@@ -61,7 +61,7 @@ const App = () => {
   // Close list editor panel
   // (if new list) Close task editor
   const handleUpdateList = (listItem) => {
-    if (list.selectedItem.locked || list.selectedItem.id < 5) {
+    if (list.selectedItem.locked) {
       alert('Cannot update locked list.');
       dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
       return;
@@ -85,7 +85,7 @@ const App = () => {
   // Delete all tasks associated with selected list
   // Assign the previous list as the selected list
   const handleDeleteList = () => {
-    if (list.selectedItem.locked || list.selectedItem.id < 5) {
+    if (list.selectedItem.locked) {
       alert('Cannot delete locked list.');
       return;
     }
@@ -98,7 +98,7 @@ const App = () => {
       dispatchTask({
         type: TASK_ACTION.DELETE_LIST_TASKS,
         payload: { listId: list.selectedItem.list_id },
-      })
+      });
     }
   }
 
@@ -110,7 +110,7 @@ const App = () => {
       type: LIST_ACTION.SELECT_ITEM,
       payload: { listId: listId },
     });
-    // close task editor
+    dispatchTask({ type: TASK_ACTION.CLOSE_EDITOR_PANEL });
   }
 
   // Toggle visibility of completed items within a list
@@ -127,6 +127,16 @@ const App = () => {
   // Toggle list editor panel (popup) visbility
   const handleToggleListEditorPanel = () => dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
   
+  // Update list item indices (sorting)
+  const handleUpdateListOrder = (activeListId, overListId) => {
+    dispatchList({
+      type: LIST_ACTION.UPDATE_INDICES,
+      payload: {
+        activeListId: activeListId,
+        overListId: overListId,
+      },
+    })
+  }
 
   // Create new task
   // Reset task creator form fields
@@ -197,6 +207,7 @@ const App = () => {
         onSelectList={handleSetSelectedList}
         onTogglePanel={handleToggleListPanel} 
         onToggleSettingsPanel={handleToggleSettingsPanel}
+        onReorderListItems={handleUpdateListOrder}
       />
 
       {/* list editor popup */}

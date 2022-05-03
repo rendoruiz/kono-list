@@ -4,6 +4,11 @@
  * can be found in the LICENSE file.
  */
 
+import * as React from 'react';
+import { closestCenter, DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { restrictToVerticalAxis, restrictToWindowEdges } from "@dnd-kit/modifiers";
+
 import ListPanelRow from "./ListPanelRow";
 import PlusIcon from "../../Icons/PlusIcon";
 import SettingsIcon from "../../Icons/SettingsIcon";
@@ -16,6 +21,7 @@ const ListPanel = ({
   onSelectList, 
   onTogglePanel, 
   onToggleSettingsPanel,
+  onReorderListItems,
 }) => (
   <>
     {/* mobile backdrop toggle */}
@@ -32,7 +38,7 @@ const ListPanel = ({
       'fixed inset-0 right-auto z-30 grid grid-rows-[auto,1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[auto,1fr,auto] bp520:w-72 md:relative md:z-auto md:translate-x-0 md:transition-none ' +
       (isOpen ? 'md:translate-x-0' : '-translate-x-full')
     }>
-      <header className='sticky top-0 grid border-b-2 pt-4 pb-3 px-3 leading-none select-none pointer-events-none md:py-3'>
+      <header className='sticky top-0 grid pt-4 pb-3 px-3 leading-none select-none pointer-events-none md:py-3'>
         <h1 className="bg-gradient-to-br from-blue-700 to-blue-500 bg-clip-text font-extrabold text-2xl text-transparent leading-none tracking-wide uppercase">
           KonoList
         </h1>
@@ -41,16 +47,14 @@ const ListPanel = ({
       {/* list rows */}
       <main className='overflow-y-auto pt-3 py-1 bp520:pt-2'>
         {listItems && (
-          <ul className='grid content-start'>
-            {listItems.map((list) => (
-              <ListPanelRow
-                key={list.id}
-                list={list}
-                selectedList={selectedList}
-                onSelectList={onSelectList}
-              />
-            ))}
-          </ul>
+          <>
+            <SortableList
+              listItems={listItems}
+              selectedList={selectedList}
+              onSelectList={onSelectList}
+              onReorderListItems={onReorderListItems}
+            />
+          </>
         )}
       </main>
 
@@ -86,5 +90,61 @@ const ListPanel = ({
     </div>
   </>
 );
+
+const SortableList = ({
+  listItems,
+  selectedList,
+  onSelectList,
+  onReorderListItems,
+}) => {
+  const [dragItemId, setDragItemId] = React.useState(null);
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 500,
+        tolerance: 5,
+        // distance: 8, 
+      },
+    }),
+  )
+
+  const handleDragStart = (event) => {
+    const activeListItemId = event.active.id;
+    setDragItemId(activeListItemId);
+  }
+  const handleDragEnd = (event) => {
+    const { active: activeItem, over: overItem } = event;
+    onReorderListItems(activeItem.id, overItem.id);
+    setDragItemId(null);
+  }
+  
+  return (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+      onDragStart={handleDragStart}
+      modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
+    >
+      <SortableContext
+        items={listItems}
+        strategy={verticalListSortingStrategy}
+      >
+        <ul className='grid content-start'>
+          {listItems.map((list) => (
+            <ListPanelRow
+              key={list.id}
+              list={list}
+              selectedList={selectedList}
+              isSortable
+              dragItemId={dragItemId}
+              onSelectList={onSelectList}
+            />
+          ))}
+        </ul>
+      </SortableContext>
+    </DndContext>
+  );
+}
  
 export default ListPanel;
