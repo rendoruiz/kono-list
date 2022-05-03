@@ -128,12 +128,19 @@ const listReducer = (state, action) => {
     }
 
     case LIST_ACTION.UPDATE_INDICES: {
+      const { activeListId, overListId } = action.payload;
+      const isActiveListLocked = state.listItems.filter((item) => item.id === activeListId).pop().locked;
+      const isOverListLocked = state.listItems.filter((item) => item.id === overListId).pop().locked;
+      if (isActiveListLocked || isOverListLocked) {
+        return { ...state }
+      }
       const currentIndex = state.listItems
         .map((item) => item.id)
-        .indexOf(action.payload.activeListId);
+        .indexOf(activeListId);
       const newIndex = state.listItems
         .map((item) => item.id)
-        .indexOf(action.payload.overListId);
+        .indexOf(overListId);
+      
       const newListItems = arrayMove(
         state.listItems,
         currentIndex,

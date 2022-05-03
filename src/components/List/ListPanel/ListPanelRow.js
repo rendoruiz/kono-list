@@ -14,9 +14,10 @@ const ListPanelRow = ({
   dragItemId,
   onSelectList,
 }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable(
-    {id: isSortable && list.id}
-  );
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: isSortable && list.id, 
+    disabled: list.locked,
+  });
   const sortableItemAttributes = !isSortable ? null : {
     ref: setNodeRef,
     style: {
@@ -30,7 +31,6 @@ const ListPanelRow = ({
     'transition origin-center ease-in-out delay-100 duration-300 ' +
     ((dragItemId && (dragItemId !== list.id)) ? 'scale-x-[0.925] scale-y-90 opacity-60' : '')
   );
-  
 
   return (
     <li {...sortableItemAttributes}>

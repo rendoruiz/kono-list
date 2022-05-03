@@ -47,14 +47,8 @@ const ListPanel = ({
       <main className='overflow-y-auto pt-3 py-1 bp520:pt-2'>
         {listItems && (
           <>
-            <AppDefaultList
-              listItems={listItems.filter((item) => item.locked)}
-              selectedList={selectedList}
-              onSelectList={onSelectList}
-            />
-            <hr className='my-[2px] border-t-[2px]' />
             <SortableList
-              listItems={listItems.filter((item) => !item.locked)}
+              listItems={listItems}
               selectedList={selectedList}
               onSelectList={onSelectList}
               onReorderListItems={onReorderListItems}
@@ -94,23 +88,6 @@ const ListPanel = ({
       </footer>
     </div>
   </>
-);
-
-const AppDefaultList = ({
-  listItems,
-  selectedList,
-  onSelectList,
-}) => (
-  <ul className='grid content-start'>
-    {listItems.map((list) => (
-      <ListPanelRow
-        key={list.id}
-        list={list}
-        selectedList={selectedList}
-        onSelectList={onSelectList}
-      />
-    ))}
-  </ul>
 );
 
 const SortableList = ({
