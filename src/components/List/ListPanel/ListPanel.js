@@ -7,7 +7,7 @@
 import * as React from 'react';
 import { closestCenter, DndContext, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { restrictToVerticalAxis, restrictToWindowEdges } from "@dnd-kit/modifiers";
 
 import ListPanelRow from "./ListPanelRow";
 import PlusIcon from "../../Icons/PlusIcon";
@@ -128,7 +128,7 @@ const SortableList = ({
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
       onDragStart={handleDragStart}
-      modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+      modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
     >
       <SortableContext
         items={listItems}
