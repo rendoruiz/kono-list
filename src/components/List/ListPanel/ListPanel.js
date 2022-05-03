@@ -20,6 +20,7 @@ const ListPanel = ({
   onSelectList, 
   onTogglePanel, 
   onToggleSettingsPanel,
+  onReorderListItems,
 }) => (
   <>
     {/* mobile backdrop toggle */}
@@ -49,6 +50,7 @@ const ListPanel = ({
             listItems={listItems}
             selectedList={selectedList}
             onSelectList={onSelectList}
+            onReorderListItems={onReorderListItems}
           />
         )}
       </main>
@@ -90,28 +92,25 @@ const SortableList = ({
   listItems,
   selectedList,
   onSelectList,
+  onReorderListItems,
 }) => {
   const [dragItemId, setDragItemId] = React.useState(null);
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        delay: 0,
-        tolerance: 0,
+        delay: 200,
+        tolerance: 5,
       }
     }),
   );
 
   const handleDragStart = (event) => {
-    console.log('drag start');
-    console.log({event});
     const activeListItemId = event.active.id;
     setDragItemId(activeListItemId);
   }
-
   const handleDragEnd = (event) => {
-    console.log('drag end');
-    console.log({event});
-    const { active, over } = event;
+    const { active: activeItem, over: overItem } = event;
+    onReorderListItems(activeItem.id, overItem.id);
     setDragItemId(null);
   }
   
@@ -140,7 +139,7 @@ const SortableList = ({
         </ul>
       </SortableContext>
     </DndContext>
-  )
+  );
 }
  
 export default ListPanel;

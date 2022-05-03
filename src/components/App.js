@@ -127,6 +127,16 @@ const App = () => {
   // Toggle list editor panel (popup) visbility
   const handleToggleListEditorPanel = () => dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
   
+  // Update list item indices (sorting)
+  const handleUpdateListOrder = (activeListId, overListId) => {
+    dispatchList({
+      type: LIST_ACTION.UPDATE_INDICES,
+      payload: {
+        activeListId: activeListId,
+        overListId: overListId,
+      },
+    })
+  }
 
   // Create new task
   // Reset task creator form fields
@@ -197,6 +207,7 @@ const App = () => {
         onSelectList={handleSetSelectedList}
         onTogglePanel={handleToggleListPanel} 
         onToggleSettingsPanel={handleToggleSettingsPanel}
+        onReorderListItems={handleUpdateListOrder}
       />
 
       {/* list editor popup */}
