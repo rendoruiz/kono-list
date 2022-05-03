@@ -29,7 +29,7 @@ const ListPanelRow = ({
     ...listeners,
   }
   const sortableButtonClass = (
-    'ease-in-out duration-300 transform-none bp520:transition bp520:origin-center bp520:delay-100 ' +
+    'ease-in-out duration-300 bp520:transition bp520:origin-center bp520:delay-100 ' +
     ((dragItemId && (dragItemId !== list.id)) ? 'bp520:scale-x-[0.925] bp520:scale-y-90 bp520:opacity-60' : '')
   );
   const sortableButtonBackplateClass = (
