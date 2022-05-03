@@ -36,12 +36,12 @@ const TaskPanelList = ({
       {completedTasks && completedTaskCount > 0 && (
         <>
           <CompletedTaskVisibilityToggle
-            isHidden={!selectedList?.is_completed_hidden}
+            isHidden={!selectedList.is_completed_hidden}
             completedTaskCount={completedTaskCount}
             onToggleCompletedItemsVisibility={onToggleCompletedItemsVisibility}
           />
 
-          {!selectedList?.is_completed_hidden && (
+          {!selectedList.is_completed_hidden && (
             <CompletedTasks
               taskItems={completedTasks}
               selectedTask={selectedTask}
