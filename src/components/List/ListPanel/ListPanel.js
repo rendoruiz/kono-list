@@ -37,7 +37,7 @@ const ListPanel = ({
       'fixed inset-0 right-auto z-30 grid grid-rows-[auto,1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[auto,1fr,auto] bp520:w-72 md:relative md:z-auto md:translate-x-0 md:transition-none ' +
       (isOpen ? 'md:translate-x-0' : '-translate-x-full')
     }>
-      <header className='sticky top-0 grid border-b-2 pt-4 pb-3 px-3 leading-none select-none pointer-events-none md:py-3'>
+      <header className='sticky top-0 grid pt-4 pb-3 px-3 leading-none select-none pointer-events-none md:py-3'>
         <h1 className="bg-gradient-to-br from-blue-700 to-blue-500 bg-clip-text font-extrabold text-2xl text-transparent leading-none tracking-wide uppercase">
           KonoList
         </h1>
@@ -46,12 +46,20 @@ const ListPanel = ({
       {/* list rows */}
       <main className='overflow-y-auto pt-3 py-1 bp520:pt-2'>
         {listItems && (
-          <SortableList
-            listItems={listItems}
-            selectedList={selectedList}
-            onSelectList={onSelectList}
-            onReorderListItems={onReorderListItems}
-          />
+          <>
+            <AppDefaultList
+              listItems={listItems.filter((item) => item.locked)}
+              selectedList={selectedList}
+              onSelectList={onSelectList}
+            />
+            <hr className='my-[2px] border-t-[2px]' />
+            <SortableList
+              listItems={listItems.filter((item) => !item.locked)}
+              selectedList={selectedList}
+              onSelectList={onSelectList}
+              onReorderListItems={onReorderListItems}
+            />
+          </>
         )}
       </main>
 
@@ -88,6 +96,23 @@ const ListPanel = ({
   </>
 );
 
+const AppDefaultList = ({
+  listItems,
+  selectedList,
+  onSelectList,
+}) => (
+  <ul className='grid content-start'>
+    {listItems.map((list) => (
+      <ListPanelRow
+        key={list.id}
+        list={list}
+        selectedList={selectedList}
+        onSelectList={onSelectList}
+      />
+    ))}
+  </ul>
+);
+
 const SortableList = ({
   listItems,
   selectedList,
@@ -97,10 +122,9 @@ const SortableList = ({
   const [dragItemId, setDragItemId] = React.useState(null);
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      // activationConstraint: {
-      //   delay: 200,
-      //   tolerance: 5,
-      // }
+      activationConstraint: {
+        distance: 8,
+      },
     }),
   )
 
