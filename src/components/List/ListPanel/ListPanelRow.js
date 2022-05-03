@@ -42,7 +42,7 @@ const ListPanelRow = ({
       {...sortableItemAttributes}
       className={
         list.id === APP_LIST_ID.TASKS ? 'pb-[2px] mb-[2px] border-b-[2px]' : '' +
-        ((dragItemId === list.id) ? ' relative z-10' : '')
+        ((dragItemId === list.id) ? ' relative z-[1]' : '')
       }
     >
       <button 
