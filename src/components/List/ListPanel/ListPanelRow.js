@@ -27,6 +27,9 @@ const ListPanelRow = ({
     },
     ...attributes,
     ...listeners,
+    className: 'touch-none ' + (
+      list.id === APP_LIST_ID.TASKS ? 'pb-[2px] mb-[2px] border-b-[2px]' : ''
+    )
   }
   const sortableButtonClass = (
     'ease-in-out duration-300 bp520:transition bp520:origin-center bp520:delay-100 ' +
@@ -37,13 +40,8 @@ const ListPanelRow = ({
     ((dragItemId === list.id) ? 'shadow-md shadow-black/25 bp520:shadow-none' : '')
   );
 
-  const appDefaultListDividerClass = list.id === APP_LIST_ID.TASKS ? 'pb-[2px] mb-[2px] border-b-[2px]' : '';
-
   return (
-    <li 
-      {...sortableItemAttributes}
-      className={appDefaultListDividerClass}
-    >
+    <li {...sortableItemAttributes}>
       <button 
         className={
           'group grid w-full px-2 py-[2px] select-none ' +
