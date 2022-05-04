@@ -7,7 +7,7 @@
 import * as React from 'react';
 import { closestCenter, DndContext, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { restrictToVerticalAxis, restrictToWindowEdges } from "@dnd-kit/modifiers";
 
 import { TaskPanelListRow, SortableTaskPanelListRow } from './TaskPanelListRow';
 import ChevronRightIcon from '../../Icons/ChevronRightIcon';
@@ -92,7 +92,7 @@ const IncompleteTasks = ({
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
       onDragStart={handleDragStart}
-      modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+      modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
     >
       <SortableContext
         items={taskItems}
