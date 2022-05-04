@@ -51,7 +51,7 @@ const SortableListPanelRow = ({
       sortableButtonClass={sortableButtonClass}
       sortableButtonBackplateClass={sortableButtonBackplateClass}
     />
-  )
+  );
 }
 
 const ListPanelRow = ({ 
@@ -87,12 +87,12 @@ const ListIcon = ({ icon }) => (
       {icon}
     </span>
   </div>
-)
+);
 
 const ListName = ({ name }) => (
   <p className='text-left truncate'>
     {name}
   </p>
-)
+);
 
 export { ListPanelRow, SortableListPanelRow };
