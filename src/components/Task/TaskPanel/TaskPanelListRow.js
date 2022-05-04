@@ -30,7 +30,7 @@ const SortableTaskPanelListRow = ({
     ...listeners,
     className: (activeDragItemId === task.id) ? 'relative z-[1]' : '',
   }
-  const sortableItemClass = !activeDragItemId ? '' : (
+  const sortableItemClass = (
     ' ease-in-out duration-300 bp520:transition bp520:origin-center bp520:delay-100 ' +
     ((activeDragItemId && (activeDragItemId !== task.id)) ? 'bp520:scale-x-95 bp520:scale-y-90 bp520:opacity-60 ' : (activeDragItemId === task.id) ? '!bg-white' : '')
   );
