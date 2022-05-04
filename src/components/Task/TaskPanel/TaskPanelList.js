@@ -29,7 +29,7 @@ const TaskPanelList = ({
   return (
     <main className='pt-1 pb-16 px-2 overflow-y-auto md:pb-1 md:px-0'>
       {incompleteTasks && incompleteTasks.length > 0 && (
-        <IncompleteTasks
+        <IncompleteTaskRows
           taskItems={incompleteTasks}
           selectedTask={selectedTask}
           onSelectTask={onSelectTask}
@@ -47,7 +47,7 @@ const TaskPanelList = ({
           />
 
           {!selectedList.is_completed_hidden && (
-            <CompletedTasks
+            <CompletedTaskRows
               taskItems={completedTasks}
               selectedTask={selectedTask}
               onSelectTask={onSelectTask}
@@ -60,7 +60,7 @@ const TaskPanelList = ({
   )
 }
 
-const IncompleteTasks = ({
+const IncompleteTaskRows = ({
   taskItems,
   selectedTask,
   onSelectTask,
@@ -120,7 +120,7 @@ const IncompleteTasks = ({
   );
 }
 
-const CompletedTasks = ({
+const CompletedTaskRows = ({
   taskItems,
   selectedTask,
   onSelectTask,
