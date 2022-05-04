@@ -48,7 +48,7 @@ const ListPanel = ({
             onSelectList={onSelectList}
           />
 
-          <div className='py-[2px]'>
+          <div className='pl-4 py-[2px] bp520:pl-0'>
             <hr className='border-t-[2px]' />
           </div>
 
