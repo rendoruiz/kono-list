@@ -27,10 +27,6 @@ const SortableListPanelRow = ({
     },
     ...attributes,
     ...listeners,
-    className: (
-      list.id === APP_LIST_ID.TASKS ? 'pb-[2px] mb-[2px] border-b-[2px]' : '' +
-      ((activeDragItemId === list.id) ? ' relative z-[1]' : '')
-    ),
   }
   const sortableButtonClass = list.locked ? '' : (
     ' ease-in-out duration-300 bp520:transition bp520:origin-center bp520:delay-100 ' +
@@ -61,7 +57,13 @@ const ListPanelRow = ({
   activeDragItemId,
   ...props
 }) => (
-  <li {...props.sortableAttributes}>
+  <li 
+    {...props.sortableAttributes}
+    className={
+      list.id === APP_LIST_ID.TASKS ? 'pb-[2px] mb-[2px] border-b-[2px]' : '' +
+      ((activeDragItemId === list.id) ? ' relative z-[1]' : '')
+    }
+  >
     <button 
       className={
         'group grid w-full px-2 py-[2px] select-none' +
