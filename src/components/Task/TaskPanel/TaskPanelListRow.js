@@ -29,7 +29,7 @@ const SortableTaskPanelListRow = ({
     ...attributes,
     ...listeners,
   }
-  const sortableItemClass = (
+  const sortableItemClass = !activeDragItemId ? '' : (
     ' ease-in-out duration-300 bp520:transition bp520:origin-center bp520:delay-100 ' +
     ((activeDragItemId && (activeDragItemId !== task.id)) ? 'bp520:scale-x-95 bp520:scale-y-90 bp520:opacity-60 ' : '')
   );
@@ -55,9 +55,9 @@ const TaskPanelListRow = ({
 }) => (
   <li 
     className={
-      'grid grid-cols-[auto,1fr] rounded-md min-h-[64px] bg-white text-black/90 cursor-pointer hover:bg-white/90 bp520:min-h-[50px] ' + 
-      ((task.id !== selectedTask?.id) ? 'md:bg-white/80' : '') 
-      + (props.sortableItemClass ?? '')
+      'grid grid-cols-[auto,1fr] rounded-md min-h-[64px] bg-white text-black/90 cursor-pointer touch-none hover:bg-white/90 bp520:min-h-[50px] ' + 
+      ((task.id !== selectedTask?.id) ? 'md:bg-white/80' : '') +
+      props.sortableItemClass
     }
     {...props.sortableAttributes}
   >
@@ -86,7 +86,6 @@ const TaskContent = ({
       title={task.title}
       isComplete={task.is_complete}
     />
-
     {task.notes && (
       <TaskHasNoteIndicator />
     )}

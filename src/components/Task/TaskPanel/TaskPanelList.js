@@ -81,7 +81,7 @@ const IncompleteTasks = ({
 
   const handleDragStart = (event) => setActiveDragItemId(event.active.id);
   const handleDragEnd = (event) => {
-    const { active: currentItem, over: targetItem } = event;
+    // const { active: currentItem, over: targetItem } = event;
     // onReorderListItems(currentItem.id, targetItem.id);
     setActiveDragItemId(null);
   }
@@ -98,7 +98,7 @@ const IncompleteTasks = ({
         items={taskItems}
         strategy={verticalListSortingStrategy}
       >
-        <ul className='grid content-start gap-[3px] self:h-full'>
+        <ul className='relative grid content-start gap-[3px] self:h-full'>
           {taskItems.map((task) => (
             <SortableTaskPanelListRow
               key={task.id}
