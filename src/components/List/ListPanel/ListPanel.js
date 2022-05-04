@@ -9,7 +9,7 @@ import { closestCenter, DndContext, MouseSensor, TouchSensor, useSensor, useSens
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis, restrictToWindowEdges } from "@dnd-kit/modifiers";
 
-import ListPanelRow from "./ListPanelRow";
+import { SortableListPanelRow } from "./ListPanelRow";
 import PlusIcon from "../../Icons/PlusIcon";
 import SettingsIcon from "../../Icons/SettingsIcon";
 
@@ -115,7 +115,7 @@ const ListRows = ({
       >
         <ul className='relative grid content-start h-full'>
           {listItems.map((list) => (
-            <ListPanelRow
+            <SortableListPanelRow
               key={list.id}
               list={list}
               selectedList={selectedList}
