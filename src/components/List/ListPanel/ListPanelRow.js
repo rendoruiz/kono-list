@@ -33,7 +33,7 @@ const SortableListPanelRow = ({
     ),
   }
   const sortableButtonClass = list.locked ? '' : (
-    'ease-in-out duration-300 bp520:transition bp520:origin-center bp520:delay-100 ' +
+    ' ease-in-out duration-300 bp520:transition bp520:origin-center bp520:delay-100 ' +
     ((activeDragItemId && (activeDragItemId !== list.id)) ? 'bp520:scale-x-95 bp520:scale-y-90 bp520:opacity-60' : '')
   );
   const sortableButtonBackplateClass = list.locked ? '' : (
@@ -64,14 +64,14 @@ const ListPanelRow = ({
   <li {...props.sortableAttributes}>
     <button 
       className={
-        'group grid w-full px-2 py-[2px] select-none ' +
+        'group grid w-full px-2 py-[2px] select-none' +
         (props.sortableButtonClass ? props.sortableButtonClass : '')
       }
       onClick={() => onSelectList(list.id)}
     >
       <div className={
         'relative grid grid-cols-[auto,1fr] items-center rounded-sm py-1 bp520:rounded bp520:py-0 bp520:group-hover:bg-slate-500/10 bp520:group-active:bg-slate-500/20 ' + 
-        (selectedList?.id === list.id ? 'bp520:bg-slate-500/10 bp520:before:absolute bp520:before:inset-y-3 bp520:before:left-0 bp520:before:rounded-full bp520:before:w-1 bp520:before:bg-blue-600 ' : '') +
+        (selectedList?.id === list.id ? 'bp520:bg-slate-500/10 bp520:before:absolute bp520:before:inset-y-3 bp520:before:left-0 bp520:before:rounded-full bp520:before:w-1 bp520:before:bg-blue-600' : '') +
         (props.sortableButtonBackplateClass ? props.sortableButtonBackplateClass : '')
       }>
         <ListIcon icon={list.icon} />
