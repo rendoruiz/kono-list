@@ -5,8 +5,11 @@
  */
 
 import * as React from 'react';
+import { closestCenter, DndContext, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifiers";
 
-import TaskPanelListRow from './TaskPanelListRow';
+import { TaskPanelListRow, SortableTaskPanelListRow } from './TaskPanelListRow';
 import ChevronRightIcon from '../../Icons/ChevronRightIcon';
 
 const TaskPanelList = ({ 
@@ -60,19 +63,56 @@ const IncompleteTasks = ({
   selectedTask,
   onSelectTask,
   onToggleTaskCompleteState,
-}) => (
-  <ul className='grid content-start gap-[3px]'>
-    {taskItems.map((task) => (
-      <TaskPanelListRow
-        key={task.id}
-        task={task}
-        selectedTask={selectedTask}
-        onSelectTask={onSelectTask}
-        onToggleTaskCompleteState={onToggleTaskCompleteState}
-      />
-    ))}
-  </ul>
-);
+}) => {
+  const [activeDragItemId, setActiveDragItemId] = React.useState(null);
+  const sensors = useSensors(
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 500,
+        tolerance: 5,
+      },
+    }),
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8, 
+      },
+    }),
+  );
+
+  const handleDragStart = (event) => setActiveDragItemId(event.active.id);
+  const handleDragEnd = (event) => {
+    const { active: currentItem, over: targetItem } = event;
+    // onReorderListItems(currentItem.id, targetItem.id);
+    setActiveDragItemId(null);
+  }
+
+  return (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+      onDragStart={handleDragStart}
+      modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+    >
+      <SortableContext
+        items={taskItems}
+        strategy={verticalListSortingStrategy}
+      >
+        <ul className='grid content-start gap-[3px]'>
+          {taskItems.map((task) => (
+            <SortableTaskPanelListRow
+              key={task.id}
+              task={task}
+              selectedTask={selectedTask}
+              onSelectTask={onSelectTask}
+              onToggleTaskCompleteState={onToggleTaskCompleteState}
+            />
+          ))}
+        </ul>
+      </SortableContext>
+    </DndContext>
+  );
+}
 
 const CompletedTasks = ({
   taskItems,

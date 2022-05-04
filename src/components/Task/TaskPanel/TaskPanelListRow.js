@@ -4,6 +4,9 @@
  * can be found in the LICENSE file.
  */
 
+import { useSortable } from "@dnd-kit/sortable";
+import {CSS} from '@dnd-kit/utilities';
+
 import TaskCompletedToggle from "../TaskCompletedToggle";
 import NoteIcon from "../../Icons/NoteIcon";
 
@@ -11,12 +14,16 @@ const TaskPanelListRow = ({
   task, 
   selectedTask, 
   onSelectTask, 
-  onToggleTaskCompleteState 
+  onToggleTaskCompleteState,
+  ...props
 }) => (
-  <li className={
-    'grid grid-cols-[auto,1fr] rounded-md min-h-[64px] bg-white text-black/90 cursor-pointer hover:bg-white/90 bp520:min-h-[50px] ' + 
-    (task.id !== selectedTask?.id ? 'md:bg-white/80' : '')
-  }>
+  <li 
+    className={
+      'grid grid-cols-[auto,1fr] rounded-md min-h-[64px] bg-white text-black/90 cursor-pointer hover:bg-white/90 bp520:min-h-[50px] ' + 
+      (task.id !== selectedTask?.id ? 'md:bg-white/80' : '')
+    }
+    {...props.sortableAttributes}
+  >
     <TaskCompletedToggle
       task={task}
       onToggle={onToggleTaskCompleteState}
@@ -27,6 +34,37 @@ const TaskPanelListRow = ({
     />
   </li>
 );
+
+const SortableTaskPanelListRow = ({
+  task, 
+  selectedTask, 
+  onSelectTask, 
+  onToggleTaskCompleteState,
+  activeDragItemId,
+}) => {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable(
+    { id: task.id }
+  );
+  const sortableItemAttributes = {
+    ref: setNodeRef,
+    style: {
+      transform: CSS.Transform.toString(transform),
+      transition,
+    },
+    ...attributes,
+    ...listeners,
+  }
+
+  return (
+    <TaskPanelListRow
+      task={task} 
+      selectedTask={selectedTask} 
+      onSelectTask={onSelectTask} 
+      onToggleTaskCompleteState={onToggleTaskCompleteState}
+      sortableAttributes={sortableItemAttributes}
+    />
+  );
+}
 
 const TaskContent = ({
   task,
@@ -68,4 +106,4 @@ const TaskHasNoteIndicator = () => (
   </div>
 );
  
-export default TaskPanelListRow;
+export { TaskPanelListRow, SortableTaskPanelListRow };
