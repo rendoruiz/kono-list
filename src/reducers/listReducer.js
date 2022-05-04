@@ -6,14 +6,13 @@
 
 import { arrayMove } from "@dnd-kit/sortable";
 
-import { listTemplate, initialListItems, appDefaultListItems } from "../data/list";
+import { listTemplate, initialUserListItems, appDefaultListItems } from "../data/list";
 import { getDecryptedList } from "../utils/encryptedStorage";
 
 const storedList = getDecryptedList();
 const defaultList = {
-  listItems: storedList?.listItems ?? [...appDefaultListItems, ...initialListItems], 
   appListItems: storedList?.appListItems ?? appDefaultListItems,
-  userListItems: storedList?.userListItems ?? initialListItems,
+  userListItems: storedList?.userListItems ?? initialUserListItems,
   selectedItem: storedList?.selectedItem ?? appDefaultListItems[0],
   isPanelOpen: storedList?.isPanelOpen ?? true,
   isEditorPanelOpen: false,
@@ -27,7 +26,7 @@ const LIST_ACTION = {
   TOGGLE_COMPLETED_ITEMS_VISIBILITY: 'toggle_completed_items_visibility',
   TOGGLE_PANEL: 'toggle_panel',
   TOGGLE_EDITOR_PANEL: 'toggle_editor_panel',
-  UPDATE_INDICES: 'update_item_indices',
+  UPDATE_USER_INDICES: 'update_user_item_indices',
 }
 
 const listReducer = (state, action) => {
@@ -37,11 +36,9 @@ const listReducer = (state, action) => {
         ...listTemplate,
         id: action.payload.listId,
       }
-      const newUserListItems = [...state.userListItems, newItem];
       return {
         ...state,
-        listItems: [...state.appListItems, ...newUserListItems],
-        userListItems: newUserListItems,
+        userListItems: [...state.userListItems, newItem],
         selectedItem: newItem,
         isEditorPanelOpen: true,
       }
@@ -64,7 +61,6 @@ const listReducer = (state, action) => {
         });
       return {
         ...state,
-        listItems: [...state.appListItems, ...newUserListItems],
         userListItems: newUserListItems,
         selectedItem: newSelectedItem,
         isPanelOpen: false,
@@ -85,7 +81,6 @@ const listReducer = (state, action) => {
         );
       return {
         ...state,
-        listItems: [...state.appListItems, ...newUserListItems],
         userListItems: newUserListItems,
         selectedItem: state.userListItems[newSelectedItemIndex],
         isPanelOpen: true,
@@ -94,7 +89,7 @@ const listReducer = (state, action) => {
     }
 
     case LIST_ACTION.SELECT_ITEM: {
-      const newSelectedItem = state.listItems.filter(
+      const newSelectedItem = [...state.appListItems, ...state.userListItems].filter(
           (item) => item.id === action.payload.listId
         ).pop();
       return {
@@ -116,7 +111,8 @@ const listReducer = (state, action) => {
           }
           return item;
         });
-      const newUserListItems = state.userListItems.map((item) => {
+      const newUserListItems = newSelectedItem ? state.userListItems : 
+        state.userListItems.map((item) => {
           if (item.id === action.payload.listId) {
             newSelectedItem = {
               ...item,
@@ -128,7 +124,6 @@ const listReducer = (state, action) => {
         });
       return {
         ...state,
-        listItems: [...newAppListItems, ...newUserListItems],
         appListItems: newAppListItems,
         userListItems: newUserListItems,
         selectedItem: newSelectedItem,
@@ -149,30 +144,20 @@ const listReducer = (state, action) => {
       }
     }
 
-    // If item being dragged is an app default list, do nothing.
-    // If item is dragged to an app default list, place on top of user list.
-    case LIST_ACTION.UPDATE_INDICES: {
+    case LIST_ACTION.UPDATE_USER_INDICES: {
       const { currentListId, targetListId } = action.payload;
       if (currentListId === targetListId) {
         return { ...state }
       }
-      const isCurrentListOnDefaultAppList = state.appListItems.filter((item) => item.id === currentListId).pop();
-      if (isCurrentListOnDefaultAppList) {
-        return { ...state }
-      }
-      const isTargetListOnDefaultAppList = state.appListItems.filter((item) => item.id === targetListId).pop();
-      const newIndex = isTargetListOnDefaultAppList 
-        ? state.userListItems.slice(0, 1) 
-        : state.userListItems
-          .map((item) => item.id)
-          .indexOf(targetListId);
+      const newIndex = state.userListItems
+        .map((item) => item.id)
+        .indexOf(targetListId);
       const currentIndex = state.userListItems
         .map((item) => item.id)
         .indexOf(currentListId);
       const newUserListItems = arrayMove(state.userListItems, currentIndex, newIndex);
       return {
         ...state,
-        listItems: [...state.appListItems, ...newUserListItems],
         userListItems: newUserListItems,
       }
     }

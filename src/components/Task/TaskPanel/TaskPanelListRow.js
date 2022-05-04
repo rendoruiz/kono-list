@@ -54,13 +54,11 @@ const TaskPanelListRow = ({
   onToggleTaskCompleteState,
   ...props
 }) => (
-  <li 
-    {...props.sortableAttributes}
-  >
+  <li {...props.sortableAttributes}>
     <div className={
       'grid grid-cols-[auto,1fr] rounded-md min-h-[64px] bg-white text-black/90 cursor-pointer touch-none hover:bg-white/90 bp520:min-h-[50px] ' + 
       ((task.id !== selectedTask?.id) ? 'md:bg-white/80' : '') +
-      props.sortableItemClass
+      (props.sortableItemClass ? props.sortableItemClass : '')
     }>
       <TaskCompletedToggle
         task={task}
