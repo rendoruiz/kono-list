@@ -41,14 +41,12 @@ const ListPanel = ({
       
       <main className='overflow-y-auto pt-3 py-1 bp520:pt-2'>
         {listItems && (
-          <>
-            <ListRows
-              listItems={listItems}
-              selectedList={selectedList}
-              onSelectList={onSelectList}
-              onReorderListItems={onReorderListItems}
-            />
-          </>
+          <ListRows
+            listItems={listItems}
+            selectedList={selectedList}
+            onSelectList={onSelectList}
+            onReorderListItems={onReorderListItems}
+          />
         )}
       </main>
 
