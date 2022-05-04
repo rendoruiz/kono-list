@@ -13,24 +13,24 @@ const SortableListPanelRow = ({
   onSelectList,
   activeDragItemId,
 }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
-    id: list.id, 
-    disabled: list.locked,
-  });
-  const sortableItemAttributes = list.locked ? null : {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable(
+    { id: list.id }
+  );
+  const sortableItemAttributes = {
     ref: setNodeRef,
-    style: list.locked ? null : {
+    style: {
       transform: CSS.Transform.toString(transform),
       transition,
     },
     ...attributes,
     ...listeners,
+    className: (activeDragItemId === list.id) ? 'relative z-[1]' : '',
   }
-  const sortableButtonClass = list.locked ? '' : (
+  const sortableButtonClass = (
     ' ease-in-out duration-300 bp520:transition bp520:origin-center bp520:delay-100 ' +
     ((activeDragItemId && (activeDragItemId !== list.id)) ? 'bp520:scale-x-95 bp520:scale-y-90 bp520:opacity-60' : '')
   );
-  const sortableButtonBackplateClass = list.locked ? '' : (
+  const sortableButtonBackplateClass = (
     ' transition ' +
     ((activeDragItemId === list.id) ? 'bg-white shadow-md shadow-black/25 bp520:shadow-none' : '')
   );
@@ -55,13 +55,7 @@ const ListPanelRow = ({
   activeDragItemId,
   ...props
 }) => (
-  <li 
-    {...props.sortableAttributes}
-    // className={
-    //   list.id === APP_LIST_ID.TASKS ? 'pb-[2px] mb-[2px] border-b-[2px]' : '' +
-    //   ((activeDragItemId === list.id) ? ' relative z-[1]' : '')
-    // }
-  >
+  <li {...props.sortableAttributes}>
     <button 
       className={
         'group grid w-full px-2 py-[2px] select-none' +
