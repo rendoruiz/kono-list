@@ -10,31 +10,6 @@ import {CSS} from '@dnd-kit/utilities';
 import TaskCompletedToggle from "../TaskCompletedToggle";
 import NoteIcon from "../../Icons/NoteIcon";
 
-const TaskPanelListRow = ({ 
-  task, 
-  selectedTask, 
-  onSelectTask, 
-  onToggleTaskCompleteState,
-  ...props
-}) => (
-  <li 
-    className={
-      'grid grid-cols-[auto,1fr] rounded-md min-h-[64px] bg-white text-black/90 cursor-pointer hover:bg-white/90 bp520:min-h-[50px] ' + 
-      (task.id !== selectedTask?.id ? 'md:bg-white/80' : '')
-    }
-    {...props.sortableAttributes}
-  >
-    <TaskCompletedToggle
-      task={task}
-      onToggle={onToggleTaskCompleteState}
-    />
-    <TaskContent
-      task={task}
-      onSelectTask={onSelectTask}
-    />
-  </li>
-);
-
 const SortableTaskPanelListRow = ({
   task, 
   selectedTask, 
@@ -54,6 +29,10 @@ const SortableTaskPanelListRow = ({
     ...attributes,
     ...listeners,
   }
+  const sortableItemClass = (
+    ' ease-in-out duration-300 bp520:transition bp520:origin-center bp520:delay-100 ' +
+    ((activeDragItemId && (activeDragItemId !== task.id)) ? 'bp520:scale-x-95 bp520:scale-y-90 bp520:opacity-60 ' : '')
+  );
 
   return (
     <TaskPanelListRow
@@ -62,9 +41,36 @@ const SortableTaskPanelListRow = ({
       onSelectTask={onSelectTask} 
       onToggleTaskCompleteState={onToggleTaskCompleteState}
       sortableAttributes={sortableItemAttributes}
+      sortableItemClass={sortableItemClass}
     />
   );
 }
+
+const TaskPanelListRow = ({ 
+  task, 
+  selectedTask, 
+  onSelectTask, 
+  onToggleTaskCompleteState,
+  ...props
+}) => (
+  <li 
+    className={
+      'grid grid-cols-[auto,1fr] rounded-md min-h-[64px] bg-white text-black/90 cursor-pointer hover:bg-white/90 bp520:min-h-[50px] ' + 
+      ((task.id !== selectedTask?.id) ? 'md:bg-white/80' : '') 
+      + (props.sortableItemClass ?? '')
+    }
+    {...props.sortableAttributes}
+  >
+    <TaskCompletedToggle
+      task={task}
+      onToggle={onToggleTaskCompleteState}
+    />
+    <TaskContent
+      task={task}
+      onSelectTask={onSelectTask}
+    />
+  </li>
+);
 
 const TaskContent = ({
   task,

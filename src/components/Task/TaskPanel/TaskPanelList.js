@@ -98,7 +98,7 @@ const IncompleteTasks = ({
         items={taskItems}
         strategy={verticalListSortingStrategy}
       >
-        <ul className='grid content-start gap-[3px]'>
+        <ul className='grid content-start gap-[3px] self:h-full'>
           {taskItems.map((task) => (
             <SortableTaskPanelListRow
               key={task.id}
@@ -106,6 +106,7 @@ const IncompleteTasks = ({
               selectedTask={selectedTask}
               onSelectTask={onSelectTask}
               onToggleTaskCompleteState={onToggleTaskCompleteState}
+              activeDragItemId={activeDragItemId}
             />
           ))}
         </ul>
