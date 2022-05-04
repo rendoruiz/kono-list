@@ -9,13 +9,14 @@ import { closestCenter, DndContext, MouseSensor, TouchSensor, useSensor, useSens
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis, restrictToWindowEdges } from "@dnd-kit/modifiers";
 
-import { SortableListPanelRow } from "./ListPanelRow";
+import { ListPanelRow, SortableListPanelRow } from "./ListPanelRow";
 import PlusIcon from "../../Icons/PlusIcon";
 import SettingsIcon from "../../Icons/SettingsIcon";
 
 const ListPanel = ({ 
   isOpen, 
-  listItems, 
+  appListItems,
+  userListItems,
   selectedList, 
   onCreateList,
   onSelectList, 
@@ -41,9 +42,19 @@ const ListPanel = ({
         </header>
         
         <main className='overflow-y-auto pt-3 py-1 bp520:pt-2'>
-          {listItems && (
-            <ListRows
-              listItems={listItems}
+          <AppListRows
+            listItems={appListItems}
+            selectedList={selectedList}
+            onSelectList={onSelectList}
+          />
+
+          <div className='py-[2px]'>
+            <hr className='border-t-[2px]' />
+          </div>
+
+          {userListItems && (
+            <UserListRows
+              listItems={userListItems}
               selectedList={selectedList}
               onSelectList={onSelectList}
               onReorderListItems={onReorderListItems}
@@ -73,7 +84,24 @@ const MobileToggleableBackdrop = ({
   />
 );
 
-const ListRows = ({
+const AppListRows = ({
+  listItems,
+  selectedList,
+  onSelectList,
+}) => (
+  <ul className='relative grid content-start'>
+    {listItems.map((list) => (
+      <ListPanelRow
+        key={list.id}
+        list={list}
+        selectedList={selectedList}
+        onSelectList={onSelectList}
+      />
+    ))}
+  </ul>
+);
+
+const UserListRows = ({
   listItems,
   selectedList,
   onSelectList,
@@ -115,15 +143,14 @@ const ListRows = ({
         items={listItems}
         strategy={verticalListSortingStrategy}
       >
-        <ul className='relative grid content-start h-full'>
+        <ul className='relative grid content-start'>
           {listItems.map((list) => (
             <SortableListPanelRow
               key={list.id}
               list={list}
               selectedList={selectedList}
-              isSortable
-              activeDragItemId={activeDragItemId}
               onSelectList={onSelectList}
+              activeDragItemId={activeDragItemId}
             />
           ))}
         </ul>

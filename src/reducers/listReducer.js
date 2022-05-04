@@ -89,7 +89,7 @@ const listReducer = (state, action) => {
     }
 
     case LIST_ACTION.SELECT_ITEM: {
-      const newSelectedItem = state.listItems.filter(
+      const newSelectedItem = [...state.appListItems, ...state.userListItems].filter(
           (item) => item.id === action.payload.listId
         ).pop();
       return {
