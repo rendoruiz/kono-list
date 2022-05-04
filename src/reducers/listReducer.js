@@ -5,6 +5,7 @@
  */
 
 import { arrayMove } from "@dnd-kit/sortable";
+
 import { listTemplate, initialListItems, appDefaultListItems } from "../data/list";
 import { getDecryptedList } from "../utils/encryptedStorage";
 
@@ -152,11 +153,13 @@ const listReducer = (state, action) => {
     // If item is dragged to an app default list, place on top of user list.
     case LIST_ACTION.UPDATE_INDICES: {
       const { currentListId, targetListId } = action.payload;
+      if (currentListId === targetListId) {
+        return { ...state }
+      }
       const isCurrentListOnDefaultAppList = state.appListItems.filter((item) => item.id === currentListId).pop();
       if (isCurrentListOnDefaultAppList) {
         return { ...state }
       }
-      
       const isTargetListOnDefaultAppList = state.appListItems.filter((item) => item.id === targetListId).pop();
       const newIndex = isTargetListOnDefaultAppList 
         ? state.userListItems.slice(0, 1) 
@@ -167,7 +170,6 @@ const listReducer = (state, action) => {
         .map((item) => item.id)
         .indexOf(currentListId);
       const newUserListItems = arrayMove(state.userListItems, currentIndex, newIndex);
-
       return {
         ...state,
         listItems: [...state.appListItems, ...newUserListItems],

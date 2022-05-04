@@ -115,7 +115,9 @@ const SortableList = ({
   const handleDragStart = (event) => setActiveDragItemId(event.active.id);
   const handleDragEnd = (event) => {
     const { active: currentItem, over: targetItem } = event;
-    onReorderListItems(currentItem.id, targetItem.id);
+    if (currentItem !== targetItem) {
+      onReorderListItems(currentItem.id, targetItem.id);
+    }
     setActiveDragItemId(null);
   }
   
