@@ -31,8 +31,8 @@ const SortableTaskPanelListRow = ({
     className: (activeDragItemId === task.id) ? 'relative z-[1]' : '',
   }
   const sortableItemClass = (
-    ' ease-in-out duration-300 bp520:transition bp520:origin-center bp520:delay-100 ' +
-    ((activeDragItemId && (activeDragItemId !== task.id)) ? 'bp520:scale-x-95 bp520:scale-y-90 bp520:opacity-60 ' : (activeDragItemId === task.id) ? '!bg-white' : '')
+    ' ease-in-out duration-300 bp520:transition md:origin-center md:delay-100 ' +
+    ((activeDragItemId && (activeDragItemId !== task.id)) ? 'md:scale-x-95 md:scale-y-90 md:opacity-60 ' : (activeDragItemId === task.id) ? '!bg-white shadow-lg shadow-black/25 md:shadow-none' : '')
   );
 
   return (
