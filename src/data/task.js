@@ -13,14 +13,14 @@ const taskTemplate = {
 const initialTaskItems = [
   {
     ...taskTemplate,
-    id: 0,
+    id: 'sample-item-1',
     list_id: APP_LIST_ID.TASKS,
     title: 'List Item 1',
     date_created: 1644078770000,
   },
   {
     ...taskTemplate,
-    id: 1,
+    id: 'sample-item-2',
     list_id: APP_LIST_ID.TASKS,
     title: 'List Item 2',
     is_complete: true,
@@ -29,7 +29,7 @@ const initialTaskItems = [
   },
   {
     ...taskTemplate,
-    id: 2,
+    id: 'sample-item-3',
     list_id: APP_LIST_ID.TASKS,
     title: 'List Item 3',
     notes: 'List Item 3 note',

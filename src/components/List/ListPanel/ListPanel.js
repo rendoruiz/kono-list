@@ -97,7 +97,7 @@ const SortableList = ({
   onSelectList,
   onReorderListItems,
 }) => {
-  const [dragItemId, setDragItemId] = React.useState(null);
+  const [activeDragItemId, setActiveDragItemId] = React.useState(null);
   const sensors = useSensors(
     useSensor(TouchSensor, {
       activationConstraint: {
@@ -107,19 +107,18 @@ const SortableList = ({
     }),
     useSensor(MouseSensor, {
       activationConstraint: {
-        distance: 8, 
+        distance: 15, 
       },
     }),
-  )
+  );
 
-  const handleDragStart = (event) => {
-    const activeListItemId = event.active.id;
-    setDragItemId(activeListItemId);
-  }
+  const handleDragStart = (event) => setActiveDragItemId(event.active.id);
   const handleDragEnd = (event) => {
-    const { active: activeItem, over: overItem } = event;
-    onReorderListItems(activeItem.id, overItem.id);
-    setDragItemId(null);
+    const { active: currentItem, over: targetItem } = event;
+    if (currentItem !== targetItem) {
+      onReorderListItems(currentItem.id, targetItem.id);
+    }
+    setActiveDragItemId(null);
   }
   
   return (
@@ -141,7 +140,7 @@ const SortableList = ({
               list={list}
               selectedList={selectedList}
               isSortable
-              dragItemId={dragItemId}
+              activeDragItemId={activeDragItemId}
               onSelectList={onSelectList}
             />
           ))}

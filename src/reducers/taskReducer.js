@@ -4,6 +4,8 @@
  * can be found in the LICENSE file.
  */
 
+import { arrayMove } from "@dnd-kit/sortable";
+
 import { taskTemplate, initialTaskItems } from "../data/task";
 import { getDecryptedTask } from "../utils/encryptedStorage";
 
@@ -22,6 +24,7 @@ const TASK_ACTION = {
   DELETE_LIST_TASKS: 'delete_delete_tasks',
   TOGGLE_ITEM_COMPLETED: 'toggle_item_completed',
   CLOSE_EDITOR_PANEL: 'close_editor_panel',
+  UPDATE_INDICES: 'update_item_indices',
 }
 
 const taskReducer = (state, action) => {
@@ -81,11 +84,12 @@ const taskReducer = (state, action) => {
     }
 
     case TASK_ACTION.TOGGLE_ITEM_COMPLETED: {
+      const taskId = action.payload.taskId;
       let newSelectedItem = null;
       return {
         ...state,
         taskItems: state.taskItems.map((item) => {
-          if (item.id === action.payload.taskId) {
+          if (item.id === taskId) {
             newSelectedItem = {
               ...item,
               is_complete: !item.is_complete,
@@ -95,7 +99,7 @@ const taskReducer = (state, action) => {
           }
           return item;
         }),
-        selectedItem: newSelectedItem,
+        selectedItem: taskId === state.selectedItem?.id ? newSelectedItem : state.selectedItem,
       }
     }
 
@@ -115,6 +119,24 @@ const taskReducer = (state, action) => {
         ...state,
         selectedItem: null,
         isEditorPanelOpen: false,
+      }
+    }
+
+    case TASK_ACTION.UPDATE_INDICES: {
+      const { currentTaskId, targetTaskId } = action.payload;
+      if (currentTaskId === targetTaskId) {
+        return { ...state }
+      }
+      const newIndex = state.taskItems
+        .map((item) => item.id)
+        .indexOf(targetTaskId);
+      const currentIndex = state.taskItems
+        .map((item) => item.id)
+        .indexOf(currentTaskId);
+      const newTaskItems = arrayMove(state.taskItems, currentIndex, newIndex);
+      return {
+        ...state,
+        taskItems: newTaskItems,
       }
     }
 

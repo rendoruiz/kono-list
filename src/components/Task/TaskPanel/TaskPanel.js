@@ -21,6 +21,7 @@ const TaskPanel = ({
   onToggleCompletedItemsVisibility,
   onToggleListPanel,
   onToggleListEditorPanel, 
+  onReorderTaskItems,
 }) => (
   <div className='relative grid grid-rows-[auto,1fr,auto] h-screen bg-gradient-to-br from-blue-700/80 to-blue-500/80 text-white md:rounded-tl-xl md:px-10'>
     <TaskPanelList
@@ -30,6 +31,7 @@ const TaskPanel = ({
       onSelectTask={onSelectTask}
       onToggleTaskCompleteState={onToggleTaskCompleteState}
       onToggleCompletedItemsVisibility={onToggleCompletedItemsVisibility}
+      onReorderTaskItems={onReorderTaskItems}
     />
     
     <TaskPanelCreator

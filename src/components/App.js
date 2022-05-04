@@ -50,10 +50,11 @@ const App = () => {
     if (!list.selectedItem.date_updated) {
       dispatchList({
         type: LIST_ACTION.DELETE_ITEM,
-        payload: { listId: list.selectedItem },
+        payload: { listId: list.selectedItem.id },
       });
+    } else {
+      dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
     }
-    dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
   }
 
   // Update list item
@@ -128,12 +129,12 @@ const App = () => {
   const handleToggleListEditorPanel = () => dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
   
   // Update list item indices (sorting)
-  const handleUpdateListOrder = (activeListId, overListId) => {
+  const handleUpdateListOrder = (currentListId, targetListId) => {
     dispatchList({
       type: LIST_ACTION.UPDATE_INDICES,
       payload: {
-        activeListId: activeListId,
-        overListId: overListId,
+        currentListId: currentListId,
+        targetListId: targetListId,
       },
     })
   }
@@ -193,6 +194,17 @@ const App = () => {
   // Close task editor panel
   const handleCloseTaskEditorPanel = () => dispatchTask({ type: TASK_ACTION.CLOSE_EDITOR_PANEL });
 
+  // Update task item indices (sorting)
+  const handleUpdateTaskOrder = (currentTaskId, targetTaskId) => {
+    dispatchTask({
+      type: TASK_ACTION.UPDATE_INDICES,
+      payload: {
+        currentTaskId: currentTaskId,
+        targetTaskId: targetTaskId,
+      },
+    })
+  }
+
   // Toggle settings panel visibility
   const handleToggleSettingsPanel = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
 
@@ -236,6 +248,7 @@ const App = () => {
         onToggleCompletedItemsVisibility={handleToggleCompletedItemsVisibility}
         onToggleListPanel={handleToggleListPanel}
         onToggleListEditorPanel={handleToggleListEditorPanel}
+        onReorderTaskItems={handleUpdateTaskOrder}
       />
 
       {/* task editor right panel */}
