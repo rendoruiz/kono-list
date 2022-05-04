@@ -96,7 +96,7 @@ const taskReducer = (state, action) => {
           }
           return item;
         }),
-        selectedItem: taskId === state.selectedItem.id ? newSelectedItem : state.selectedItem,
+        selectedItem: taskId === state.selectedItem?.id ? newSelectedItem : state.selectedItem,
       }
     }
 
