@@ -107,7 +107,7 @@ const SortableList = ({
     }),
     useSensor(MouseSensor, {
       activationConstraint: {
-        distance: 8, 
+        distance: 15, 
       },
     }),
   );
