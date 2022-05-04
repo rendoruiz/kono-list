@@ -28,10 +28,11 @@ const SortableTaskPanelListRow = ({
     },
     ...attributes,
     ...listeners,
+    className: (activeDragItemId === task.id) ? 'relative z-[1]' : '',
   }
   const sortableItemClass = !activeDragItemId ? '' : (
     ' ease-in-out duration-300 bp520:transition bp520:origin-center bp520:delay-100 ' +
-    ((activeDragItemId && (activeDragItemId !== task.id)) ? 'bp520:scale-x-95 bp520:scale-y-90 bp520:opacity-60 ' : '')
+    ((activeDragItemId && (activeDragItemId !== task.id)) ? 'bp520:scale-x-95 bp520:scale-y-90 bp520:opacity-60 ' : (activeDragItemId === task.id) ? '!bg-white' : '')
   );
 
   return (
@@ -54,21 +55,22 @@ const TaskPanelListRow = ({
   ...props
 }) => (
   <li 
-    className={
+    {...props.sortableAttributes}
+  >
+    <div className={
       'grid grid-cols-[auto,1fr] rounded-md min-h-[64px] bg-white text-black/90 cursor-pointer touch-none hover:bg-white/90 bp520:min-h-[50px] ' + 
       ((task.id !== selectedTask?.id) ? 'md:bg-white/80' : '') +
       props.sortableItemClass
-    }
-    {...props.sortableAttributes}
-  >
-    <TaskCompletedToggle
-      task={task}
-      onToggle={onToggleTaskCompleteState}
-    />
-    <TaskContent
-      task={task}
-      onSelectTask={onSelectTask}
-    />
+    }>
+      <TaskCompletedToggle
+        task={task}
+        onToggle={onToggleTaskCompleteState}
+      />
+      <TaskContent
+        task={task}
+        onSelectTask={onSelectTask}
+      />
+    </div>
   </li>
 );
 
