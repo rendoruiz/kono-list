@@ -131,7 +131,7 @@ const App = () => {
   // Update list item indices (sorting)
   const handleUpdateListOrder = (currentListId, targetListId) => {
     dispatchList({
-      type: LIST_ACTION.UPDATE_INDICES,
+      type: LIST_ACTION.UPDATE_USER_INDICES,
       payload: {
         currentListId: currentListId,
         targetListId: targetListId,

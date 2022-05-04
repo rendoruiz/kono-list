@@ -22,41 +22,43 @@ const ListPanel = ({
   onTogglePanel, 
   onToggleSettingsPanel,
   onReorderListItems,
-}) => (
-  <>
-    <MobileToggleableBackdrop
-      isOpen={isOpen}
-      onToggle={onTogglePanel}
-    />
+}) => {
+  return (
+    <>
+      <MobileToggleableBackdrop
+        isOpen={isOpen}
+        onToggle={onTogglePanel}
+      />
 
-    <div className={
-      'fixed inset-0 right-auto z-30 grid grid-rows-[auto,1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[auto,1fr,auto] bp520:w-72 md:relative md:z-auto md:translate-x-0 md:transition-none ' +
-      (isOpen ? 'md:translate-x-0' : '-translate-x-full')
-    }>
-      <header className='sticky top-0 grid pt-4 pb-3 px-3 leading-none select-none pointer-events-none md:py-3'>
-        <h1 className="bg-gradient-to-br from-blue-700 to-blue-500 bg-clip-text font-extrabold text-2xl text-transparent leading-none tracking-wide uppercase">
-          KonoList
-        </h1>
-      </header>
-      
-      <main className='overflow-y-auto pt-3 py-1 bp520:pt-2'>
-        {listItems && (
-          <ListRows
-            listItems={listItems}
-            selectedList={selectedList}
-            onSelectList={onSelectList}
-            onReorderListItems={onReorderListItems}
-          />
-        )}
-      </main>
+      <div className={
+        'fixed inset-0 right-auto z-30 grid grid-rows-[auto,1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[auto,1fr,auto] bp520:w-72 md:relative md:z-auto md:translate-x-0 md:transition-none ' +
+        (isOpen ? 'md:translate-x-0' : '-translate-x-full')
+      }>
+        <header className='sticky top-0 grid pt-4 pb-3 px-3 leading-none select-none pointer-events-none md:py-3'>
+          <h1 className="bg-gradient-to-br from-blue-700 to-blue-500 bg-clip-text font-extrabold text-2xl text-transparent leading-none tracking-wide uppercase">
+            KonoList
+          </h1>
+        </header>
+        
+        <main className='overflow-y-auto pt-3 py-1 bp520:pt-2'>
+          {listItems && (
+            <ListRows
+              listItems={listItems}
+              selectedList={selectedList}
+              onSelectList={onSelectList}
+              onReorderListItems={onReorderListItems}
+            />
+          )}
+        </main>
 
-      <footer className='fixed inset-0 top-auto grid grid-cols-[1fr,auto] border-t-2 p-[2px] bg-inherit text-black/70 bp520:sticky'>
-        <NewListButton onCreateList={onCreateList} />
-        <SettingsButton onToggle={onToggleSettingsPanel} />
-      </footer>
-    </div>
-  </>
-);
+        <footer className='fixed inset-0 top-auto grid grid-cols-[1fr,auto] border-t-2 p-[2px] bg-inherit text-black/70 bp520:sticky'>
+          <NewListButton onCreateList={onCreateList} />
+          <SettingsButton onToggle={onToggleSettingsPanel} />
+        </footer>
+      </div>
+    </>
+  );
+}
 
 const MobileToggleableBackdrop = ({
   isOpen,

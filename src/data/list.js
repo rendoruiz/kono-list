@@ -23,6 +23,6 @@ const appDefaultListItems = [
   },
 ];
 
-const initialListItems = [];
+const initialUserListItems = [];
 
-export { listTemplate, appDefaultListItems, initialListItems, APP_LIST_ID }
+export { listTemplate, APP_LIST_ID, appDefaultListItems, initialUserListItems }

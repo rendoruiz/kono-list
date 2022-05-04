@@ -7,8 +7,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import {CSS} from '@dnd-kit/utilities';
 
-import { APP_LIST_ID } from "../../../data/list";
-
 const SortableListPanelRow = ({
   list, 
   selectedList, 
@@ -59,10 +57,10 @@ const ListPanelRow = ({
 }) => (
   <li 
     {...props.sortableAttributes}
-    className={
-      list.id === APP_LIST_ID.TASKS ? 'pb-[2px] mb-[2px] border-b-[2px]' : '' +
-      ((activeDragItemId === list.id) ? ' relative z-[1]' : '')
-    }
+    // className={
+    //   list.id === APP_LIST_ID.TASKS ? 'pb-[2px] mb-[2px] border-b-[2px]' : '' +
+    //   ((activeDragItemId === list.id) ? ' relative z-[1]' : '')
+    // }
   >
     <button 
       className={
