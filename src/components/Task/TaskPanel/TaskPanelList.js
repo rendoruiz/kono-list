@@ -19,6 +19,7 @@ const TaskPanelList = ({
   onSelectTask, 
   onToggleTaskCompleteState, 
   onToggleCompletedItemsVisibility,
+  onReorderTaskItems,
 }) => {
   const completedTasks = taskItems.filter((task) => task.is_complete && task.list_id === selectedList.id)
     .sort((a, b) => b.date_updated - a.date_updated);
@@ -33,6 +34,7 @@ const TaskPanelList = ({
           selectedTask={selectedTask}
           onSelectTask={onSelectTask}
           onToggleTaskCompleteState={onToggleTaskCompleteState}
+          onReorderTaskItems={onReorderTaskItems}
         />
       )}
 
@@ -63,6 +65,7 @@ const IncompleteTasks = ({
   selectedTask,
   onSelectTask,
   onToggleTaskCompleteState,
+  onReorderTaskItems,
 }) => {
   const [activeDragItemId, setActiveDragItemId] = React.useState(null);
   const sensors = useSensors(
@@ -81,8 +84,10 @@ const IncompleteTasks = ({
 
   const handleDragStart = (event) => setActiveDragItemId(event.active.id);
   const handleDragEnd = (event) => {
-    // const { active: currentItem, over: targetItem } = event;
-    // onReorderListItems(currentItem.id, targetItem.id);
+    const { active: currentItem, over: targetItem } = event;
+    if (currentItem !== targetItem) {
+      onReorderTaskItems(currentItem.id, targetItem.id);
+    }
     setActiveDragItemId(null);
   }
 
