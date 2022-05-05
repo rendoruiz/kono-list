@@ -23,7 +23,7 @@ const buildTime = preval`module.exports =
 // for pwa install button
 let deferredPrompt; 
 
-const SettingsPanel = ({ 
+const AppSettingsPanel = ({ 
   isOpen,
   onTogglePanel,
 }) => {
@@ -179,4 +179,4 @@ const SettingsPanel = ({
   );
 }
  
-export default SettingsPanel;
+export default AppSettingsPanel;
