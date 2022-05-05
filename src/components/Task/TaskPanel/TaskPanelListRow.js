@@ -98,10 +98,10 @@ const TaskTitle = ({
   title,
   isComplete,
 }) => (
-  <p className={
-    'overflow-hidden text-ellipsis ' + 
-    (isComplete ? 'block opacity-60 line-through' : '')
-  }>
+  <p className={clsx(
+    'overflow-hidden text-ellipsis',
+    { 'block opacity-60 line-through': isComplete }
+  )}>
     {title}
   </p>
 );
