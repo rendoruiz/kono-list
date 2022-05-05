@@ -46,7 +46,6 @@ const List = ({
       dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
       return;
     }
-
     dispatchList({
       type: LIST_ACTION.UPDATE_ITEM,
       payload: {
@@ -55,7 +54,6 @@ const List = ({
         icon: listItem.icon,
       }
     });
-
     if (!list.selectedItem.date_updated) {
       dispatchTask({ type: TASK_ACTION.CLOSE_EDITOR_PANEL });
     }
