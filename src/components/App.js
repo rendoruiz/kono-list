@@ -8,12 +8,11 @@ import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 // components
-import ListPanel from './List/ListPanel/ListPanel';
-import ListEditorPanel from './List/ListEditorPanel/ListEditorPanel';
+import List from './List/List';
 import TaskPanel from './Task/TaskPanel/TaskPanel';
 import TaskEditorPanel from './Task/TaskEditorPanel/TaskEditorPanel';
-import SettingsPanel from './SettingsPanel';
-import DisclaimerPanel from './DisclaimerPanel';
+import AppNoticePanel from './AppNoticePanel';
+import AppSettingsPanel from './AppSettingsPanel';
 // hooks, reducers, data, utils
 import { listReducer, LIST_ACTION, defaultList } from '../reducers/listReducer';
 import { taskReducer, TASK_ACTION, defaultTask } from '../reducers/taskReducer';
@@ -31,56 +30,6 @@ const App = () => {
   React.useEffect(() => {
     setEncryptedTask(task);
   }, [task]);
-
-
-  // Create new list item
-  // Use the new list item as selected list
-  // Close list editor panel
-  const handleCreateList = () => {
-    dispatchList({
-      type: LIST_ACTION.CREATE_ITEM,
-      payload: { listId: uuidv4() },
-    });
-  }
-
-  // (if new list) Delete recently created list item
-  // (if new list) Assign the previous list as the selected list
-  // Close list editor panel 
-  const handleCloseListEditor = () => {
-    if (!list.selectedItem.date_updated) {
-      dispatchList({
-        type: LIST_ACTION.DELETE_ITEM,
-        payload: { listId: list.selectedItem.id },
-      });
-    } else {
-      dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
-    }
-  }
-
-  // Update list item
-  // Set new selected list
-  // Close list editor panel
-  // (if new list) Close task editor
-  const handleUpdateList = (listItem) => {
-    if (list.selectedItem.locked) {
-      alert('Cannot update locked list.');
-      dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
-      return;
-    }
-
-    dispatchList({
-      type: LIST_ACTION.UPDATE_ITEM,
-      payload: {
-        listId: listItem.id,
-        name: listItem.name,
-        icon: listItem.icon,
-      }
-    });
-
-    if (!list.selectedItem.date_updated) {
-      dispatchTask({ type: TASK_ACTION.CLOSE_EDITOR_PANEL });
-    }
-  }
 
   // Delete selected list
   // Delete all tasks associated with selected list
@@ -103,16 +52,7 @@ const App = () => {
     }
   }
 
-  // Set selected list
-  // Close list panel (mobile)
-  // Close task editor
-  const handleSetSelectedList = (listId) => {
-    dispatchList({
-      type: LIST_ACTION.SELECT_ITEM,
-      payload: { listId: listId },
-    });
-    dispatchTask({ type: TASK_ACTION.CLOSE_EDITOR_PANEL });
-  }
+
 
   // Toggle visibility of completed items within a list
   const handleToggleCompletedItemsVisibility = () => {
@@ -128,16 +68,7 @@ const App = () => {
   // Toggle list editor panel (popup) visbility
   const handleToggleListEditorPanel = () => dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
   
-  // Update list item indices (sorting)
-  const handleUpdateListOrder = (currentListId, targetListId) => {
-    dispatchList({
-      type: LIST_ACTION.UPDATE_USER_INDICES,
-      payload: {
-        currentListId: currentListId,
-        targetListId: targetListId,
-      },
-    })
-  }
+
 
   // Create new task
   // Reset task creator form fields
@@ -206,35 +137,16 @@ const App = () => {
   }
 
   // Toggle settings panel visibility
-  const handleToggleSettingsPanel = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
+  const handleToggleAppSettings = () => setIsSettingsPanelOpen(!isSettingsPanelOpen);
 
   return (
     <div className='grid md:grid-cols-[auto,1fr,auto] h-screen w-screen bg-slate-100 overflow-hidden'>
-      {/* list left panel */}
-      <ListPanel
-        isOpen={list.isPanelOpen} 
-        appListItems={list.appListItems}
-        userListItems={list.userListItems}
-        selectedList={list.selectedItem}
-        onCreateList={handleCreateList}
-        onSelectList={handleSetSelectedList}
-        onTogglePanel={handleToggleListPanel} 
-        onToggleSettingsPanel={handleToggleSettingsPanel}
-        onReorderListItems={handleUpdateListOrder}
-      />
-
-      {/* list editor popup */}
-      <ListEditorPanel
-        isOpen={list.isEditorPanelOpen}
-        selectedList={list.selectedItem}
-        onUpdateList={handleUpdateList}
-        onCancelEdit={handleCloseListEditor}
-      />
-
-      {/* Settings panel */}
-      <SettingsPanel
-        isOpen={isSettingsPanelOpen}
-        onTogglePanel={handleToggleSettingsPanel}
+      <List
+        list={list}
+        dispatchList={dispatchList}
+        dispatchTask={dispatchTask}
+        onToggleListPanel={handleToggleListPanel}
+        onToggleAppSettings={handleToggleAppSettings}
       />
 
       {/* task middle panel */}
@@ -263,8 +175,11 @@ const App = () => {
         onToggleTaskCompleteState={handleToggleTaskCompleteState}
       />
 
-      {/* app disclaimer */}
-      <DisclaimerPanel />
+      <AppNoticePanel />
+      <AppSettingsPanel
+        isOpen={isSettingsPanelOpen}
+        onToggle={handleToggleAppSettings}
+      />
     </div>
   );
 }
