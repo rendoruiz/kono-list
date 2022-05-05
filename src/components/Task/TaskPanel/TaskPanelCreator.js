@@ -5,6 +5,7 @@
  */
 
 import * as React from 'react';
+import clsx from 'clsx';
 
 import CircleCheckIcon from '../../Icons/CircleCheckIcon';
 import PlusIcon from '../../Icons/PlusIcon';
@@ -59,10 +60,12 @@ const TaskPanelCreator = ({
         <button
           type='submit'
           title={input.trim().length > 0 ? 'Add new task' : 'Invalid input'}
-          className={
-            'absolute inset-y-0 left-auto right-3 hidden px-2 cursor-pointer peer-focus:block md:right-0 md:px-2 ' + 
-            (input.trim().length > 0 ? '!block' : '!cursor-not-allowed opacity-25')
-          }
+          className={clsx(
+            'absolute inset-y-0 left-auto right-3 hidden px-2 cursor-pointer peer-focus:block md:right-0 md:px-2',
+            input.trim().length > 0 
+              ? '!block' 
+              : '!cursor-not-allowed opacity-25',
+          )}
           disabled={input.trim().length < 1}
         >
           <SendIcon 

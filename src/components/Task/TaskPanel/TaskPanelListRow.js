@@ -4,6 +4,7 @@
  * can be found in the LICENSE file.
  */
 
+import clsx from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
 import {CSS} from '@dnd-kit/utilities';
 
@@ -28,11 +29,12 @@ const SortableTaskPanelListRow = ({
     },
     ...attributes,
     ...listeners,
-    className: (activeDragItemId === task.id) ? 'relative z-[1]' : '',
+    className: clsx({ 'relative z-[1]': activeDragItemId === task.id }),
   }
-  const sortableItemClass = (
-    ' ease-in-out duration-300 bp520:transition md:origin-center md:delay-100 ' +
-    ((activeDragItemId && (activeDragItemId !== task.id)) ? 'md:scale-x-95 md:scale-y-90 md:opacity-60 ' : (activeDragItemId === task.id) ? '!bg-white shadow-lg shadow-black/25 md:shadow-none' : '')
+  const sortableItemClass = clsx(
+    'ease-in-out duration-300 bp520:transition md:origin-center md:delay-100',
+    { 'opacity-70 md:scale-x-95 md:scale-y-90 md:opacity-60': activeDragItemId && (activeDragItemId !== task.id) },
+    { '!bg-white shadow-lg shadow-black/25 md:shadow-none': activeDragItemId === task.id }
   );
 
   return (
@@ -55,11 +57,11 @@ const TaskPanelListRow = ({
   ...props
 }) => (
   <li {...props.sortableAttributes}>
-    <div className={
-      'grid grid-cols-[auto,1fr] rounded-md min-h-[64px] bg-white text-black/90 cursor-pointer touch-none hover:bg-white/90 bp520:min-h-[50px] ' + 
-      ((task.id !== selectedTask?.id) ? 'md:bg-white/80' : '') +
-      (props.sortableItemClass ? props.sortableItemClass : '')
-    }>
+    <div className={clsx(
+      'grid grid-cols-[auto,1fr] rounded-md min-h-[64px] bg-white text-black/90 cursor-pointer touch-none hover:bg-white/90 bp520:min-h-[50px]',
+      { 'md:bg-white/80': task.id !== selectedTask?.id },
+      props.sortableItemClass
+    )}>
       <TaskCompletedToggle
         task={task}
         onToggle={onToggleTaskCompleteState}
@@ -96,10 +98,10 @@ const TaskTitle = ({
   title,
   isComplete,
 }) => (
-  <p className={
-    'overflow-hidden text-ellipsis ' + 
-    (isComplete ? 'block opacity-60 line-through' : '')
-  }>
+  <p className={clsx(
+    'overflow-hidden text-ellipsis',
+    { 'block opacity-60 line-through': isComplete }
+  )}>
     {title}
   </p>
 );

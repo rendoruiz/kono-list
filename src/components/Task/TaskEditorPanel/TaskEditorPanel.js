@@ -5,6 +5,7 @@
  */
 
 import * as React from 'react';
+import clsx from 'clsx';
 
 import TaskCompletedToggle from "../TaskCompletedToggle";
 import TaskNoteInput from './TaskNoteInput';
@@ -46,18 +47,22 @@ const TaskEditorPanel = ({
     <>
       {/* mobile backdrop toggle */}
       <div 
-        className={
-          'fixed inset-0 z-30 transition-opacity duration-300 bg-black/70 bp520:block lg:hidden ' +
-          (isOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full')
-        }
+        className={clsx(
+          'fixed inset-0 z-30 transition-opacity duration-300 bg-black/70 bp520:block lg:hidden',
+          isOpen 
+            ? 'opacity-100 translate-x-0' 
+            : 'opacity-0 -translate-x-full',
+        )}
         onClick={onTogglePanel}
       />
 
       {/* bp520 - floats, lg - inline */}
-      <div className={
-        'fixed inset-0 left-auto z-30 grid grid-rows-[auto,1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[auto,1fr,auto] bp520:w-[320px] lg:relative lg:z-auto lg:translate-x-0 lg:transition-none ' +
-        (isOpen ? 'lg:translate-x-0' : 'translate-x-full lg:hidden')
-      }>
+      <div className={clsx(
+        'fixed inset-0 left-auto z-30 grid grid-rows-[auto,1fr,60px] w-full h-screen bg-slate-100 transition-transform duration-200 bp520:grid-rows-[auto,1fr,auto] bp520:w-[320px] lg:relative lg:z-auto lg:translate-x-0 lg:transition-none',
+        isOpen 
+          ? 'lg:translate-x-0' 
+          : 'translate-x-full lg:hidden',
+      )}>
         {/* debug */}
         {/* <p className='font-mono font-medium text-xs uppercase break-word'>
             {JSON.stringify(selectedList)?.replaceAll(',"', ', "')}
@@ -101,10 +106,10 @@ const TaskEditorPanel = ({
               <TaskNoteInput
                 name='name'
                 onBlur={handleSubmit}
-                className={
-                  'pt-2 pr-3 bg-transparent font-medium text-lg leading-snug resize-none outline-none appearance-none md:pt-[2px] ' +
-                  (selectedTask?.is_complete ? 'line-through focus:no-underline' : '')
-                }
+                className={clsx(
+                  'pt-2 pr-3 bg-transparent font-medium text-lg leading-snug resize-none outline-none appearance-none md:pt-[2px]',
+                  { 'line-through focus:no-underline': selectedTask?.is_complete }
+                )}
                 value={title}
                 disabled={!selectedTask}
                 onChange={setTitle}

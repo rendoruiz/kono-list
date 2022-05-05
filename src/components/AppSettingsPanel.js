@@ -23,9 +23,9 @@ const buildTime = preval`module.exports =
 // for pwa install button
 let deferredPrompt; 
 
-const SettingsPanel = ({ 
+const AppSettingsPanel = ({ 
   isOpen,
-  onTogglePanel,
+  onToggle,
 }) => {
   // pwa install button state
   const [isPWAInstallable, setIsPWAInstallable] = React.useState(false);
@@ -58,7 +58,7 @@ const SettingsPanel = ({
   return isOpen && (  
     <div 
       className='fixed inset-0 z-50 grid place-items-center overflow-y-auto px-3 py-5 bg-black/60'
-      onClick={onTogglePanel}
+      onClick={onToggle}
     >
       <div 
         className='grid content-start w-full max-w-lg text-black/90'
@@ -81,7 +81,7 @@ const SettingsPanel = ({
             type='button'
             title='Close settings'
             className='grid place-items-center rounded -mt-2 -mr-2 w-12 h-12 text-2xl hover:bg-black/10 active:bg-black/20 bp520:w-8 bp520:h-8 bp520:text-lg'
-            onClick={onTogglePanel}
+            onClick={onToggle}
           >
             <CrossIcon className='w-8 h-8 stroke-current bp520:w-6 bp520:h-6' />
           </button>
@@ -179,4 +179,4 @@ const SettingsPanel = ({
   );
 }
  
-export default SettingsPanel;
+export default AppSettingsPanel;

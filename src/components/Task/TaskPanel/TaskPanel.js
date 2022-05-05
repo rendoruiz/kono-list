@@ -4,6 +4,8 @@
  * can be found in the LICENSE file.
  */
 
+import clsx from "clsx";
+
 import TaskPanelCreator from "./TaskPanelCreator";
 import TaskPanelList from "./TaskPanelList";
 import ArrowLeftIcon from "../../Icons/ArrowLeftIcon";
@@ -57,18 +59,20 @@ const TaskPanel = ({
       <button 
         type='button'
         title='Click to rename'
-        className={
-          'justify-self-start grid grid-cols-[auto,1fr] items-center rounded leading-none hover:bg-black/10 active:bg-black/20 ' +
-          (selectedList.locked ? 'pointer-events-none' : '')
-        }
+        className={clsx(
+          'justify-self-start grid grid-cols-[auto,1fr] items-center rounded leading-none hover:bg-black/10 active:bg-black/20 ',
+          { 'pointer-events-none': selectedList.locked }
+        )}
         onClick={!selectedList.locked ? onToggleListEditorPanel : null}
         disabled={selectedList.locked}
       >
         {/* list icon */}
-        <div className={
-          'grid place-items-center h-10 ' +
-          (selectedList.icon === "" ? 'pl-1 w-0' : 'w-10')
-        }>
+        <div className={clsx(
+          'grid place-items-center h-10',
+          selectedList.icon === ""
+            ? 'pl-1 w-0' 
+            : 'w-10',
+        )}>
           <div className='font-mono font-bold text-2xl'>
             {selectedList?.icon}
           </div>
