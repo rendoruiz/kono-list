@@ -33,7 +33,7 @@ const SortableTaskPanelListRow = ({
   }
   const sortableItemClass = clsx(
     'ease-in-out duration-300 bp520:transition md:origin-center md:delay-100',
-    { 'md:scale-x-95 md:scale-y-90 md:opacity-60': activeDragItemId && (activeDragItemId !== task.id) },
+    { 'opacity-70 md:scale-x-95 md:scale-y-90 md:opacity-60': activeDragItemId && (activeDragItemId !== task.id) },
     { '!bg-white shadow-lg shadow-black/25 md:shadow-none': activeDragItemId === task.id }
   );
 
