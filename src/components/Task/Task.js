@@ -33,7 +33,6 @@ const Task = ({
     }
   }
 
-
   // Toggle visibility of completed items within a list
   const handleToggleCompletedItemsVisibility = () => {
     dispatchList({
@@ -41,11 +40,6 @@ const Task = ({
       payload: { listId: selectedList.id },
     });
   }
-  
-  // Toggle list editor panel (popup) visbility
-  const handleToggleListEditorPanel = () => dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
-  
-
 
   // Create new task
   // Reset task creator form fields
@@ -99,11 +93,8 @@ const Task = ({
     });
   }
 
-  // Close task editor panel
-  const handleCloseTaskEditorPanel = () => dispatchTask({ type: TASK_ACTION.CLOSE_EDITOR_PANEL });
-
   // Update task item indices (sorting)
-  const handleUpdateTaskOrder = (currentTaskId, targetTaskId) => {
+  const handleReorderTaskItems = (currentTaskId, targetTaskId) => {
     dispatchTask({
       type: TASK_ACTION.UPDATE_INDICES,
       payload: {
@@ -112,6 +103,12 @@ const Task = ({
       },
     })
   }
+  
+  // Toggle list editor panel (popup) visbility
+  const handleToggleListEditorPanel = () => dispatchList({ type: LIST_ACTION.TOGGLE_EDITOR_PANEL });
+
+  // Close task editor panel
+  const handleCloseTaskEditorPanel = () => dispatchTask({ type: TASK_ACTION.CLOSE_EDITOR_PANEL });
 
   return (  
     <>
@@ -126,7 +123,7 @@ const Task = ({
         onToggleCompletedItemsVisibility={handleToggleCompletedItemsVisibility}
         onToggleListPanel={onToggleListPanel}
         onToggleListEditorPanel={handleToggleListEditorPanel}
-        onReorderTaskItems={handleUpdateTaskOrder}
+        onReorderTaskItems={handleReorderTaskItems}
       />
       <TaskEditorPanel
         isOpen={task.isEditorPanelOpen}
