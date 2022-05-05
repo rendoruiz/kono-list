@@ -4,12 +4,13 @@
  * can be found in the LICENSE file.
  */
 
+import clsx from "clsx";
+
 import TaskPanelCreator from "./TaskPanelCreator";
 import TaskPanelList from "./TaskPanelList";
 import ArrowLeftIcon from "../../Icons/ArrowLeftIcon";
 import PencilIcon from "../../Icons/PencilIcon";
 import TrashIcon from "../../Icons/TrashIcon";
-import clsx from "clsx";
 
 const TaskPanel = ({ 
   taskItems, 
